@@ -1,6 +1,7 @@
 package org.sdoaj.jimgus.world.biome;
 
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.Features;
 import net.minecraft.data.worldgen.SurfaceBuilders;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.CountConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import org.sdoaj.jimgus.core.init.FeatureInit;
 
 public class ModBiomes {
@@ -20,11 +22,9 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultCarvers(generationSettingsBuilder);
         BiomeDefaultFeatures.addDefaultLakes(generationSettingsBuilder);
 
-//        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-//                FeatureInit.CRYSTAL_FEATURE.get().configured(new CountConfiguration(10)));
-
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.CRYSTAL_FEATURE.configured(new CountConfiguration(10)));
+                FeatureInit.CRYSTAL_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(4));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
