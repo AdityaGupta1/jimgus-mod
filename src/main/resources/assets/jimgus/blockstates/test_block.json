@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "jimgus:block/test_block"
+    }
+  }
+}
