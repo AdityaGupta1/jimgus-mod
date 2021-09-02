@@ -1,5 +1,6 @@
 package org.sdoaj.jimgus.world.feature;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -12,8 +13,11 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        for (int y = 0; y < 256; y++) {
-            context.level().setBlock(context.origin().atY(y), BlockInit.TEST_BLOCK.get().defaultBlockState(), 19);
+        BlockPos pos = context.origin();
+        int y = pos.getY();
+
+        for (int dy = 0; dy < 5; dy++) {
+            context.level().setBlock(context.origin().atY(y + dy), BlockInit.TEST_BLOCK.get().defaultBlockState(), 19);
         }
 
         return true;
