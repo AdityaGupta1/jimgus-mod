@@ -1,7 +1,6 @@
 package org.sdoaj.jimgus.util.sdf.primitive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.sdf.SDF;
