@@ -5,6 +5,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import org.sdoaj.jimgus.core.init.BlockInit;
+import org.sdoaj.jimgus.util.sdf.SDF;
+import org.sdoaj.jimgus.util.sdf.primitive.SDFSphere;
 
 public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
     public CrystalFeature() {
@@ -13,12 +15,15 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        BlockPos pos = context.origin();
-        int y = pos.getY();
+//        BlockPos pos = context.origin();
+//        int y = pos.getY();
+//
+//        for (int dy = 0; dy < 5; dy++) {
+//            context.level().setBlock(context.origin().atY(y + dy), BlockInit.TEST_BLOCK.get().defaultBlockState(), 19);
+//        }
 
-        for (int dy = 0; dy < 5; dy++) {
-            context.level().setBlock(context.origin().atY(y + dy), BlockInit.TEST_BLOCK.get().defaultBlockState(), 19);
-        }
+        SDF sdf = new SDFSphere(4).setBlock(BlockInit.TEST_BLOCK.get());
+        sdf.fill(context.level(), context.origin());
 
         return true;
     }
