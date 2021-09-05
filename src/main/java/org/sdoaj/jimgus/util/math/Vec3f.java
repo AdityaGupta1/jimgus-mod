@@ -47,4 +47,9 @@ public class Vec3f {
                 MathHelper.lerp(delta, v1.y, v2.y),
                 MathHelper.lerp(delta, v1.z, v2.z));
     }
+
+    @Override
+    public String toString() {
+        return String.format("(%.3f, %.3f, %.3f)", x, y, z);
+    }
 }

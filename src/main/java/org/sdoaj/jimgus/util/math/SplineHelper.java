@@ -43,6 +43,37 @@ public class SplineHelper {
         }
     }
 
+    public static List<Vec3f> bezier(List<Vec3f> spline, int points) {
+        List<Vec3f> newSpline = new ArrayList<>();
+        newSpline.add(spline.get(0));
+
+        for (int i = 0; i < points - 2; i++) {
+            newSpline.add(getBezierPoint(spline, ((float) i + 1) / (points - 1)));
+        }
+
+        newSpline.add(spline.get(spline.size() - 1));
+        return newSpline;
+    }
+
+    private static Vec3f getBezierPoint(List<Vec3f> spline, float t) {
+        List<Vec3f> oldPoints = new ArrayList<>(spline);
+        List<Vec3f> newPoints = new ArrayList<>();
+        int points = spline.size();
+
+        while (points > 1) {
+            for (int i = 0; i < points - 1; i++) {
+                newPoints.add(Vec3f.lerp(t, oldPoints.get(i), oldPoints.get(i + 1)));
+            }
+
+            oldPoints.clear();
+            oldPoints.addAll(newPoints);
+            newPoints.clear();
+            points--;
+        }
+
+        return oldPoints.get(0);
+    }
+
     public static class SplineSDFBuilder {
         private final List<Vec3f> spline;
         private float r1;
