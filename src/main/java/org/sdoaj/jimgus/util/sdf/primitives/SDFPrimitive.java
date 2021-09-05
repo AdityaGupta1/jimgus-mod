@@ -1,4 +1,4 @@
-package org.sdoaj.jimgus.util.sdf.primitive;
+package org.sdoaj.jimgus.util.sdf.primitives;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

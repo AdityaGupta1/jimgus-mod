@@ -1,8 +1,9 @@
-package org.sdoaj.jimgus.util.sdf.primitive;
+package org.sdoaj.jimgus.util.sdf.primitives;
 
 import org.sdoaj.jimgus.util.MathHelper;
 
 // https://www.youtube.com/watch?v=62-pRVZuS5c
+// TODO doesn't work
 public class SDFBox extends SDFPrimitive {
     private final float rx, ry, rz; // radius x, y, z
 
