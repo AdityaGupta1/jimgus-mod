@@ -8,6 +8,7 @@ import org.sdoaj.jimgus.util.sdf.primitives.SDFLine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 // based partly on https://github.com/paulevsGitch/BCLib/blob/main/src/main/java/ru/bclib/util/SplineHelper.java
 public class SplineHelper {
@@ -28,18 +29,17 @@ public class SplineHelper {
         return spline;
     }
 
-    public static void offsetPoints(List<Vec3f> spline, Random random, float dx, float dy, float dz) {
+    // supplier allows the caller to choose between uniform, normal, or any other distribution
+    public static void offsetPoints(List<Vec3f> spline, Supplier<Float> random, float dx, float dy, float dz) {
         offsetPoints(spline, random, dx, dy, dz, false, false);
     }
 
-    public static void offsetPoints(List<Vec3f> spline, Random random, float dx, float dy, float dz, boolean offsetStart, boolean offsetEnd) {
+    public static void offsetPoints(List<Vec3f> spline, Supplier<Float> random, float dx, float dy, float dz, boolean offsetStart, boolean offsetEnd) {
         int start = offsetStart ? 0 : 1;
         int end = offsetEnd ? spline.size() : spline.size() - 1;
         for (int i = start; i < end; i++) {
             Vec3f point = spline.get(i);
-            spline.set(i, point.add(new Vec3f((float) random.nextGaussian() * dx,
-                    (float) random.nextGaussian() * dy,
-                    (float) random.nextGaussian() * dz)));
+            spline.set(i, point.add(new Vec3f(random.get() * dx, random.get() * dy, random.get() * dz)));
         }
     }
 
