@@ -1,14 +1,15 @@
 package org.sdoaj.jimgus.world.feature;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import org.sdoaj.jimgus.core.init.BlockInit;
 import org.sdoaj.jimgus.util.sdf.SDF;
-import org.sdoaj.jimgus.util.sdf.operators.SDFTranslate;
-import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
-import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFLine;
 
 public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
     public CrystalFeature() {
@@ -17,20 +18,15 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-//        BlockPos pos = context.origin();
-//        int y = pos.getY();
-//
-//        for (int dy = 0; dy < 5; dy++) {
-//            context.level().setBlock(context.origin().atY(y + dy), BlockInit.TEST_BLOCK.get().defaultBlockState(), 19);
-//        }
+        WorldGenLevel world = context.level();
+        BlockPos pos = context.origin();
 
-        SDF sphere1 = new SDFSphere(4).setBlock(BlockInit.TEST_BLOCK.get());
-        SDF sphere2 = new SDFSphere(4).setBlock(Blocks.GLOWSTONE);
-        SDF sdf = new SDFUnion().setSourceA(sphere1).setSourceB(new SDFTranslate().setTranslate(0, 4, 0).setSource(sphere2));
-        sdf.fill(context.level(), context.origin());
+        if (!world.isEmptyBlock(pos) || !world.getBlockState(pos.below()).is(Blocks.STONE)) {
+            return false;
+        }
 
-//        SDF sdf = new SDFBox(3, 10, 3).setBlock(BlockInit.TEST_BLOCK.get());
-//        sdf.fill(context.level(), context.origin());
+        SDF line = new SDFLine(0, 0, 0, 0, 50, 0, 5, 1).disableRoundCaps().setBlock(BlockInit.TEST_BLOCK.get());
+        line.fill(context.level(), context.origin());
 
         return true;
     }

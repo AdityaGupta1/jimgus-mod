@@ -1,6 +1,6 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
-import org.sdoaj.jimgus.util.MathHelper;
+import org.sdoaj.jimgus.util.math.MathHelper;
 
 public class SDFSphere extends SDFPrimitive {
     private final float radius;
