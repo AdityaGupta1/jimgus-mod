@@ -13,15 +13,15 @@ public class MathHelper {
         return Math.min(Math.max(x, min), max);
     }
 
-    public static boolean isInRange(float x, float min, float max) {
-        return isInRange(x, min, max, false);
+    public static boolean isInRange(float v, float min, float max) {
+        return isInRange(v, min, max, false);
     }
 
-    public static boolean isInRange(float x, float min, float max, boolean inclusive) {
-        return inclusive ? (x >= min && x <= max) : (x > min && x < max);
+    public static boolean isInRange(float v, float min, float max, boolean inclusive) {
+        return inclusive ? (v >= min && v <= max) : (v > min && v < max);
     }
 
-    public static float lerp(float x, float min, float max) {
-        return (max - min) * x + min;
+    public static float lerp(float delta, float min, float max) {
+        return (max - min) * delta + min;
     }
 }

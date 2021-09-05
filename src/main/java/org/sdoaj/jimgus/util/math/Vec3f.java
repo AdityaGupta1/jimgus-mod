@@ -41,4 +41,10 @@ public class Vec3f {
     public float distance(Vec3f other) {
         return this.subtract(other).length();
     }
+
+    public static Vec3f lerp(float delta, Vec3f v1, Vec3f v2) {
+        return new Vec3f(MathHelper.lerp(delta, v1.x, v2.x),
+                MathHelper.lerp(delta, v1.y, v2.y),
+                MathHelper.lerp(delta, v1.z, v2.z));
+    }
 }
