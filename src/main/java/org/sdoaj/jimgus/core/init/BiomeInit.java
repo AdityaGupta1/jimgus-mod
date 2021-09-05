@@ -18,7 +18,7 @@ import org.sdoaj.jimgus.world.biome.ModBiomes;
 public class BiomeInit {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Jimgus.MODID);
 
-    public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("crystal_biome", ModBiomes::crystalBiome);
+    public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("tentacle_biome", ModBiomes::tentacleBiome);
 
     public static void registerBiome(Biome biome, BiomeManager.BiomeType type, BiomeDictionary.Type... types) {
         ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());

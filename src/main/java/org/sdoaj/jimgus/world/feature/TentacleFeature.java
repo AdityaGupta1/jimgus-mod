@@ -16,10 +16,10 @@ import org.sdoaj.jimgus.util.sdf.SDF;
 import java.util.List;
 import java.util.Random;
 
-public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
+public class TentacleFeature extends Feature<NoneFeatureConfiguration> {
     private static final Block[] blocks = {Blocks.OBSIDIAN, Blocks.SMOOTH_QUARTZ, Blocks.POLISHED_BASALT};
 
-    public CrystalFeature() {
+    public TentacleFeature() {
         super(NoneFeatureConfiguration.CODEC);
     }
 
@@ -33,13 +33,13 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        List<Vec3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, 80, 0, 4);
-//        SplineHelper.offsetPoints(spline, () -> MathHelper.lerp(random.nextFloat(), -1, 1), 3, 0, 3);
+        List<Vec3f> spline = SplineHelper.makeSpline(0, 0, 0,
+                0, MathHelper.nextIntInRange(random, 60, 100), 0, 4);
         SplineHelper.offsetPoints(spline, () -> (float) random.nextGaussian(), 12, 0, 12);
         SDF sdf = SplineHelper.SplineSDFBuilder.from(SplineHelper.bezier(spline, 8))
                 .radius(10, 2).build().setBlock(Util.pickRandom(random, blocks));
-        sdf.fill(world, pos);
 
+        sdf.fill(world, pos);
         return true;
     }
 }

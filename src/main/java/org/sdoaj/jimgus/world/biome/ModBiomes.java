@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import org.sdoaj.jimgus.core.init.FeatureInit;
 
 public class ModBiomes {
-    public static Biome crystalBiome() {
+    public static Biome tentacleBiome() {
         MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
 
@@ -22,7 +22,7 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultLakes(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.CRYSTAL_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.TENTACLE_FEATURE.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
 
         return new Biome.BiomeBuilder()

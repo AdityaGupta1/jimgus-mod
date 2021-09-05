@@ -1,5 +1,7 @@
 package org.sdoaj.jimgus.util.math;
 
+import java.util.Random;
+
 public class MathHelper {
     public static float length(float x, float y) {
         return (float) Math.sqrt(x * x + y * y);
@@ -23,5 +25,9 @@ public class MathHelper {
 
     public static float lerp(float delta, float min, float max) {
         return (max - min) * delta + min;
+    }
+
+    public static int nextIntInRange(Random random, int min, int max) {
+        return random.nextInt(max - min) + min;
     }
 }
