@@ -1,5 +1,7 @@
 package org.sdoaj.jimgus.util.math;
 
+import net.minecraft.core.BlockPos;
+
 public class Vec3f {
     public final float x, y, z;
 
@@ -7,6 +9,14 @@ public class Vec3f {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vec3f(BlockPos pos) {
+        this(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public BlockPos toBlockPos() {
+        return new BlockPos(this.x, this.y, this.z);
     }
 
     public float length() {

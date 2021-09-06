@@ -36,10 +36,10 @@ public class TentacleFeature extends Feature<NoneFeatureConfiguration> {
         List<Vec3f> spline = SplineHelper.makeSpline(0, 0, 0,
                 0, MathHelper.nextIntInRange(random, 60, 100), 0, 4);
         SplineHelper.offsetPoints(spline, () -> (float) random.nextGaussian(), 12, 0, 12);
-        SDF sdf = SplineHelper.SplineSDFBuilder.from(SplineHelper.bezier(spline, 8))
+        SDF tentacle = SplineHelper.SplineSDFBuilder.from(SplineHelper.bezier(spline, 8))
                 .radius(10, 2).build().setBlock(Util.pickRandom(random, blocks));
 
-        sdf.fill(world, pos);
+        tentacle.fill(world, pos);
         return true;
     }
 }

@@ -75,6 +75,10 @@ public class SplineHelper {
         return oldPoints.get(0);
     }
 
+    public static Vec3f getEndpoint(List<Vec3f> spline) {
+        return spline.get(spline.size() - 1);
+    }
+
     public static class SplineSDFBuilder {
         private final List<Vec3f> spline;
         private UnaryOperator<Float> radius;

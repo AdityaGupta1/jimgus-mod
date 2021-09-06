@@ -14,6 +14,7 @@ import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFLine;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
 
@@ -35,16 +36,20 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        List<Vec3f> spline = SplineHelper.makeSpline(0, 0, 0,
+        List<Vec3f> splineStem = SplineHelper.makeSpline(0, 0, 0,
                 0, MathHelper.nextIntInRange(random, 30, 50), 0, 3);
-        SplineHelper.offsetPoints(spline, () -> MathHelper.nextFloatInRangeOne(random), 6, 0, 6, false, true);
-        SDF sdf = SplineHelper.SplineSDFBuilder.from(SplineHelper.bezier(spline, 8))
+        SplineHelper.offsetPoints(splineStem, () -> MathHelper.nextFloatInRangeOne(random), 6, 0, 6, false, true);
+        splineStem = SplineHelper.bezier(splineStem, 8);
+        SDF stem = SplineHelper.SplineSDFBuilder.from(splineStem)
                 .radius(delta -> {
                     float x = delta - 0.5f;
                     return 4 * x * x + 1.5f;
                 }).build().setBlock(BlockInit.TEST_BLOCK.get());
 
-        sdf.fill(world, pos);
+        SDF cap = new SDFCylinder(10, 2).setBlock(Blocks.AMETHYST_BLOCK);
+
+        cap.fill(world, new Vec3f(pos).add(SplineHelper.getEndpoint(splineStem)).toBlockPos());
+        stem.fill(world, pos);
         return true;
     }
 }
