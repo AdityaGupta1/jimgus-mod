@@ -2,13 +2,16 @@ package org.sdoaj.jimgus.util.math;
 
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import org.lwjgl.system.CallbackI;
 
 public class Vec3f {
     public final float x, y, z;
 
-    public static Vec3f UP = new Vec3f(0, 1, 0);
+    public static Vec3f XP = new Vec3f(1, 0 ,0);
+    public static Vec3f XN = new Vec3f(-1, 0 ,0);
+    public static Vec3f YP = new Vec3f(0, 1, 0);
+    public static Vec3f YN = new Vec3f(0, -1, 0);
+    public static Vec3f ZP = new Vec3f(0, 0, 1);
+    public static Vec3f ZN = new Vec3f(0, 0, -1);
 
     public Vec3f(float x, float y, float z) {
         this.x = x;
@@ -71,7 +74,7 @@ public class Vec3f {
     }
 
     public Vec3f normalize() {
-        final float length = this.length();
+        float length = this.length();
         return new Vec3f(this.x / length, this.y / length, this.z / length);
     }
 

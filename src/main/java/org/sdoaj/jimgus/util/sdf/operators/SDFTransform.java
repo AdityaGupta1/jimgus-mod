@@ -6,11 +6,11 @@ import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled
 public class SDFTransform extends SDFUnary {
-//    private Vec3f translate, axis, scale;
-//    private float sin, cos;
+    private Vec3f translation, axis, scale;
+    private float sin, cos, cosm; // cosm = 1 - cos
 
-    private Vec3f translation, scale;
-    private Quaternion rotation;
+//    private Vec3f translation, scale;
+//    private Quaternion rotation;
 
     public SDFTransform translate(float x, float y, float z) {
         return translate(new Vec3f(x, y, z));
@@ -27,15 +27,17 @@ public class SDFTransform extends SDFUnary {
     }
 
     public SDFTransform rotate(Vec3f axis, float angle) {
-//        angle = -angle;
-//        this.axis = axis.normalize();
-//        this.sin = (float) Math.sin(angle);
-//        this.cos = (float) Math.cos(angle);
-//        return this;
-
-        this.rotation = new Quaternion(axis.toVector3f(), angle, false);
+        this.axis = axis.normalize();
+        this.sin = (float) Math.sin(angle);
+        this.cos = (float) Math.cos(angle);
+        this.cosm = 1 - this.cos;
         return this;
     }
+
+//    public SDFTransform rotate(Vec3f axis, float angle) {
+//        this.rotation = new Quaternion(axis.toVector3f(), angle, false);
+//        return this;
+//    }
 
     public SDFTransform scale(float scale) {
         return scale(scale, scale, scale);
@@ -54,21 +56,21 @@ public class SDFTransform extends SDFUnary {
     public float distance(float x, float y, float z) {
         Vec3f pos = new Vec3f(x, y, z);
 
-        if (scale != null) {
-            pos = pos.divide(scale);
+        // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
+        if (axis != null) {
+            float wx = axis.x;
+            float wy = axis.y;
+            float wz = axis.z;
+
+            float px = (cos + (wx * wx) * cosm) * x + (-wz * sin + wx * wy * cosm) * y + (wy * sin + wx * wz * cosm) * z;
+            float py = (wz * sin + wx * wy * cosm) * x + (cos + (wy * wy) * cosm) * y + (-wx * sin + wy * wz * cosm) * z;
+            float pz = (-wy * sin + wx * wz * cosm) * x + (wx * sin + wy * wz * cosm) * y + (cos + (wz * wz) * cosm) * z;
+
+            pos = new Vec3f(px, py, pz);
         }
 
-//        // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
-//        if (axis != null) {
-//            pos = pos.multiply(cos) // vcos(theta)
-//                    .add(axis.cross(pos).multiply(sin)) // (k x v)sin(theta)
-//                    .add(axis.multiply(axis.dot(pos) * (1 - cos))); // k(k * v)(1 - cos(theta))
-//        }
-
-        if (rotation != null) {
-            Vector3f v = pos.toVector3f();
-            v.transform(rotation);
-            pos = new Vec3f(v);
+        if (scale != null) {
+            pos = pos.divide(scale);
         }
 
         if (translation != null) {
