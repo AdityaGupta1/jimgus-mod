@@ -6,7 +6,8 @@ import org.sdoaj.jimgus.util.math.Vec3f;
 import java.util.function.UnaryOperator;
 
 public class SDFLine extends SDFPrimitive {
-    protected UnaryOperator<Float> radius;
+    private UnaryOperator<Float> radius;
+    private float radiusMultiplier = 1f;
     protected final Vec3f pos1;
     protected final Vec3f pos2;
 
@@ -54,6 +55,11 @@ public class SDFLine extends SDFPrimitive {
         return radius(delta -> radius.apply(MathHelper.lerp(delta, min, max)));
     }
 
+    public SDFLine radiusMultiplier(float multiplier) {
+        this.radiusMultiplier = multiplier;
+        return this;
+    }
+
     public SDFLine disableCapStart() {
         this.capStart = false;
         return this;
@@ -67,6 +73,10 @@ public class SDFLine extends SDFPrimitive {
     public SDFLine disableCaps() {
         this.capStart = this.capEnd = false;
         return this;
+    }
+
+    protected final float getRadius(float delta) {
+        return this.radius.apply(delta) * this.radiusMultiplier;
     }
 
     @Override
@@ -85,7 +95,6 @@ public class SDFLine extends SDFPrimitive {
         Vec3f pointLine = vecLine.normalize().multiply(proj); // point on the line
         Vec3f vecPointPos = pointPos.subtract(pointLine); // vector from pointLine to pointPos
         float distance = vecPointPos.length();
-        float r = radius.apply(ratio);
-        return distance - r;
+        return distance - this.getRadius(ratio);
     }
 }

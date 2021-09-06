@@ -39,7 +39,7 @@ public class SDFNgonPrism extends SDFCylinder {
             return 0; // not technically correct but it works
         }
 
-        float r = radius.apply(ratio);
+        float r = this.getRadius(ratio);
         float p = (float) (Math.PI / sides);
         r *= (Math.cos(p) / Math.cos(p - (angle % (2 * p)))); // https://www.youtube.com/watch?v=OG9olLlKB8Q (simplified)
         return distance - r;

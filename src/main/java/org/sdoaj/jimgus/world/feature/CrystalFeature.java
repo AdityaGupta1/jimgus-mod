@@ -17,9 +17,20 @@ import org.sdoaj.jimgus.util.sdf.primitives.SDFNgonPrism;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.UnaryOperator;
 
 public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
     private static final Block[] blocks = {Blocks.EMERALD_BLOCK, Blocks.DIAMOND_BLOCK};
+
+    private static final float coneStart = 0.8f;
+    private static final float coneN = 1 / (1 - coneStart);
+    private static final UnaryOperator<Float> crystalRadius = delta -> {
+        if (delta <= coneStart) {
+            return 1f;
+        } else {
+            return -coneN * delta + coneN;
+        }
+    };
 
     public CrystalFeature() {
         super(NoneFeatureConfiguration.CODEC);
@@ -35,9 +46,8 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-//        SDF sdf = new SDFBox(4, 12, 8).setBlock(Util.pickRandom(random, blocks));
-        SDF sdf = new SDFNgonPrism(20, false).sides(6).rotate((float) (Math.PI / 6))
-                .radius(10).setBlock(Util.pickRandom(random, blocks));
+        SDF sdf = new SDFNgonPrism(50, false).sides(6).rotate((float) (Math.PI / 6))
+                .radius(crystalRadius).radiusMultiplier(8f).setBlock(Util.pickRandom(random, blocks));
 
         sdf.fill(world, pos);
         return true;
