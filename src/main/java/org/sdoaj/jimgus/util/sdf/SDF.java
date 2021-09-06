@@ -39,12 +39,14 @@ public abstract class SDF {
         fill(world, start, false);
     }
 
+    // assumes the starting position is always within the SDF
     public void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace) {
         Map<BlockPos, BlockState> blocks = new HashMap<>();
         Set<BlockPos> done = new HashSet<>();
         Set<BlockPos> ends = new HashSet<>();
         Set<BlockPos> add = new HashSet<>();
         ends.add(new BlockPos(0, 0, 0));
+        blocks.put(start, getBlockState(start));
 
         while (!ends.isEmpty()) {
             for (BlockPos center : ends) {

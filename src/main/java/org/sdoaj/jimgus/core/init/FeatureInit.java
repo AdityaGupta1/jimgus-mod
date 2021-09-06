@@ -7,6 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.world.feature.CrystalFeature;
+import org.sdoaj.jimgus.world.feature.MinishroomFeature;
 import org.sdoaj.jimgus.world.feature.MushroomFeature;
 import org.sdoaj.jimgus.world.feature.TentacleFeature;
 
@@ -14,12 +15,14 @@ import org.sdoaj.jimgus.world.feature.TentacleFeature;
 public class FeatureInit {
     public static final Feature<NoneFeatureConfiguration> TENTACLE_FEATURE = new TentacleFeature();
     public static final Feature<NoneFeatureConfiguration> MUSHROOM_FEATURE = new MushroomFeature();
+    public static final Feature<NoneFeatureConfiguration> MINISHROOM_FEATURE = new MinishroomFeature();
     public static final Feature<NoneFeatureConfiguration> CRYSTAL_FEATURE = new CrystalFeature();
 
     @SubscribeEvent
     public static void onRegisterFeatures(RegistryEvent.Register<Feature<?>> event) {
         Jimgus.register(event.getRegistry(), TENTACLE_FEATURE, "tentacle_feature");
         Jimgus.register(event.getRegistry(), MUSHROOM_FEATURE, "mushroom_feature");
+        Jimgus.register(event.getRegistry(), MINISHROOM_FEATURE, "minishroom_feature");
         Jimgus.register(event.getRegistry(), CRYSTAL_FEATURE, "crystal_feature");
     }
 }
