@@ -53,7 +53,7 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
 
         float capRadius = MathHelper.nextFloatInRange(random, 10, 14);
         capRadius *= MathHelper.mapRange(height, heightMin, heightMax, 0.8f, 1.2f);
-        SDF cap = new SDFCylinder(capRadius, 2, false).setBlock(Blocks.AMETHYST_BLOCK);
+        SDF cap = new SDFCylinder(2, false).radius(capRadius).setBlock(Blocks.AMETHYST_BLOCK);
         Vec3f splineDirection = SplineHelper.getEndpoint(splineStem).subtract(SplineHelper.getPointFromEnd(splineStem, 1));
         Vec3f axis = splineDirection.cross(Vec3f.YP);
         float angle = splineDirection.angleTo(Vec3f.YP);

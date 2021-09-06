@@ -16,7 +16,7 @@ public class MathHelper {
     }
 
     public static boolean isInRange(float v, float min, float max) {
-        return isInRange(v, min, max, false);
+        return isInRange(v, min, max, true);
     }
 
     public static boolean isInRange(float v, float min, float max, boolean inclusive) {

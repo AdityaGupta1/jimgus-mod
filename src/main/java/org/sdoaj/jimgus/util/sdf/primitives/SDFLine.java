@@ -6,16 +6,16 @@ import org.sdoaj.jimgus.util.math.Vec3f;
 import java.util.function.UnaryOperator;
 
 public class SDFLine extends SDFPrimitive {
-    private UnaryOperator<Float> radius;
-    private final Vec3f pos1;
-    private final Vec3f pos2;
+    protected UnaryOperator<Float> radius;
+    protected final Vec3f pos1;
+    protected final Vec3f pos2;
 
-    private float rStart;
-    private float rEnd;
-    private boolean capStart = true;
-    private boolean capEnd = true;
-    private final Vec3f vecLine;
-    private final float length;
+    protected float rStart;
+    protected float rEnd;
+    protected boolean capStart = true;
+    protected boolean capEnd = true;
+    protected final Vec3f vecLine;
+    protected final float length;
 
     public SDFLine(float x1, float y1, float z1, float x2, float y2, float z2) {
         this(new Vec3f(x1, y1, z1), new Vec3f(x2, y2, z2));
@@ -71,8 +71,8 @@ public class SDFLine extends SDFPrimitive {
 
     @Override
     public float distance(Vec3f pos) {
-        Vec3f vecPoint = pos.subtract(pos1);
-        float proj = vecPoint.dot(vecLine) / length;
+        Vec3f pointPos = pos.subtract(pos1);
+        float proj = pointPos.dot(vecLine) / length;
         float ratio = proj / length;
 
         if (ratio < 0) {
@@ -81,8 +81,11 @@ public class SDFLine extends SDFPrimitive {
             return capEnd ? pos.distance(pos2) - rEnd : 0;
         }
 
-        float r = radius.apply(MathHelper.clamp(ratio, 0, 1));
-        float distance = vecLine.normalize().multiply(proj).distance(vecPoint);
+        ratio = MathHelper.clamp(ratio, 0, 1);
+        Vec3f pointLine = vecLine.normalize().multiply(proj); // point on the line
+        Vec3f vecPointPos = pointPos.subtract(pointLine); // vector from pointLine to pointPos
+        float distance = vecPointPos.length();
+        float r = radius.apply(ratio);
         return distance - r;
     }
 }

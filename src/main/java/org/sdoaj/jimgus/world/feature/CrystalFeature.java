@@ -13,6 +13,7 @@ import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFBox;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFNgonPrism;
 
 import java.util.List;
 import java.util.Random;
@@ -34,9 +35,11 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        SDF box = new SDFBox(4, 12, 8).setBlock(Util.pickRandom(random, blocks));
+//        SDF sdf = new SDFBox(4, 12, 8).setBlock(Util.pickRandom(random, blocks));
+        SDF sdf = new SDFNgonPrism(20, false).sides(6).rotate((float) (Math.PI / 6))
+                .radius(10).setBlock(Util.pickRandom(random, blocks));
 
-        box.fill(world, pos);
+        sdf.fill(world, pos);
         return true;
     }
 }
