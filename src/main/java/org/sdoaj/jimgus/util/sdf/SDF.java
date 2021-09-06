@@ -35,7 +35,7 @@ public abstract class SDF {
 
     public abstract BlockState getBlockState(BlockPos pos);
 
-    public void fill(LevelAccessor world, BlockPos start) {
+    public final void fill(LevelAccessor world, BlockPos start) {
         fill(world, start, false);
     }
 
