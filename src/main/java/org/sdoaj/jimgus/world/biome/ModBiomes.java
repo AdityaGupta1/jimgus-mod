@@ -129,11 +129,14 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.NEON_BOX_BIG_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
+                FeatureInit.NEON_TOWER_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(12));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.NEON_BOX_SMALL_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(3));
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.NEON_BOX_BIG_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.NONE)

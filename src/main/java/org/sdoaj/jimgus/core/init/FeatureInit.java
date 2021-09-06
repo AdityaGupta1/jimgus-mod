@@ -19,6 +19,7 @@ public class FeatureInit {
             new NeonBoxFeature(2, 4, 3, 6, 2, 4, Blocks.BLACK_CONCRETE);
     public static final Feature<NoneFeatureConfiguration> NEON_BOX_SMALL_FEATURE =
             new NeonBoxFeature(1, 3, 1, 3, 1, 3, Blocks.LIME_CONCRETE);
+    public static final Feature<NoneFeatureConfiguration> NEON_TOWER_FEATURE = new NeonTowerFeature();
 
     @SubscribeEvent
     public static void onRegisterFeatures(RegistryEvent.Register<Feature<?>> event) {
@@ -28,5 +29,6 @@ public class FeatureInit {
         Jimgus.register(event.getRegistry(), CRYSTAL_FEATURE, "crystal_feature");
         Jimgus.register(event.getRegistry(), NEON_BOX_BIG_FEATURE, "neon_box_big_feature");
         Jimgus.register(event.getRegistry(), NEON_BOX_SMALL_FEATURE, "neon_box_small_feature");
+        Jimgus.register(event.getRegistry(), NEON_TOWER_FEATURE, "neon_tower_feature");
     }
 }

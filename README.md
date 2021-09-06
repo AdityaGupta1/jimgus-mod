@@ -6,3 +6,5 @@ jimgus mod
 ![mushroom biome](images/mushroom_biome.png)
 
 ![crystal biome](images/crystal_biome.png)
+
+![neon genesis biome](images/neon_genesis_biome.png)
