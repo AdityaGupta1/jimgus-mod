@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.BlockHelper;
+import org.sdoaj.jimgus.util.math.Vec3f;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,10 @@ public abstract class SDF {
     // negative inside, positive outside
     public float distance(BlockPos pos) {
         return distance(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public float distance(Vec3f pos) {
+        return distance(pos.x, pos.y, pos.z);
     }
 
     public abstract float distance(float x, float y, float z);

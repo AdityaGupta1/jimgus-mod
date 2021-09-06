@@ -13,7 +13,9 @@ import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
+import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFLine;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
 
 import java.util.List;
 import java.util.Random;
