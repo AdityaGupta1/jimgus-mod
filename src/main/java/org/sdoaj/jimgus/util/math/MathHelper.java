@@ -27,6 +27,10 @@ public class MathHelper {
         return (max - min) * delta + min;
     }
 
+    public static float mapRange(float delta, float min1, float max1, float min2, float max2) {
+        return lerp((delta - min1) / (max1 - min1), min2, max2);
+    }
+
     public static int nextIntInRange(Random random, int min, int max) {
         return random.nextInt(max - min) + min;
     }
