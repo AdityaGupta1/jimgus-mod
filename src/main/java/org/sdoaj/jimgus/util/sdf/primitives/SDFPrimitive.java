@@ -10,17 +10,17 @@ import java.util.function.Function;
 public abstract class SDFPrimitive extends SDF {
     protected Function<BlockPos, BlockState> placerFunction;
 
-    public SDFPrimitive setPlacerFunction(Function<BlockPos, BlockState> placerFunction) {
+    public SDFPrimitive setBlock(Function<BlockPos, BlockState> placerFunction) {
         this.placerFunction = placerFunction;
         return this;
     }
 
-    public SDFPrimitive setBlockState(BlockState state) {
-        return setPlacerFunction(pos -> state);
+    public SDFPrimitive setBlock(BlockState state) {
+        return setBlock(pos -> state);
     }
 
     public SDFPrimitive setBlock(Block block) {
-        return setBlockState(block.defaultBlockState());
+        return setBlock(block.defaultBlockState());
     }
 
     @Override
