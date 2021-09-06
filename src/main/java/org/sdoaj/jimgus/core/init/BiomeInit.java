@@ -19,15 +19,17 @@ public class BiomeInit {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Jimgus.MODID);
 
     public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("tentacle_biome", ModBiomes::tentacleBiome);
+    public static final RegistryObject<Biome> MUSHROOM_BIOME = BIOMES.register("mushroom_biome", ModBiomes::mushroomBiome);
+
+    @SubscribeEvent
+    public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
+        registerBiome(CRYSTAL_BIOME.get(), BiomeManager.BiomeType.COOL, BiomeDictionary.Type.MOUNTAIN);
+        registerBiome(MUSHROOM_BIOME.get(), BiomeManager.BiomeType.WARM, BiomeDictionary.Type.MUSHROOM);
+    }
 
     public static void registerBiome(Biome biome, BiomeManager.BiomeType type, BiomeDictionary.Type... types) {
         ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());
         BiomeDictionary.addTypes(key, types);
         BiomeManager.addBiome(type,new BiomeManager.BiomeEntry(key, 10));
-    }
-
-    @SubscribeEvent
-    public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
-        registerBiome(CRYSTAL_BIOME.get(), BiomeManager.BiomeType.COOL, BiomeDictionary.Type.MOUNTAIN);
     }
 }

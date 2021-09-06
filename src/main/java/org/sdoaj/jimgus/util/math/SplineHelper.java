@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 // based partly on https://github.com/paulevsGitch/BCLib/blob/main/src/main/java/ru/bclib/util/SplineHelper.java
 public class SplineHelper {
@@ -76,8 +77,7 @@ public class SplineHelper {
 
     public static class SplineSDFBuilder {
         private final List<Vec3f> spline;
-        private float r1;
-        private float r2;
+        private UnaryOperator<Float> radius;
         private boolean capStart = true;
         private boolean capEnd = true;
 
@@ -90,15 +90,18 @@ public class SplineHelper {
         }
 
         public SDFAbstractShape build() {
-            float r1;
-            float r2 = this.r1;
+//            float r1;
+//            float r2 = this.radius.apply(0f);
             SDF sdf = null;
 
             int points = spline.size();
-            for (int i = 0; i < points - 1; i++) {
-                r1 = r2; // radius at this point
-                r2 = MathHelper.lerp((float) (i + 1) / (points - 1), this.r1, this.r2); // radius at next point
-                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1), r1, r2);
+            final int count = points - 1;
+            for (int i = 0; i < count; i++) {
+//                r1 = r2; // radius at this point
+//                r2 = this.radius.apply((float) (i + 1) / count); // radius at next point
+//                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1)).radius(r1, r2);
+                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1)).radius(this.radius,
+                        ((float) i) / count, ((float) (i + 1)) / count);
 
                 if (i == 0 && !capStart) {
                     line.disableCapStart();
@@ -115,13 +118,17 @@ public class SplineHelper {
         }
 
         public SplineSDFBuilder radius(float radius) {
-            this.r1 = this.r2 = radius;
+            this.radius = delta -> radius;
             return this;
         }
 
         public SplineSDFBuilder radius(float r1, float r2) {
-            this.r1 = r1;
-            this.r2 = r2;
+            this.radius = delta -> MathHelper.lerp(delta, r1, r2);
+            return this;
+        }
+
+        public SplineSDFBuilder radius(UnaryOperator<Float> radius) {
+            this.radius = radius;
             return this;
         }
 

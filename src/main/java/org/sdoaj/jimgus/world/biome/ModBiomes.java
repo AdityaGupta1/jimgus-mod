@@ -29,11 +29,43 @@ public class ModBiomes {
                 .precipitation(Biome.Precipitation.RAIN)
                 .biomeCategory(Biome.BiomeCategory.EXTREME_HILLS)
                 .depth(0.12f)
-                .scale(1.2f)
+                .scale(1.0f)
                 .temperature(0.2f)
                 .downfall(0.3f)
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .fogColor(10518688)
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .skyColor(0)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
+    public static Biome mushroomBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.MYCELIUM);
+        BiomeDefaultFeatures.addDefaultCarvers(generationSettingsBuilder);
+        BiomeDefaultFeatures.addDefaultLakes(generationSettingsBuilder);
+
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.MUSHROOM_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(Biome.BiomeCategory.MUSHROOM)
+                .depth(0.2f)
+                .scale(0.3f)
+                .temperature(0.9f)
+                .downfall(0.3f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(12638463)
                         .waterColor(4159204)
                         .waterFogColor(329011)
                         .skyColor(0)

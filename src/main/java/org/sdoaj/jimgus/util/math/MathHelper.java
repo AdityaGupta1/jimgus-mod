@@ -30,4 +30,12 @@ public class MathHelper {
     public static int nextIntInRange(Random random, int min, int max) {
         return random.nextInt(max - min) + min;
     }
+
+    public static float nextFloatInRange(Random random, float min, float max) {
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public static float nextFloatInRangeOne(Random random) {
+        return nextFloatInRange(random, -1, 1);
+    }
 }
