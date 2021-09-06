@@ -39,7 +39,7 @@ public abstract class SDF {
         fill(world, start, false);
     }
 
-    // assumes the starting position is always within the SDF
+    // assumes the origin is always within the SDF
     public void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace) {
         Map<BlockPos, BlockState> blocks = new HashMap<>();
         Set<BlockPos> done = new HashSet<>();

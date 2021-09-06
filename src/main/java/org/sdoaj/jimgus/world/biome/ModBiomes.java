@@ -7,8 +7,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import org.sdoaj.jimgus.core.init.FeatureInit;
 
 public class ModBiomes {
@@ -107,6 +111,39 @@ public class ModBiomes {
                         .waterColor(defaultWaterColor)
                         .waterFogColor(defaultWaterFogColor)
                         .skyColor(0x94ABB5)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
+    public static Biome neonGenesisBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BlockState blackConcrete = Blocks.BLACK_CONCRETE.defaultBlockState();
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT
+                .configured(new SurfaceBuilderBaseConfiguration(blackConcrete, blackConcrete, blackConcrete)));
+        addDefaultFeatures(generationSettingsBuilder);
+
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.NEON_BOX_BIG_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.NONE)
+                .biomeCategory(Biome.BiomeCategory.NONE)
+                .depth(0.1f)
+                .scale(0.1f)
+                .temperature(0.2f)
+                .downfall(0f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(0x30753F)
+                        .waterColor(0x40E340)
+                        .waterFogColor(0x053314)
+                        .skyColor(0x000000)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())
