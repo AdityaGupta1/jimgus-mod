@@ -3,6 +3,8 @@ package org.sdoaj.jimgus.util.math;
 import java.util.Random;
 
 public class MathHelper {
+    public static float PI = (float) Math.PI;
+
     public static float length(float x, float y) {
         return (float) Math.sqrt(x * x + y * y);
     }
@@ -31,15 +33,23 @@ public class MathHelper {
         return lerp((delta - min1) / (max1 - min1), min2, max2);
     }
 
-    public static int nextIntInRange(Random random, int min, int max) {
+    public static int nextInt(Random random, int min, int max) {
         return random.nextInt(max - min) + min;
     }
 
-    public static float nextFloatInRange(Random random, float min, float max) {
+    public static float nextFloat(Random random, float min, float max) {
         return random.nextFloat() * (max - min) + min;
     }
 
-    public static float nextFloatInRangeOne(Random random) {
-        return nextFloatInRange(random, -1, 1);
+    public static float nextFloatOne(Random random) {
+        return nextFloat(random, -1, 1);
+    }
+
+    public static float toRadians(float degrees) {
+        return degrees / 180 * PI;
+    }
+
+    public static float toDegrees(float radians) {
+        return radians / PI * 180;
     }
 }

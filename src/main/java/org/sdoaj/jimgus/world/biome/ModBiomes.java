@@ -87,7 +87,7 @@ public class ModBiomes {
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.CRYSTAL_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)

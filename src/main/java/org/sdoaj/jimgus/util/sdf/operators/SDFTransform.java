@@ -1,16 +1,11 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled
 public class SDFTransform extends SDFUnary {
     private Vec3f translation, axis, scale;
     private float sin, cos, cosm; // cosm = 1 - cos
-
-//    private Vec3f translation, scale;
-//    private Quaternion rotation;
 
     public SDFTransform translate(float x, float y, float z) {
         return translate(new Vec3f(x, y, z));
@@ -33,11 +28,6 @@ public class SDFTransform extends SDFUnary {
         this.cosm = 1 - this.cos;
         return this;
     }
-
-//    public SDFTransform rotate(Vec3f axis, float angle) {
-//        this.rotation = new Quaternion(axis.toVector3f(), angle, false);
-//        return this;
-//    }
 
     public SDFTransform scale(float scale) {
         return scale(scale, scale, scale);

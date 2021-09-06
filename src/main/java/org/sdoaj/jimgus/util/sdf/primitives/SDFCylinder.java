@@ -2,7 +2,7 @@ package org.sdoaj.jimgus.util.sdf.primitives;
 
 public class SDFCylinder extends SDFLine {
     public SDFCylinder(float height) {
-        this(height, true);
+        this(height, false);
     }
 
     public SDFCylinder(float height, boolean centered) {
