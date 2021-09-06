@@ -1,5 +1,6 @@
 package org.sdoaj.jimgus.util.math;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.system.CallbackI;
@@ -19,8 +20,16 @@ public class Vec3f {
         this(pos.getX(), pos.getY(), pos.getZ());
     }
 
+    public Vec3f(Vector3f v) {
+        this(v.x(), v.y(), v.z());
+    }
+
     public BlockPos toBlockPos() {
         return new BlockPos(this.x, this.y, this.z);
+    }
+
+    public Vector3f toVector3f() {
+        return new Vector3f(this.x, this.y, this.z);
     }
 
     public float length() {
