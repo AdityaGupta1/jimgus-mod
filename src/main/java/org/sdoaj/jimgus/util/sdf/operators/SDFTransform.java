@@ -53,18 +53,16 @@ public class SDFTransform extends SDFUnary {
     }
 
     @Override
-    public float distance(float x, float y, float z) {
-        Vec3f pos = new Vec3f(x, y, z);
-
+    public float distance(Vec3f pos) {
         // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
         if (axis != null) {
             float wx = axis.x;
             float wy = axis.y;
             float wz = axis.z;
 
-            float px = (cos + (wx * wx) * cosm) * x + (-wz * sin + wx * wy * cosm) * y + (wy * sin + wx * wz * cosm) * z;
-            float py = (wz * sin + wx * wy * cosm) * x + (cos + (wy * wy) * cosm) * y + (-wx * sin + wy * wz * cosm) * z;
-            float pz = (-wy * sin + wx * wz * cosm) * x + (wx * sin + wy * wz * cosm) * y + (cos + (wz * wz) * cosm) * z;
+            float px = (cos + (wx * wx) * cosm) * pos.x + (-wz * sin + wx * wy * cosm) * pos.y + (wy * sin + wx * wz * cosm) * pos.z;
+            float py = (wz * sin + wx * wy * cosm) * pos.x + (cos + (wy * wy) * cosm) * pos.y + (-wx * sin + wy * wz * cosm) * pos.z;
+            float pz = (-wy * sin + wx * wz * cosm) * pos.x + (wx * sin + wy * wz * cosm) * pos.y + (cos + (wz * wz) * cosm) * pos.z;
 
             pos = new Vec3f(px, py, pz);
         }

@@ -1,6 +1,7 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
 import org.sdoaj.jimgus.util.math.MathHelper;
+import org.sdoaj.jimgus.util.math.Vec3f;
 
 public class SDFSphere extends SDFPrimitive {
     private final float radius;
@@ -10,7 +11,7 @@ public class SDFSphere extends SDFPrimitive {
     }
 
     @Override
-    public float distance(float x, float y, float z) {
-        return MathHelper.length(x, y, z) - radius;
+    public float distance(Vec3f pos) {
+        return pos.length() - radius;
     }
 }

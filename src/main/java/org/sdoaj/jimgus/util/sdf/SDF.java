@@ -23,15 +23,15 @@ public abstract class SDF {
     }
 
     // negative inside, positive outside
-    public float distance(BlockPos pos) {
-        return distance(pos.getX(), pos.getY(), pos.getZ());
+    public final float distance(BlockPos pos) {
+        return distance(new Vec3f(pos));
     }
 
-    public float distance(Vec3f pos) {
-        return distance(pos.x, pos.y, pos.z);
+    public final float distance(float x, float y, float z) {
+        return distance(new Vec3f(x, y, z));
     }
 
-    public abstract float distance(float x, float y, float z);
+    public abstract float distance(Vec3f pos);
 
     public abstract BlockState getBlockState(BlockPos pos);
 

@@ -1,5 +1,6 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
+import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 
 /**
@@ -14,7 +15,7 @@ public class SDFAbstractShape extends SDFPrimitive {
     }
 
     @Override
-    public float distance(float x, float y, float z) {
-        return sdf.distance(x, y, z);
+    public float distance(Vec3f pos) {
+        return sdf.distance(pos);
     }
 }

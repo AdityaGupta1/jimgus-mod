@@ -12,14 +12,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import org.sdoaj.jimgus.core.init.FeatureInit;
 
 public class ModBiomes {
+    private static final int defaultWaterColor = 0x3F76E4;
+    private static final int defaultWaterFogColor = 0x050533;
+
     public static Biome tentacleBiome() {
         MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
 
         BiomeGenerationSettings.Builder generationSettingsBuilder
                 = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.STONE);
-        BiomeDefaultFeatures.addDefaultCarvers(generationSettingsBuilder);
-        BiomeDefaultFeatures.addDefaultLakes(generationSettingsBuilder);
+        addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.TENTACLE_FEATURE.configured(FeatureConfiguration.NONE)
@@ -28,15 +30,15 @@ public class ModBiomes {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .biomeCategory(Biome.BiomeCategory.EXTREME_HILLS)
-                .depth(0.12f)
-                .scale(1.0f)
+                .depth(0.4f)
+                .scale(0.8f)
                 .temperature(0.2f)
                 .downfall(0.3f)
                 .specialEffects(new BiomeSpecialEffects.Builder()
-                        .fogColor(10518688)
-                        .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .skyColor(0)
+                        .fogColor(0x526066)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0x94ABB5)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())
@@ -50,8 +52,7 @@ public class ModBiomes {
 
         BiomeGenerationSettings.Builder generationSettingsBuilder
                 = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.MYCELIUM);
-        BiomeDefaultFeatures.addDefaultCarvers(generationSettingsBuilder);
-        BiomeDefaultFeatures.addDefaultLakes(generationSettingsBuilder);
+        addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.MUSHROOM_FEATURE.configured(FeatureConfiguration.NONE)
@@ -66,13 +67,50 @@ public class ModBiomes {
                 .downfall(0.3f)
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .fogColor(12638463)
-                        .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .skyColor(0)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0xA37FA3)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())
                 .temperatureAdjustment(Biome.TemperatureModifier.NONE)
                 .build();
+    }
+
+    public static Biome crystalBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.STONE);
+        addDefaultFeatures(generationSettingsBuilder);
+
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.CRYSTAL_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(Biome.BiomeCategory.EXTREME_HILLS)
+                .depth(0.3f)
+                .scale(0.5f)
+                .temperature(0.2f)
+                .downfall(0.3f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(0x526066)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0x94ABB5)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
+    public static void addDefaultFeatures(BiomeGenerationSettings.Builder builder) {
+        BiomeDefaultFeatures.addDefaultCarvers(builder);
+        BiomeDefaultFeatures.addDefaultLakes(builder);
+        BiomeDefaultFeatures.addDefaultOres(builder);
     }
 }

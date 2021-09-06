@@ -47,16 +47,16 @@ public class Vec3f {
         return new Vec3f(this.x - other.x, this.y - other.y, this.z - other.z);
     }
 
-    public Vec3f multiply(float v) {
-        return new Vec3f(this.x * v, this.y * v, this.z * v);
+    public Vec3f multiply(float c) {
+        return new Vec3f(this.x * c, this.y * c, this.z * c);
     }
 
     public Vec3f multiply(Vec3f other) {
         return new Vec3f(this.x * other.x, this.y * other.y, this.z * other.z);
     }
 
-    public Vec3f divide(float v) {
-        return new Vec3f(this.x / v, this.y / v, this.z / v);
+    public Vec3f divide(float c) {
+        return new Vec3f(this.x / c, this.y / c, this.z / c);
     }
 
     public Vec3f divide(Vec3f other) {
@@ -90,6 +90,26 @@ public class Vec3f {
 
     public float angleTo(Vec3f other) {
         return (float) Math.acos(this.dot(other) / (this.length() * other.length()));
+    }
+
+    public Vec3f abs() {
+        return new Vec3f(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
+    }
+
+    public Vec3f max(int c) {
+        return new Vec3f(Math.max(this.x, c), Math.max(this.y, c), Math.max(this.z, c));
+    }
+
+    public Vec3f min(int c) {
+        return new Vec3f(Math.min(this.x, c), Math.min(this.y, c), Math.min(this.z, c));
+    }
+
+    public float maxComp() {
+        return Math.max(this.x, Math.max(this.y, this.z));
+    }
+
+    public float minComp() {
+        return Math.min(this.x, Math.min(this.y, this.z));
     }
 
     @Override

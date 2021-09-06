@@ -18,13 +18,15 @@ import org.sdoaj.jimgus.world.biome.ModBiomes;
 public class BiomeInit {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Jimgus.MODID);
 
-    public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("tentacle_biome", ModBiomes::tentacleBiome);
+    public static final RegistryObject<Biome> TENTACLE_BIOME = BIOMES.register("tentacle_biome", ModBiomes::tentacleBiome);
     public static final RegistryObject<Biome> MUSHROOM_BIOME = BIOMES.register("mushroom_biome", ModBiomes::mushroomBiome);
+    public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("crystal_biome", ModBiomes::crystalBiome);
 
     @SubscribeEvent
     public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
-        registerBiome(CRYSTAL_BIOME.get(), BiomeManager.BiomeType.COOL, BiomeDictionary.Type.MOUNTAIN);
+        registerBiome(TENTACLE_BIOME.get(), BiomeManager.BiomeType.COOL, BiomeDictionary.Type.MOUNTAIN);
         registerBiome(MUSHROOM_BIOME.get(), BiomeManager.BiomeType.WARM, BiomeDictionary.Type.MUSHROOM);
+        registerBiome(CRYSTAL_BIOME.get(), BiomeManager.BiomeType.COOL, BiomeDictionary.Type.MOUNTAIN);
     }
 
     public static void registerBiome(Biome biome, BiomeManager.BiomeType type, BiomeDictionary.Type... types) {

@@ -1,26 +1,18 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
-import org.sdoaj.jimgus.util.math.MathHelper;
+import org.sdoaj.jimgus.util.math.Vec3f;
 
 // https://www.youtube.com/watch?v=62-pRVZuS5c
-// TODO doesn't work
 public class SDFBox extends SDFPrimitive {
-    private final float rx, ry, rz; // radius x, y, z
+    private final Vec3f r; // radius x, y, z
 
     public SDFBox(float rx, float ry, float rz) {
-        this.rx = rx;
-        this.ry = ry;
-        this.rz = rz;
+        this.r = new Vec3f(rx, ry, rz);
     }
 
     @Override
-    public float distance(float x, float y, float z) {
-        float dx = Math.abs(x - rx);
-        float dy = Math.abs(y - ry);
-        float dz = Math.abs(z - rz);
-
-        // outside distance + inside distance
-        return MathHelper.length(Math.max(dx, 0), Math.max(dy, 0), Math.max(dz, 0))
-                + Math.min(Math.max(Math.max(dx, dy), dz), 0);
+    public float distance(Vec3f pos) {
+        Vec3f q = pos.abs().subtract(this.r);
+        return q.max(0).length() + Math.min(q.maxComp(), 0);
     }
 }

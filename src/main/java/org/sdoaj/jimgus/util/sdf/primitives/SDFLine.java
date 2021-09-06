@@ -70,8 +70,7 @@ public class SDFLine extends SDFPrimitive {
     }
 
     @Override
-    public float distance(float x, float y, float z) {
-        Vec3f pos = new Vec3f(x, y, z);
+    public float distance(Vec3f pos) {
         Vec3f vecPoint = pos.subtract(pos1);
         float proj = vecPoint.dot(vecLine) / length;
         float ratio = proj / length;
