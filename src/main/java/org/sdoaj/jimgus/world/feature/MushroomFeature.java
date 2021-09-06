@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.phys.Vec3;
 import org.sdoaj.jimgus.core.init.BlockInit;
 import org.sdoaj.jimgus.util.Util;
 import org.sdoaj.jimgus.util.math.MathHelper;
@@ -46,7 +47,11 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
                     return 4 * x * x + 1.5f;
                 }).build().setBlock(BlockInit.TEST_BLOCK.get());
 
-        SDF cap = new SDFCylinder(10, 2).setBlock(Blocks.AMETHYST_BLOCK);
+        SDF cap = new SDFCylinder(10, 2, false).setBlock(Blocks.AMETHYST_BLOCK);
+        Vec3f splineDirection = SplineHelper.getEndpoint(splineStem).subtract(SplineHelper.getPointFromEnd(splineStem, 1));
+        Vec3f axis = splineDirection.cross(Vec3f.UP);
+        float angle = splineDirection.angleTo(Vec3f.UP);
+        cap = new SDFTransform().rotate(axis, angle).setSource(cap);
 
         cap.fill(world, new Vec3f(pos).add(SplineHelper.getEndpoint(splineStem)).toBlockPos());
         stem.fill(world, pos);

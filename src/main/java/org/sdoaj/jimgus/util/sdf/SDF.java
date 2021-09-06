@@ -36,6 +36,10 @@ public abstract class SDF {
     public abstract BlockState getBlockState(BlockPos pos);
 
     public void fill(LevelAccessor world, BlockPos start) {
+        fill(world, start, false);
+    }
+
+    public void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace) {
         Map<BlockPos, BlockState> blocks = new HashMap<>();
         Set<BlockPos> done = new HashSet<>();
         Set<BlockPos> ends = new HashSet<>();
@@ -48,10 +52,11 @@ public abstract class SDF {
                     BlockPos posLocal = center.relative(direction);
                     BlockPos posWorld = posLocal.offset(start);
 
-                    if (!done.contains(posLocal) && canReplace.test(world.getBlockState(posWorld))
-                            && this.distance(posLocal) < 0) {
-                        blocks.put(posWorld, getBlockState(posWorld));
-                        add.add(posLocal);
+                    if (!done.contains(posLocal) && this.distance(posLocal) < 0) {
+                        if (!ignoreCanReplace && canReplace.test(world.getBlockState(posWorld))) {
+                            blocks.put(posWorld, getBlockState(posWorld));
+                            add.add(posLocal);
+                        }
                     }
                 }
             }

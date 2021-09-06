@@ -76,7 +76,11 @@ public class SplineHelper {
     }
 
     public static Vec3f getEndpoint(List<Vec3f> spline) {
-        return spline.get(spline.size() - 1);
+        return getPointFromEnd(spline, 0);
+    }
+
+    public static Vec3f getPointFromEnd(List<Vec3f> spline, int offset) {
+        return spline.get(spline.size() - (offset + 1));
     }
 
     public static class SplineSDFBuilder {

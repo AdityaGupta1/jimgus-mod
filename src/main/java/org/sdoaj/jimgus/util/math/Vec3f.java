@@ -1,9 +1,13 @@
 package org.sdoaj.jimgus.util.math;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import org.lwjgl.system.CallbackI;
 
 public class Vec3f {
     public final float x, y, z;
+
+    public static Vec3f UP = new Vec3f(0, 1, 0);
 
     public Vec3f(float x, float y, float z) {
         this.x = x;
@@ -70,6 +74,10 @@ public class Vec3f {
         return new Vec3f(MathHelper.lerp(delta, v1.x, v2.x),
                 MathHelper.lerp(delta, v1.y, v2.y),
                 MathHelper.lerp(delta, v1.z, v2.z));
+    }
+
+    public float angleTo(Vec3f other) {
+        return (float) Math.acos(this.dot(other) / (this.length() * other.length()));
     }
 
     @Override
