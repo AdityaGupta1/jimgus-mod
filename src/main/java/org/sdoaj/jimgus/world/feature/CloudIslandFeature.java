@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.sdoaj.jimgus.util.Util;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.sdf.SDF;
+import org.sdoaj.jimgus.util.sdf.operators.SDFDisplacement;
 import org.sdoaj.jimgus.util.sdf.operators.SDFSubtraction;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
@@ -70,6 +71,13 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
         island = new SDFTransform().scale(1, 1, MathHelper.nextFloat(random, 0.5f, 0.8f)).setSource(island);
 
         island.fill(world, cloudPos);
+
+        if (!MathHelper.chance(random, pillarChance)) {
+            return true;
+        }
+
+        // TODO generate pillar
+
         return true;
     }
 }

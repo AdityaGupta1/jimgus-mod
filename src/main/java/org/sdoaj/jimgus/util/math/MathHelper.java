@@ -53,6 +53,15 @@ public class MathHelper {
         return nextFloatOne(random) * (max - min) + min;
     }
 
+    public static boolean chance(Random random, float chance) {
+        return random.nextFloat() < chance;
+    }
+
+    public static boolean chance(Random random, float min, float max) {
+        float c = random.nextFloat();
+        return min <= c && c < max;
+    }
+
     public static float toRadians(float degrees) {
         return degrees / 180 * PI;
     }
