@@ -122,7 +122,7 @@ public class SplineHelper {
                 sdf = (sdf == null) ? line : new SDFUnion().setSourceA(sdf).setSourceB(line);
             }
 
-            return new SDFAbstractShape(sdf);
+            return new SDFAbstractShape().setSource(sdf);
         }
 
         public SplineSDFBuilder radius(float radius) {

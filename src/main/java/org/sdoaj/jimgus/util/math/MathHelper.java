@@ -42,7 +42,11 @@ public class MathHelper {
     }
 
     public static float nextFloatOne(Random random) {
-        return nextFloat(random, -1, 1);
+        return nextFloatAbs(random, 1f);
+    }
+
+    public static float nextFloatAbs(Random random, float max) {
+        return nextFloat(random, -max, max);
     }
 
     public static float toRadians(float degrees) {

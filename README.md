@@ -7,4 +7,4 @@ jimgus mod
 
 ![crystal biome](images/crystal_biome.png)
 
-![neon genesis biome](images/neon_genesis_biome.png)
+<!-- ![neon genesis biome](images/neon_genesis_biome.png) -->

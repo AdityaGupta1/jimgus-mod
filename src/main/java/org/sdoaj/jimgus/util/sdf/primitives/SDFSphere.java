@@ -1,6 +1,5 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
-import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 public class SDFSphere extends SDFPrimitive {

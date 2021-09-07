@@ -8,10 +8,11 @@ import org.sdoaj.jimgus.util.sdf.SDF;
  * function
  */
 public class SDFAbstractShape extends SDFPrimitive {
-    private final SDF sdf;
+    private SDF sdf;
 
-    public SDFAbstractShape(SDF sdf) {
+    public SDFAbstractShape setSource(SDF sdf) {
         this.sdf = sdf;
+        return this;
     }
 
     @Override

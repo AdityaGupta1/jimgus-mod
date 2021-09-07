@@ -22,6 +22,11 @@ public abstract class SDF {
         return this;
     }
 
+    public SDF addCanReplace(Predicate<BlockState> canReplace) {
+        this.canReplace = this.canReplace.or(canReplace);
+        return this;
+    }
+
     // negative inside, positive outside
     public final float distance(BlockPos pos) {
         return distance(new Vec3f(pos));
@@ -45,7 +50,9 @@ public abstract class SDF {
         Set<BlockPos> done = new HashSet<>();
         Set<BlockPos> ends = new HashSet<>();
         Set<BlockPos> add = new HashSet<>();
-        ends.add(new BlockPos(0, 0, 0));
+        BlockPos origin = new BlockPos(0, 0, 0);
+        ends.add(origin);
+        done.add(origin);
         blocks.put(start, getBlockState(start));
 
         while (!ends.isEmpty()) {

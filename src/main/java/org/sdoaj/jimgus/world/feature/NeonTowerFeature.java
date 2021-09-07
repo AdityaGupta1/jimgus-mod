@@ -35,7 +35,7 @@ public class NeonTowerFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        int height = MathHelper.nextInt(random, 3, 7) * 16;
+        int height = MathHelper.nextInt(random, 4, 7) * 16;
         float diff = (((float) midsectionLength) / height) / 2;
         SDF tower = new SDFNgonPrism(height).sides(4).radius(delta -> Math.abs(delta - 0.5) < diff ? 0.8f : 1f)
                 .radiusMultiplier(MathHelper.nextInt(random, 4, 7) * 2).setBlock(Blocks.PURPLE_CONCRETE);

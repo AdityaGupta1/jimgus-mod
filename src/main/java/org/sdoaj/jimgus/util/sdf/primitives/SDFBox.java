@@ -6,6 +6,10 @@ import org.sdoaj.jimgus.util.math.Vec3f;
 public class SDFBox extends SDFPrimitive {
     private final Vec3f r; // radius x, y, z
 
+    public SDFBox(float r) {
+        this(r, r, r);
+    }
+
     public SDFBox(float rx, float ry, float rz) {
         this.r = new Vec3f(rx, ry, rz);
     }

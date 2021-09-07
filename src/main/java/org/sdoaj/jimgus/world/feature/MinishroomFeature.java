@@ -41,7 +41,8 @@ public class MinishroomFeature extends Feature<NoneFeatureConfiguration> {
         float height = MathHelper.nextFloat(random, 2, 4);
         SDF stem = new SDFCylinder(height).radius(0.5f).setBlock(BlockInit.TEST_BLOCK.get());
 
-        SDF cap = new SDFCylinder(0.5f).radius(Util.pickRandom(random, capRadii)).setBlock(Blocks.AMETHYST_BLOCK);
+        SDF cap = new SDFCylinder(0.5f).radius(Util.pickRandom(random, capRadii)).setBlock(Blocks.AMETHYST_BLOCK)
+                .addCanReplace(state -> state.is(Blocks.STONE));
 
         cap.fill(world, pos.above((int) height + 1));
         stem.fill(world, pos);

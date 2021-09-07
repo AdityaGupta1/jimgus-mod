@@ -37,7 +37,8 @@ public class TentacleFeature extends Feature<NoneFeatureConfiguration> {
                 0, MathHelper.nextInt(random, 60, 100), 0, 4);
         SplineHelper.offsetPoints(spline, () -> (float) random.nextGaussian(), 12, 0, 12);
         SDF tentacle = SplineHelper.SplineSDFBuilder.from(SplineHelper.bezier(spline, 8))
-                .radius(10, 2).build().setBlock(Util.pickRandom(random, blocks));
+                .radius(MathHelper.nextFloat(random, 7.5f, 10f), MathHelper.nextFloat(random, 1.5f, 2.5f))
+                .build().setBlock(Util.pickRandom(random, blocks));
 
         tentacle.fill(world, pos);
         return true;

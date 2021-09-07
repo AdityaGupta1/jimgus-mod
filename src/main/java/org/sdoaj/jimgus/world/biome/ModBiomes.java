@@ -7,10 +7,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import org.sdoaj.jimgus.core.init.FeatureInit;
@@ -122,10 +124,8 @@ public class ModBiomes {
         MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
 
-        BlockState blackConcrete = Blocks.BLACK_CONCRETE.defaultBlockState();
         BiomeGenerationSettings.Builder generationSettingsBuilder
-                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT
-                .configured(new SurfaceBuilderBaseConfiguration(blackConcrete, blackConcrete, blackConcrete)));
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(basicBuilder(Blocks.BLACK_CONCRETE));
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -157,9 +157,51 @@ public class ModBiomes {
                 .build();
     }
 
+    public static Biome cloudIslandBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(basicBuilder(Blocks.WHITE_WOOL));
+        addDefaultFeatures(generationSettingsBuilder);
+
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.CLOUD_ISLAND_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(4));
+//        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+//                FeatureInit.MINISHROOM_FEATURE.configured(FeatureConfiguration.NONE)
+//                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(Biome.BiomeCategory.NONE)
+                .depth(0.05f)
+                .scale(0.2f)
+                .temperature(0.3f)
+                .downfall(0.5f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(0x768E99)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0x98C3D6)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
     public static void addDefaultFeatures(BiomeGenerationSettings.Builder builder) {
         BiomeDefaultFeatures.addDefaultCarvers(builder);
         BiomeDefaultFeatures.addDefaultLakes(builder);
         BiomeDefaultFeatures.addDefaultOres(builder);
+    }
+
+    public static ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> basicBuilder(Block block) {
+        return basicBuilder(block.defaultBlockState());
+    }
+
+    public static ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> basicBuilder(BlockState block) {
+        return SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderBaseConfiguration(block, block, block));
     }
 }
