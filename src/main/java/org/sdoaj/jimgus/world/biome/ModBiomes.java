@@ -167,10 +167,7 @@ public class ModBiomes {
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.CLOUD_ISLAND_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(4));
-//        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-//                FeatureInit.MINISHROOM_FEATURE.configured(FeatureConfiguration.NONE)
-//                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(3));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)

@@ -29,10 +29,10 @@ public class BiomeInit {
 
     @SubscribeEvent
     public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
-        registerBiome(TENTACLE_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN);
-        registerBiome(MUSHROOM_BIOME.get(), BiomeType.WARM, Type.MUSHROOM);
-        registerBiome(CRYSTAL_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN, Type.MAGICAL);
-        // registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
+//        registerBiome(TENTACLE_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN);
+//        registerBiome(MUSHROOM_BIOME.get(), BiomeType.WARM, Type.MUSHROOM);
+//        registerBiome(CRYSTAL_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN, Type.MAGICAL);
+//        registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(CLOUD_ISLAND_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
     }
 

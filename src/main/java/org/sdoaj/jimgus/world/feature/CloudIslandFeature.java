@@ -27,6 +27,8 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
             .add(Blocks.LIGHT_GRAY_WOOL, 1)
             .build();
 
+    private static final float pillarChance = 0.2f;
+
     public CloudIslandFeature() {
         super(NoneFeatureConfiguration.CODEC);
     }
@@ -45,26 +47,27 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
 
         float radius = MathHelper.nextFloat(random, 8, 14);
         SDF island = new SDFSphere(radius).setBlock(blocks.getRandomValue(random).get());
-        island = new SDFTransform().scale(MathHelper.nextFloat(random, 0.5f, 0.75f),
+        island = new SDFTransform().scale(MathHelper.nextFloat(random, 0.8f, 1.2f),
                 MathHelper.nextFloat(random, 0.45f, 0.55f),
-                MathHelper.nextFloat(random, 0.9f, 1.2f))
+                MathHelper.nextFloat(random, 0.8f, 1.2f))
                 .setSource(island);
 
         int extraClouds = MathHelper.nextInt(random, 4, 8);
         for (int i = 0; i < extraClouds; i++) {
             SDF extraCloud = new SDFSphere(MathHelper.nextFloat(random, 4, 6))
                     .setBlock(blocks.getRandomValue(random).get());
-            extraCloud = new SDFTransform().translate(MathHelper.nextFloatAbs(random, radius * 0.7f),
-                    MathHelper.nextFloat(random, 0, -radius * 0.35f),
-                    MathHelper.nextFloatAbs(random, radius * 0.7f))
+            extraCloud = new SDFTransform().translate(MathHelper.nextFloatAbs(random, radius * 0.4f, radius * 0.8f),
+                    MathHelper.nextFloat(random, 0, -radius * 0.3f),
+                    MathHelper.nextFloatAbs(random, radius * 0.4f, radius * 0.8f))
                     .scale(1f, 1f, 0.5f).setSource(extraCloud);
             island = new SDFUnion().setSourceA(island).setSourceB(extraCloud);
         }
 
         float boxRadius = radius * 1.5f;
-        SDF subtractionBox = new SDFBox(boxRadius).setBlock(Blocks.AIR);
+        SDF subtractionBox = new SDFBox(boxRadius).setBlock(Blocks.DIAMOND_BLOCK);
         subtractionBox = new SDFTransform().translate(0, boxRadius + 1f, 0).setSource(subtractionBox);
-        island = new SDFSubtraction().setSourceA(island).setSourceB(subtractionBox);
+        island = new SDFSubtraction().setBoolean().setSourceA(island).setSourceB(subtractionBox);
+        island = new SDFTransform().scale(1, 1, MathHelper.nextFloat(random, 0.5f, 0.8f)).setSource(island);
 
         island.fill(world, cloudPos);
         return true;

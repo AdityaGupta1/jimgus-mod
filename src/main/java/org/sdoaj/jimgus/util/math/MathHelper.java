@@ -42,11 +42,15 @@ public class MathHelper {
     }
 
     public static float nextFloatOne(Random random) {
-        return nextFloatAbs(random, 1f);
+        return nextFloat(random, -1f, 1f);
     }
 
     public static float nextFloatAbs(Random random, float max) {
-        return nextFloat(random, -max, max);
+        return nextFloatOne(random) * max;
+    }
+
+    public static float nextFloatAbs(Random random, float min, float max) {
+        return nextFloatOne(random) * (max - min) + min;
     }
 
     public static float toRadians(float degrees) {
