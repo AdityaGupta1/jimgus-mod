@@ -2,7 +2,8 @@ package org.sdoaj.jimgus.util.sdf.primitives;
 
 import org.sdoaj.jimgus.util.math.Vec3f;
 
-// https://www.youtube.com/watch?v=62-pRVZuS5c
+// kinda bad for building shapes, use BlockHelper.fillBox() instead
+// useful for booleans
 public class SDFBox extends SDFPrimitive {
     private final Vec3f r; // radius x, y, z
 
@@ -14,6 +15,7 @@ public class SDFBox extends SDFPrimitive {
         this.r = new Vec3f(rx, ry, rz);
     }
 
+    // https://www.youtube.com/watch?v=62-pRVZuS5c
     @Override
     public float distance(Vec3f pos) {
         Vec3f q = pos.abs().subtract(this.r);

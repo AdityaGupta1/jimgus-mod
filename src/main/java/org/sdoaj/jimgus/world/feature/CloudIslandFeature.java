@@ -5,9 +5,11 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.Util;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.sdf.SDF;
@@ -20,6 +22,8 @@ import org.sdoaj.jimgus.util.sdf.primitives.SDFBox;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFNgonPrism;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
@@ -66,7 +70,7 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
 
         float boxRadius = radius * 1.5f;
         SDF subtractionBox = new SDFBox(boxRadius).setBlock(Blocks.DIAMOND_BLOCK);
-        subtractionBox = new SDFTransform().translate(0, boxRadius + 1f, 0).setSource(subtractionBox);
+        subtractionBox = new SDFTransform().translate(0, boxRadius + 1.5f, 0).setSource(subtractionBox);
         island = new SDFSubtraction().setBoolean().setSourceA(island).setSourceB(subtractionBox);
         island = new SDFTransform().scale(1, 1, MathHelper.nextFloat(random, 0.5f, 0.8f)).setSource(island);
 
@@ -76,7 +80,21 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
             return true;
         }
 
-        // TODO generate pillar
+        BlockPos pillarBase = cloudPos.above(2);
+        pillarBase = pillarBase.offset(MathHelper.nextIntAbs(random, 3), 0, MathHelper.nextIntAbs(random, 3));
+        int pillarHeight = MathHelper.nextInt(random, 8, 16);
+
+        BlockHelper.fillBox(world, pillarBase.offset(-1, 1, -1),
+                pillarBase.offset(1, pillarHeight, 1), Blocks.QUARTZ_PILLAR);
+
+        BlockPos pillarCapPos1 = pillarBase.offset(-2, 0, -2);
+        BlockPos pillarCapPos2 = pillarBase.offset(2, 0, 2);
+        int cap2Height = pillarHeight + 1;
+
+        boolean smoothQuartz = MathHelper.chance(random, 0.5f);
+        Block capBlock = smoothQuartz ? Blocks.SMOOTH_QUARTZ : Blocks.QUARTZ_BLOCK;
+        BlockHelper.fillBox(world, pillarCapPos1, pillarCapPos2, capBlock);
+        BlockHelper.fillBox(world, pillarCapPos1.above(cap2Height), pillarCapPos2.above(cap2Height), capBlock);
 
         return true;
     }

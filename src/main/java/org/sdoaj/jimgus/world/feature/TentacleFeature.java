@@ -41,6 +41,7 @@ public class TentacleFeature extends Feature<NoneFeatureConfiguration> {
                 .build().setBlock(Util.pickRandom(random, blocks));
 
         tentacle.fill(world, pos);
+
         return true;
     }
 }

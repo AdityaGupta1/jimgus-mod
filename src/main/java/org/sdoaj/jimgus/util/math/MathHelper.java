@@ -37,6 +37,11 @@ public class MathHelper {
         return random.nextInt(max - min) + min;
     }
 
+    // abs(value) <= max
+    public static int nextIntAbs(Random random, int max) {
+        return nextInt(random, -max, max + 1);
+    }
+
     public static float nextFloat(Random random, float min, float max) {
         return random.nextFloat() * (max - min) + min;
     }

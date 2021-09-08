@@ -8,3 +8,5 @@ jimgus mod
 ![crystal biome](images/crystal_biome.png)
 
 <!-- ![neon genesis biome](images/neon_genesis_biome.png) -->
+
+![cloud island biome](images/cloud_island_biome.png)

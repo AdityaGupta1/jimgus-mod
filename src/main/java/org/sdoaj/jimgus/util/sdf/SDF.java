@@ -53,7 +53,9 @@ public abstract class SDF {
         BlockPos origin = new BlockPos(0, 0, 0);
         ends.add(origin);
         done.add(origin);
-        blocks.put(start, getBlockState(start));
+        if (canReplace.test(world.getBlockState(start))) {
+            blocks.put(start, getBlockState(start));
+        }
 
         while (!ends.isEmpty()) {
             for (BlockPos center : ends) {

@@ -56,6 +56,7 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
 
         cap.fill(world, new Vec3f(pos).add(SplineHelper.getEndpoint(splineStem)).toBlockPos());
         stem.fill(world, pos);
+
         return true;
     }
 }

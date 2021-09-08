@@ -61,6 +61,7 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         crystal.fill(world, pos);
+
         return true;
     }
 }

@@ -43,6 +43,7 @@ public class NeonTowerFeature extends Feature<NoneFeatureConfiguration> {
                 .translate(0.5f, 0.5f, 0.5f).setSource(tower);
 
         tower.fill(world, pos);
+
         return true;
     }
 }

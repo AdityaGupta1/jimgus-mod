@@ -57,6 +57,7 @@ public class NeonBoxFeature extends Feature<NoneFeatureConfiguration> {
         box = new SDFTransform().translate(0.5f, 0.5f, 0.5f).setSource(box);
 
         box.fill(world, pos);
+
         return true;
     }
 }

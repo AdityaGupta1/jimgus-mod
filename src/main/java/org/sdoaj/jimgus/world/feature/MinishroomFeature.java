@@ -46,6 +46,7 @@ public class MinishroomFeature extends Feature<NoneFeatureConfiguration> {
 
         cap.fill(world, pos.above((int) height + 1));
         stem.fill(world, pos);
+
         return true;
     }
 }
