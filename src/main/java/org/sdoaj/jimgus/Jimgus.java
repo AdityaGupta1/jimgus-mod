@@ -23,7 +23,7 @@ import org.sdoaj.jimgus.core.init.*;
 public class Jimgus {
     public static final String MODID = "jimgus";
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public Jimgus() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

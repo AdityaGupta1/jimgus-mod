@@ -8,6 +8,7 @@ public class Vec3f {
 
     public static final float epsilon = 0.0001f;
 
+    public static Vec3f ZERO = new Vec3f(0f, 0f, 0f);
     public static Vec3f XP = new Vec3f(1, 0, 0);
     public static Vec3f XN = new Vec3f(-1, 0, 0);
     public static Vec3f YP = new Vec3f(0, 1, 0);

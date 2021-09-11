@@ -30,6 +30,17 @@ public class SplineHelper {
         return spline;
     }
 
+    public static List<Vec3f> makeSpline(Vec3f pos1, Vec3f pos2, int points) {
+        return makeSpline(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, points);
+    }
+
+    public static void moveToOrigin(List<Vec3f> spline) {
+        Vec3f splineStart = spline.get(0);
+        for (int i = 0; i < spline.size(); i++) {
+            spline.set(i, spline.get(i).subtract(splineStart));
+        }
+    }
+
     // supplier allows the caller to choose between uniform, normal, or any other distribution
     public static void offsetPoints(List<Vec3f> spline, Supplier<Float> random, float dx, float dy, float dz) {
         offsetPoints(spline, random, dx, dy, dz, false, false);
@@ -83,9 +94,18 @@ public class SplineHelper {
         return spline.get(spline.size() - (offset + 1));
     }
 
+    public static Vec3f getPointFromParameter(List<Vec3f> spline, float t) {
+        t = MathHelper.clamp(t, 0f, 1f);
+        float t2 = t * (spline.size() - 1);
+        int point1 = (int) Math.floor(t2);
+        float tLocal = t2 - point1;
+        return Vec3f.lerp(tLocal, spline.get(point1), spline.get(point1 + 1));
+    }
+
     public static class SplineSDFBuilder {
         private final List<Vec3f> spline;
         private UnaryOperator<Float> radius;
+        private float radiusMultiplier = 1;
         private boolean capStart = true;
         private boolean capEnd = true;
 
@@ -98,24 +118,21 @@ public class SplineHelper {
         }
 
         public SDFAbstractShape build() {
-//            float r1;
-//            float r2 = this.radius.apply(0f);
             SDF sdf = null;
 
             int points = spline.size();
             final int count = points - 1;
+            Vec3f splineStart = spline.get(0);
             for (int i = 0; i < count; i++) {
-//                r1 = r2; // radius at this point
-//                r2 = this.radius.apply((float) (i + 1) / count); // radius at next point
-//                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1)).radius(r1, r2);
-                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1)).radius(this.radius,
-                        ((float) i) / count, ((float) (i + 1)) / count);
+                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1))
+                        .radius(this.radius, ((float) i) / count, ((float) (i + 1)) / count)
+                        .radiusMultiplier(radiusMultiplier);
 
                 if (i == 0 && !capStart) {
                     line.disableCapStart();
                 }
 
-                if (i == points - 2 && !capEnd) {
+                if (i == count - 1 && !capEnd) {
                     line.disableCapEnd();
                 }
 
@@ -137,6 +154,11 @@ public class SplineHelper {
 
         public SplineSDFBuilder radius(UnaryOperator<Float> radius) {
             this.radius = radius;
+            return this;
+        }
+
+        public SplineSDFBuilder radiusMultiplier(float multiplier) {
+            this.radiusMultiplier = multiplier;
             return this;
         }
 

@@ -18,8 +18,8 @@ public class VoxelPiece extends StructurePiece {
     private final StructureWorld world;
 
     // null BoundingBox in super constructor is slightly bad but it is set manually later
-    public VoxelPiece(Consumer<StructureWorld> consumer) {
-        super(StructurePieceInit.VOXEL_PIECE, 0, null);
+    public VoxelPiece(Consumer<StructureWorld> consumer, int id) {
+        super(StructurePieceInit.VOXEL_PIECE, id, null);
         this.world = new StructureWorld();
         consumer.accept(world);
         this.boundingBox = world.getBounds();

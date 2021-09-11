@@ -12,25 +12,23 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import org.sdoaj.jimgus.util.math.MathHelper;
-import org.sdoaj.jimgus.util.sdf.SDF;
 
-import java.util.List;
 import java.util.Random;
 
-public abstract class SDFStructureFeature extends StructureFeature<NoneFeatureConfiguration> {
-    public SDFStructureFeature() {
+public abstract class AbstractStructureFeature extends StructureFeature<NoneFeatureConfiguration> {
+    public AbstractStructureFeature() {
         super(NoneFeatureConfiguration.CODEC);
     }
 
-    protected abstract List<SDF> getSDFs(Random random);
+    protected abstract void fillStructureWorld(StructureWorld world, BlockPos pos, Random random);
 
     @Override
     public StructureStartFactory<NoneFeatureConfiguration> getStartFactory() {
-        return SDFStructureStart::new;
+        return AbstractStructureStart::new;
     }
 
-    public static class SDFStructureStart extends StructureStart<NoneFeatureConfiguration> {
-        public SDFStructureStart(StructureFeature<NoneFeatureConfiguration> p_163595_, ChunkPos p_163596_, int p_163597_, long p_163598_) {
+    public static class AbstractStructureStart extends StructureStart<NoneFeatureConfiguration> {
+        public AbstractStructureStart(StructureFeature<NoneFeatureConfiguration> p_163595_, ChunkPos p_163596_, int p_163597_, long p_163598_) {
             super(p_163595_, p_163596_, p_163597_, p_163598_);
         }
 
@@ -44,15 +42,11 @@ public abstract class SDFStructureFeature extends StructureFeature<NoneFeatureCo
             BlockPos start = new BlockPos(x, y, z);
             System.out.println("structure start: " +  start);
 
-            VoxelPiece piece = new VoxelPiece(world -> {
-                SDFStructureFeature structure = (SDFStructureFeature) this.getFeature();
-                for (SDF sdf : structure.getSDFs(this.random)) {
-                    sdf.fill(world, start);
-                }
-            });
-
-            this.pieces.add(piece);
+            this.pieces.add(new VoxelPiece(world ->
+                    ((AbstractStructureFeature) this.getFeature()).fillStructureWorld(world, start, this.random),
+                    this.random.nextInt()));
             this.createBoundingBox();
+            System.out.println(this.getBoundingBox());
         }
     }
 }

@@ -36,11 +36,11 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         float height = MathHelper.nextFloat(random, heightMin, heightMax);
-        List<Vec3f> splineStem = SplineHelper.makeSpline(0, 0, 0,
-                0, height, 0, 3);
-        SplineHelper.offsetPoints(splineStem, () -> MathHelper.nextFloatOne(random), 6, 0, 6, false, true);
-        splineStem = SplineHelper.bezier(splineStem, 8);
-        SDF stem = SplineHelper.SplineSDFBuilder.from(splineStem)
+        List<Vec3f> stemSpline = SplineHelper.makeSpline(0, 0, 0,
+                0, height, 0, 4);
+        SplineHelper.offsetPoints(stemSpline, () -> MathHelper.nextFloatOne(random), 6, 0, 6, false, true);
+        stemSpline = SplineHelper.bezier(stemSpline, 8);
+        SDF stem = SplineHelper.SplineSDFBuilder.from(stemSpline)
                 .radius(delta -> {
                     float x = delta - 0.5f;
                     return 4 * x * x + 1.5f;
@@ -48,15 +48,25 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
 
         float capRadius = MathHelper.nextFloat(random, 10, 14);
         capRadius *= MathHelper.mapRange(height, heightMin, heightMax, 0.8f, 1.2f);
-        SDF cap = new SDFCylinder(2).radius(capRadius).setBlock(Blocks.AMETHYST_BLOCK);
-        Vec3f splineDirection = SplineHelper.getEndpoint(splineStem).subtract(SplineHelper.getPointFromEnd(splineStem, 1));
-        Vec3f axis = splineDirection.cross(Vec3f.YP);
-        float angle = splineDirection.angleTo(Vec3f.YP);
-        cap = new SDFTransform().rotate(axis, angle).setSource(cap);
+        SDF cap = cap(stemSpline, capRadius, 2f);
+//        SDF cap = new SDFCylinder(2).radius(capRadius).setBlock(Blocks.AMETHYST_BLOCK);
+//        Vec3f stemSplineDirection = SplineHelper.getEndpoint(stemSpline).subtract(SplineHelper.getPointFromEnd(stemSpline, 1));
+//        Vec3f capAxis = stemSplineDirection.cross(Vec3f.YP);
+//        float capAngle = stemSplineDirection.angleTo(Vec3f.YP);
+//        cap = new SDFTransform().rotate(capAxis, capAngle).setSource(cap);
 
-        cap.fill(world, new Vec3f(pos).add(SplineHelper.getEndpoint(splineStem)).toBlockPos());
+        cap.fill(world, pos.offset(SplineHelper.getEndpoint(stemSpline).toBlockPos()));
         stem.fill(world, pos);
 
         return true;
+    }
+
+    public static SDF cap(List<Vec3f> spline, float radius, float height) {
+        SDF cap = new SDFCylinder(height).radius(radius).setBlock(Blocks.AMETHYST_BLOCK);
+        Vec3f stemSplineDirection = SplineHelper.getEndpoint(spline).subtract(SplineHelper.getPointFromEnd(spline, 1));
+        Vec3f capAxis = stemSplineDirection.cross(Vec3f.YP);
+        float capAngle = stemSplineDirection.angleTo(Vec3f.YP);
+        cap = new SDFTransform().rotate(capAxis, capAngle).setSource(cap);
+        return cap;
     }
 }
