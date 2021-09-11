@@ -34,7 +34,7 @@ public class StructureInit {
         Jimgus.register(registry, BIG_MUSHROOM, "big_mushroom_structure");
 
         setupStructure(BIG_MUSHROOM, CONFIGURED_BIG_MUSHROOM,
-                new StructureFeatureConfiguration(16, 4, 5552345), false);
+                new StructureFeatureConfiguration(12, 4, 5552345), false);
 
         StructurePieceInit.registerPieces();
     }

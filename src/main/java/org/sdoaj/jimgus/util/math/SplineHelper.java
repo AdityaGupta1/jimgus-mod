@@ -122,7 +122,6 @@ public class SplineHelper {
 
             int points = spline.size();
             final int count = points - 1;
-            Vec3f splineStart = spline.get(0);
             for (int i = 0; i < count; i++) {
                 SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1))
                         .radius(this.radius, ((float) i) / count, ((float) (i + 1)) / count)

@@ -8,7 +8,6 @@ import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
-import org.sdoaj.jimgus.util.sdf.operators.SDFDisplacement;
 import org.sdoaj.jimgus.world.feature.MushroomFeature;
 
 import java.util.HashMap;
@@ -70,7 +69,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
                     float tPrev = entry.getKey();
                     float anglePrev = entry.getKey();
 
-                    if (Math.abs(t - tPrev) < 0.15f && Math.abs(tendrilAngle - anglePrev) < MathHelper.PI / 4) {
+                    if (Math.abs(t - tPrev) < 0.15f && MathHelper.angleBetween(tendrilAngle, anglePrev) < MathHelper.PI / 4) {
                         isTooClose = true;
                         break;
                     }
@@ -101,8 +100,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
             SplineHelper.offsetPoints(tendrilSpline, () -> MathHelper.nextFloatOne(random), 6, 0, 6, false, true);
             tendrilSpline = SplineHelper.bezier(tendrilSpline, 8);
 
-            SDF tendril = SplineHelper.SplineSDFBuilder.from(tendrilSpline).radius(6, 2).build().setBlock(BlockInit.TEST_BLOCK.get());
-            tendril = new SDFDisplacement().setDisplacement(-0.5f).setSource(tendril);
+            SDF tendril = SplineHelper.SplineSDFBuilder.from(tendrilSpline).radius(5, 2).build().setBlock(BlockInit.TEST_BLOCK.get());
             BlockPos tendrilBaseWorldPos = tendrilBase.toBlockPos().offset(pos);
             tendril.fill(world, tendrilBaseWorldPos);
 
