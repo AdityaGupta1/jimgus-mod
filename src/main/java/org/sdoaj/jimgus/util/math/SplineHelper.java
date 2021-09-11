@@ -133,18 +133,11 @@ public class SplineHelper {
                 float radiusMaxT = ((float) (i + 1)) / count;
 
                 if (i != 0 && i != count - 1) {
-                    Vec3f vecLine = point2.subtract(point1);
-
                     if (padding != 0f) {
-                        Vec3f direction = vecLine.normalize();
+                        Vec3f direction = point2.subtract(point1).normalize();
                         point1 = point1.add(direction.multiply(-padding));
                         point2 = point2.add(direction.multiply(padding));
                     }
-
-//                    float length = vecLine.length();
-//                    float paddingRadius = padding / length;
-//                    radiusMinT -= paddingRadius;
-//                    radiusMaxT += paddingRadius;
                 }
 
                 SDFLine line = new SDFLine(point1, point2).radius(this.radius, radiusMinT, radiusMaxT)
