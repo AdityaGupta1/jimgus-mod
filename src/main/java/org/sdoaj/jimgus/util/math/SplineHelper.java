@@ -118,13 +118,36 @@ public class SplineHelper {
         }
 
         public SDFAbstractShape build() {
+            return this.build(0f);
+        }
+
+        public SDFAbstractShape build(float padding) {
             SDF sdf = null;
 
             int points = spline.size();
             final int count = points - 1;
             for (int i = 0; i < count; i++) {
-                SDFLine line = new SDFLine(spline.get(i), spline.get(i + 1))
-                        .radius(this.radius, ((float) i) / count, ((float) (i + 1)) / count)
+                Vec3f point1 = spline.get(i);
+                Vec3f point2 = spline.get(i + 1);
+                float radiusMinT = ((float) i) / count;
+                float radiusMaxT = ((float) (i + 1)) / count;
+
+                if (i != 0 && i != count - 1) {
+                    Vec3f vecLine = point2.subtract(point1);
+
+                    if (padding != 0f) {
+                        Vec3f direction = vecLine.normalize();
+                        point1 = point1.add(direction.multiply(-padding));
+                        point2 = point2.add(direction.multiply(padding));
+                    }
+
+//                    float length = vecLine.length();
+//                    float paddingRadius = padding / length;
+//                    radiusMinT -= paddingRadius;
+//                    radiusMaxT += paddingRadius;
+                }
+
+                SDFLine line = new SDFLine(point1, point2).radius(this.radius, radiusMinT, radiusMaxT)
                         .radiusMultiplier(radiusMultiplier);
 
                 if (i == 0 && !capStart) {

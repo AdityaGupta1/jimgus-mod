@@ -39,12 +39,12 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
         List<Vec3f> stemSpline = SplineHelper.makeSpline(0, 0, 0,
                 0, height, 0, 6);
         SplineHelper.offsetPoints(stemSpline, () -> MathHelper.nextFloatOne(random), 10, 0, 10, false, true);
-        stemSpline = SplineHelper.bezier(stemSpline, 32);
+        stemSpline = SplineHelper.bezier(stemSpline, 14);
         SDF stem = SplineHelper.SplineSDFBuilder.from(stemSpline)
                 .radius(delta -> {
                     float x = delta - 0.5f;
                     return 4 * x * x + 1.5f;
-                }).radiusMultiplier(4.5f).build().setBlock(BlockInit.TEST_BLOCK.get());
+                }).radiusMultiplier(4.5f).build(1.5f).setBlock(BlockInit.TEST_BLOCK.get());
 
         float capRadius = MathHelper.nextFloat(random, 36, 48);
         capRadius *= MathHelper.mapRange(height, heightMin, heightMax, 0.8f, 1.2f);
