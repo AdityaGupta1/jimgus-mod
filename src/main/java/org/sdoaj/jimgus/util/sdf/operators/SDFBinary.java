@@ -19,6 +19,12 @@ public abstract class SDFBinary extends SDF {
         return this;
     }
 
+    public SDFBinary setSources(SDF sourceA, SDF sourceB) {
+        this.sourceA = sourceA;
+        this.sourceB = sourceB;
+        return this;
+    }
+
     protected void selectValue(float a, float b) {
         firstValue = a < b;
     }

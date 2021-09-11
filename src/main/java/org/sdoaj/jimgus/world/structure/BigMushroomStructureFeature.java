@@ -5,6 +5,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
+import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
 
 import java.util.List;
@@ -26,6 +27,6 @@ public class BigMushroomStructureFeature extends SDFStructureFeature {
         SDF cylinderBase = new SDFCylinder(12).radius(32).setBlock(Blocks.SMOOTH_QUARTZ);
         SDF cylinderTop = new SDFCylinder(24).radius(24).setBlock(Blocks.IRON_BLOCK);
         cylinderTop = new SDFTransform().translate(0, 12, 0).setSource(cylinderTop);
-        return List.of(cylinderBase, cylinderTop);
+        return List.of(new SDFUnion().setSources(cylinderBase, cylinderTop));
     }
 }

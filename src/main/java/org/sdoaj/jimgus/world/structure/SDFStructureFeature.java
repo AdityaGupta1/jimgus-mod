@@ -42,6 +42,7 @@ public abstract class SDFStructureFeature extends StructureFeature<NoneFeatureCo
             int z = (chunkPos.z << 4) | MathHelper.nextInt(this.random, 4, 12);
             int y = chunkGenerator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, heightAccessor);
             BlockPos start = new BlockPos(x, y, z);
+            System.out.println("structure start: " +  start);
 
             VoxelPiece piece = new VoxelPiece(world -> {
                 SDFStructureFeature structure = (SDFStructureFeature) this.getFeature();
