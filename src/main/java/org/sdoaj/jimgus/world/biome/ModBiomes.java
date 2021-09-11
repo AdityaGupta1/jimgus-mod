@@ -12,10 +12,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import org.sdoaj.jimgus.core.init.FeatureInit;
+import org.sdoaj.jimgus.core.init.StructureInit;
 
 public class ModBiomes {
     private static final int defaultWaterColor = 0x3F76E4;
@@ -30,7 +32,7 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.TENTACLE_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.TENTACLE.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
 
         return new Biome.BiomeBuilder()
@@ -61,11 +63,13 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.MUSHROOM_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.MUSHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.MINISHROOM_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(5));
+
+        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM.configured(FeatureConfiguration.NONE));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
@@ -95,10 +99,10 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.CRYSTAL_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.CRYSTAL.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.MINISHROOM_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
 
         return new Biome.BiomeBuilder()
@@ -129,13 +133,13 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.NEON_TOWER_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.NEON_TOWER.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(12));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.NEON_BOX_SMALL_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.NEON_BOX_SMALL.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(2));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.NEON_BOX_BIG_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.NEON_BOX_BIG.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
 
         return new Biome.BiomeBuilder()
@@ -166,7 +170,7 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.CLOUD_ISLAND_FEATURE.configured(FeatureConfiguration.NONE)
+                FeatureInit.CLOUD_ISLAND.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(3));
 
         return new Biome.BiomeBuilder()

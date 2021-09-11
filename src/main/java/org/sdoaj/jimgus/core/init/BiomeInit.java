@@ -36,7 +36,7 @@ public class BiomeInit {
         registerBiome(CLOUD_ISLAND_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
     }
 
-    public static void registerBiome(Biome biome, BiomeType type, Type... types) {
+    private static void registerBiome(Biome biome, BiomeType type, Type... types) {
         ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());
         BiomeDictionary.addTypes(key, types);
         BiomeManager.addBiome(type, new BiomeManager.BiomeEntry(key, 10));

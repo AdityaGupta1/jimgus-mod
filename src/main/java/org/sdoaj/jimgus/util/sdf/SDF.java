@@ -6,11 +6,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
+import org.sdoaj.jimgus.world.structure.StructureWorld;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 // based largely on https://github.com/paulevsGitch/BCLib/blob/main/src/main/java/ru/bclib/sdf/SDF.java
@@ -41,11 +43,15 @@ public abstract class SDF {
     public abstract BlockState getBlockState(BlockPos pos);
 
     public final void fill(LevelAccessor world, BlockPos start) {
-        fill(world, start, false);
+        this.fill(world, start, false);
+    }
+
+    public void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace) {
+        this.fill(world, start, ignoreCanReplace, (pos, state) -> BlockHelper.setWithoutUpdate(world, pos, state));
     }
 
     // assumes the origin is always within the SDF
-    public void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace) {
+    private void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace, BiConsumer<BlockPos, BlockState> placeFunction) {
         Map<BlockPos, BlockState> blocks = new HashMap<>();
         Set<BlockPos> done = new HashSet<>();
         Set<BlockPos> ends = new HashSet<>();
@@ -53,7 +59,7 @@ public abstract class SDF {
         BlockPos origin = new BlockPos(0, 0, 0);
         ends.add(origin);
         done.add(origin);
-        if (canReplace.test(world.getBlockState(start))) {
+        if (ignoreCanReplace || canReplace.test(world.getBlockState(start))) {
             blocks.put(start, getBlockState(start));
         }
 
@@ -64,7 +70,7 @@ public abstract class SDF {
                     BlockPos posWorld = posLocal.offset(start);
 
                     if (!done.contains(posLocal) && this.distance(posLocal) < 0) {
-                        if (!ignoreCanReplace && canReplace.test(world.getBlockState(posWorld))) {
+                        if (ignoreCanReplace || canReplace.test(world.getBlockState(posWorld))) {
                             blocks.put(posWorld, getBlockState(posWorld));
                             add.add(posLocal);
                         }
@@ -79,7 +85,12 @@ public abstract class SDF {
         }
 
         for (Map.Entry<BlockPos, BlockState> entry : blocks.entrySet()) {
-            BlockHelper.setWithoutUpdate(world, entry.getKey(), entry.getValue());
+            placeFunction.accept(entry.getKey(), entry.getValue());
         }
+    }
+
+    // setting world to null is kinda bad but world will never be used since ignoreCanReplace is true
+    public void fill(StructureWorld world, BlockPos start) {
+        this.fill(null, start, true, world::setBlock);
     }
 }

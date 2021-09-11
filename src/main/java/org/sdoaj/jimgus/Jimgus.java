@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,10 +16,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.sdoaj.jimgus.core.init.BiomeInit;
-import org.sdoaj.jimgus.core.init.BlockInit;
-import org.sdoaj.jimgus.core.init.FeatureInit;
-import org.sdoaj.jimgus.core.init.ItemInit;
+import org.sdoaj.jimgus.core.init.*;
 
 @Mod(Jimgus.MODID)
 @Mod.EventBusSubscriber(modid = Jimgus.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -37,6 +33,7 @@ public class Jimgus {
         ItemInit.ITEMS.register(bus);
         BlockInit.BLOCKS.register(bus);
         BiomeInit.BIOMES.register(bus);
+        StructurePieceInit.registerPieces();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
