@@ -1,11 +1,14 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
+import com.mojang.math.Quaternion;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled
 public class SDFTransform extends SDFUnary {
-    private Vec3f translation, axis, scale;
-    private float sin, cos, cosm; // cosm = 1 - cos
+    private Vec3f translation, scale;
+    // private Vec3f axis;
+    // private float sin, cos, cosm; // cosm = 1 - cos
+    private Quaternion quaternion = null;
 
     public SDFTransform translate(float x, float y, float z) {
         return translate(new Vec3f(x, y, z));
@@ -16,16 +19,21 @@ public class SDFTransform extends SDFUnary {
         return this;
     }
 
-    // angle is in radians
+    // angle in radians
     public SDFTransform rotate(float x, float y, float z, float angle) {
         return rotate(new Vec3f(x, y, z), angle);
     }
 
+    // public SDFTransform rotate(Vec3f axis, float angle) {
+    //     this.axis = axis.normalize();
+    //     this.sin = (float) Math.sin(angle);
+    //     this.cos = (float) Math.cos(angle);
+    //     this.cosm = 1 - this.cos;
+    //     return this;
+    // }
+
     public SDFTransform rotate(Vec3f axis, float angle) {
-        this.axis = axis.normalize();
-        this.sin = (float) Math.sin(angle);
-        this.cos = (float) Math.cos(angle);
-        this.cosm = 1 - this.cos;
+        this.quaternion = new Quaternion(axis.toVector3f(), angle, false);
         return this;
     }
 
@@ -44,17 +52,21 @@ public class SDFTransform extends SDFUnary {
 
     @Override
     public float distance(Vec3f pos) {
-        // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
-        if (axis != null) {
-            float wx = axis.x;
-            float wy = axis.y;
-            float wz = axis.z;
+        // // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
+        // if (axis != null) {
+        //     float wx = axis.x;
+        //     float wy = axis.y;
+        //     float wz = axis.z;
+        //
+        //     float px = (cos + (wx * wx) * cosm) * pos.x + (-wz * sin + wx * wy * cosm) * pos.y + (wy * sin + wx * wz * cosm) * pos.z;
+        //     float py = (wz * sin + wx * wy * cosm) * pos.x + (cos + (wy * wy) * cosm) * pos.y + (-wx * sin + wy * wz * cosm) * pos.z;
+        //     float pz = (-wy * sin + wx * wz * cosm) * pos.x + (wx * sin + wy * wz * cosm) * pos.y + (cos + (wz * wz) * cosm) * pos.z;
+        //
+        //     pos = new Vec3f(px, py, pz);
+        // }
 
-            float px = (cos + (wx * wx) * cosm) * pos.x + (-wz * sin + wx * wy * cosm) * pos.y + (wy * sin + wx * wz * cosm) * pos.z;
-            float py = (wz * sin + wx * wy * cosm) * pos.x + (cos + (wy * wy) * cosm) * pos.y + (-wx * sin + wy * wz * cosm) * pos.z;
-            float pz = (-wy * sin + wx * wz * cosm) * pos.x + (wx * sin + wy * wz * cosm) * pos.y + (cos + (wz * wz) * cosm) * pos.z;
-
-            pos = new Vec3f(px, py, pz);
+        if (quaternion != null) {
+            pos = pos.rotate(quaternion);
         }
 
         if (scale != null) {
