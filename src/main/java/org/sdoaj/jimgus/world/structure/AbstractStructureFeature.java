@@ -40,13 +40,11 @@ public abstract class AbstractStructureFeature extends StructureFeature<NoneFeat
             int z = (chunkPos.z << 4) | MathHelper.nextInt(this.random, 4, 12);
             int y = chunkGenerator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, heightAccessor);
             BlockPos start = new BlockPos(x, y, z);
-            System.out.println("structure start: " +  start);
 
             this.pieces.add(new VoxelPiece(world ->
                     ((AbstractStructureFeature) this.getFeature()).fillStructureWorld(world, start, this.random),
                     this.random.nextInt()));
             this.createBoundingBox();
-            System.out.println(this.getBoundingBox());
         }
     }
 }

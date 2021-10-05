@@ -1,4 +1,4 @@
-package org.sdoaj.jimgus.world.structure;
+package org.sdoaj.jimgus.world.structure.feature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -9,6 +9,8 @@ import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.world.feature.MushroomFeature;
+import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
+import org.sdoaj.jimgus.world.structure.StructureWorld;
 
 import java.util.HashMap;
 import java.util.List;

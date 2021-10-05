@@ -68,7 +68,8 @@ public class ModBiomes {
                 FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(5));
 
-        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM.configured(FeatureConfiguration.NONE));
+        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM
+                .configured(FeatureConfiguration.NONE));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
@@ -201,11 +202,11 @@ public class ModBiomes {
         BiomeDefaultFeatures.addSurfaceFreezing(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                FeatureInit.ICE_FEATHER_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(6));
-        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.ICE_WIREFRAME_FEATURE.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(3));
+
+        generationSettingsBuilder.addStructureStart(StructureInit.ICE_FEATHER
+                .configured(FeatureConfiguration.NONE));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.SNOW)
@@ -215,10 +216,10 @@ public class ModBiomes {
                 .temperature(0.3f)
                 .downfall(0.7f)
                 .specialEffects(new BiomeSpecialEffects.Builder()
-                        .fogColor(0x6E5D73)
+                        .fogColor(0x5D6873)
                         .waterColor(defaultWaterColor)
                         .waterFogColor(defaultWaterFogColor)
-                        .skyColor(0xA294B5)
+                        .skyColor(0x94A2B5)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())

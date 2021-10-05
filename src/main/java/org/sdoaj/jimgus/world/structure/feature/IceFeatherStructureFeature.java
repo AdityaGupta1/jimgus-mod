@@ -1,13 +1,11 @@
-package org.sdoaj.jimgus.world.feature;
+package org.sdoaj.jimgus.world.structure.feature;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.util.LSystem;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
@@ -15,12 +13,12 @@ import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFAbstractShape;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFLine;
+import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
+import org.sdoaj.jimgus.world.structure.StructureWorld;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Random;
+import java.util.*;
 
-public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
+public class IceFeatherStructureFeature extends AbstractStructureFeature {
     private static final LSystem lSystem = new LSystem() {
         @Override
         protected String getSeed() {
@@ -36,7 +34,7 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
             float i = random.nextFloat();
             char direction;
 
-            if (i < 0.5) {
+            if (i < 0.35) {
                 direction = 'x';
             } else {
                 direction = switch (random.nextInt(3)) {
@@ -51,10 +49,6 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
         }
     };
 
-    public IceFeatherFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
-
     private static final float lineLength = 12f;
     private static final float turnAngle = MathHelper.toRadians(10f);
     private static final float lineRadius = 2.0f;
@@ -65,10 +59,18 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
     private static final Quaternion quatZN = new Quaternion(Vector3f.XP, -turnAngle, false);
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel world = context.level();
-        BlockPos pos = context.origin();
-        Random random = context.random();
+    public GenerationStep.Decoration step() {
+        return GenerationStep.Decoration.SURFACE_STRUCTURES;
+    }
+
+    @Override
+    public String getFeatureName() {
+        return Jimgus.MODID + ":ice_feather_structure";
+    }
+
+    @Override
+    protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
+        pos = pos.below(2);
 
         Vec3f currentPos = Vec3f.ZERO;
         Vec3f direction = Vec3f.YP;
@@ -110,7 +112,5 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
 
         sdf = new SDFAbstractShape().setSource(sdf).setBlock(Blocks.BLUE_ICE);
         sdf.fill(world, pos);
-
-        return true;
     }
 }

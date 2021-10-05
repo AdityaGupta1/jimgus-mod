@@ -22,7 +22,6 @@ public class FeatureInit {
             new NeonBoxFeature(1, 3, 1, 3, 1, 3, Blocks.LIME_CONCRETE);
     public static final Feature<NoneFeatureConfiguration> NEON_TOWER = new NeonTowerFeature();
     public static final Feature<NoneFeatureConfiguration> CLOUD_ISLAND = new CloudIslandFeature();
-    public static final Feature<NoneFeatureConfiguration> ICE_FEATHER_FEATURE = new IceFeatherFeature();
     public static final Feature<NoneFeatureConfiguration> ICE_WIREFRAME_FEATURE = new IceWireframeFeature();
 
     @SubscribeEvent
@@ -37,7 +36,6 @@ public class FeatureInit {
         Jimgus.register(registry, NEON_BOX_SMALL, "neon_box_small_feature");
         Jimgus.register(registry, NEON_TOWER, "neon_tower_feature");
         Jimgus.register(registry, CLOUD_ISLAND, "cloud_island_feature");
-        Jimgus.register(registry, ICE_FEATHER_FEATURE, "ice_feather_feature");
         Jimgus.register(registry, ICE_WIREFRAME_FEATURE, "ice_wireframe_feature");
     }
 }

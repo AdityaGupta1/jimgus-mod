@@ -24,7 +24,7 @@ public class IceWireframeFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         Random random = context.random();
 
-        if (world.getBlockState(pos.below()).getBlock() != Blocks.SNOW) {
+        if (world.getBlockState(pos.below()).getBlock() == Blocks.BLUE_ICE) {
             return false;
         }
 
