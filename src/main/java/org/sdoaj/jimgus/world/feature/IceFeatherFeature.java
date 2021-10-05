@@ -41,8 +41,8 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
             } else {
                 direction = switch (random.nextInt(3)) {
                     case 0 -> 'X';
-                    case 1 -> 'y';
-                    case 2 -> 'Y';
+                    case 1 -> 'z';
+                    case 2 -> 'Z';
                     default -> throw new IllegalStateException();
                 };
             }
@@ -55,14 +55,14 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
         super(NoneFeatureConfiguration.CODEC);
     }
 
-    private static final float lineLength = 10f;
-    private static final float turnAngle = MathHelper.toRadians(15f);
+    private static final float lineLength = 12f;
+    private static final float turnAngle = MathHelper.toRadians(10f);
     private static final float lineRadius = 2.0f;
 
-    private static final Quaternion quatXP = new Quaternion(Vector3f.YP, turnAngle, false);
-    private static final Quaternion quatXN = new Quaternion(Vector3f.YP, -turnAngle, false);
-    private static final Quaternion quatYP = new Quaternion(Vector3f.XP, turnAngle, false);
-    private static final Quaternion quatYN = new Quaternion(Vector3f.XP, -turnAngle, false);
+    private static final Quaternion quatXP = new Quaternion(Vector3f.ZP, turnAngle, false);
+    private static final Quaternion quatXN = new Quaternion(Vector3f.ZP, -turnAngle, false);
+    private static final Quaternion quatZP = new Quaternion(Vector3f.XP, turnAngle, false);
+    private static final Quaternion quatZN = new Quaternion(Vector3f.XP, -turnAngle, false);
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
@@ -71,12 +71,13 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
         Random random = context.random();
 
         Vec3f currentPos = Vec3f.ZERO;
-        Vec3f direction = Vec3f.ZP;
+        Vec3f direction = Vec3f.YP;
         Deque<Vec3f> savedPositions = new ArrayDeque<>();
 
+        String lSystemString = lSystem.run(5, random);
         SDF sdf = null;
 
-        for (char c : lSystem.run(3, random).toCharArray()) {
+        for (char c : lSystemString.toCharArray()) {
             switch (c) {
                 case '[':
                     savedPositions.addFirst(currentPos);
@@ -96,11 +97,11 @@ public class IceFeatherFeature extends Feature<NoneFeatureConfiguration> {
                 case 'X':
                     direction = direction.rotate(quatXN);
                     break;
-                case 'y':
-                    direction = direction.rotate(quatYP);
+                case 'z':
+                    direction = direction.rotate(quatZP);
                     break;
-                case 'Y':
-                    direction = direction.rotate(quatYN);
+                case 'Z':
+                    direction = direction.rotate(quatZN);
                     break;
                 default:
                     break;

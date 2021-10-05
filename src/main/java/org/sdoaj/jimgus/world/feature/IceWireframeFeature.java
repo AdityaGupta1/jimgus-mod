@@ -24,7 +24,11 @@ public class IceWireframeFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         Random random = context.random();
 
-        final int radius = MathHelper.nextInt(random, 3, 5);
+        if (world.getBlockState(pos.below()).getBlock() != Blocks.SNOW) {
+            return false;
+        }
+
+        final int radius = MathHelper.nextInt(random, 1, 4);
         final BlockPos[] vertices = {
                 pos.offset(radius, radius, radius),
                 pos.offset(radius, -radius, radius),

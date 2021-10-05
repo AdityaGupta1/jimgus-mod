@@ -193,15 +193,16 @@ public class ModBiomes {
 
     public static Biome iceFeatherBiome() {
         MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
-        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+        BiomeDefaultFeatures.snowySpawns(spawnSettingsBuilder);
 
         BiomeGenerationSettings.Builder generationSettingsBuilder
                 = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.ICE_SPIKES);
         addDefaultFeatures(generationSettingsBuilder);
+        BiomeDefaultFeatures.addSurfaceFreezing(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.ICE_FEATHER_FEATURE.configured(FeatureConfiguration.NONE)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(12));
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(6));
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.ICE_WIREFRAME_FEATURE.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(3));
