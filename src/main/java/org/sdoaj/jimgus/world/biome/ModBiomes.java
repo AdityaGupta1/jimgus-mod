@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
@@ -69,7 +68,8 @@ public class ModBiomes {
                 FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(5));
 
-        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM.configured(FeatureConfiguration.NONE));
+        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM
+                .configured(FeatureConfiguration.NONE));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
@@ -185,6 +185,41 @@ public class ModBiomes {
                         .waterColor(defaultWaterColor)
                         .waterFogColor(defaultWaterFogColor)
                         .skyColor(0x98C3D6)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
+    public static Biome iceFeatherBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.snowySpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.ICE_SPIKES);
+        addDefaultFeatures(generationSettingsBuilder);
+        BiomeDefaultFeatures.addSurfaceFreezing(generationSettingsBuilder);
+
+        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                FeatureInit.ICE_WIREFRAME_FEATURE.configured(FeatureConfiguration.NONE)
+                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(3));
+
+        generationSettingsBuilder.addStructureStart(StructureInit.ICE_FEATHER
+                .configured(FeatureConfiguration.NONE));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.SNOW)
+                .biomeCategory(Biome.BiomeCategory.ICY)
+                .depth(0.15f)
+                .scale(0.2f)
+                .temperature(0.3f)
+                .downfall(0.7f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(0x5D6873)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0x94A2B5)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())

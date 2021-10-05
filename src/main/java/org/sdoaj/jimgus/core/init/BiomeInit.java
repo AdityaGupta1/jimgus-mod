@@ -24,16 +24,18 @@ public class BiomeInit {
     public static final RegistryObject<Biome> TENTACLE_BIOME = BIOMES.register("tentacle_biome", ModBiomes::tentacleBiome);
     public static final RegistryObject<Biome> MUSHROOM_BIOME = BIOMES.register("mushroom_biome", ModBiomes::mushroomBiome);
     public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("crystal_biome", ModBiomes::crystalBiome);
-     public static final RegistryObject<Biome> NEON_GENESIS_BIOME = BIOMES.register("neon_genesis_biome", ModBiomes::neonGenesisBiome);
+    // public static final RegistryObject<Biome> NEON_GENESIS_BIOME = BIOMES.register("neon_genesis_biome", ModBiomes::neonGenesisBiome);
     public static final RegistryObject<Biome> CLOUD_ISLAND_BIOME = BIOMES.register("cloud_island_biome", ModBiomes::cloudIslandBiome);
+    public static final RegistryObject<Biome> ICE_FEATHER_BIOME = BIOMES.register("ice_feather_biome", ModBiomes::iceFeatherBiome);
 
     @SubscribeEvent
     public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
         registerBiome(TENTACLE_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN);
         registerBiome(MUSHROOM_BIOME.get(), BiomeType.WARM, Type.MUSHROOM);
         registerBiome(CRYSTAL_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN, Type.MAGICAL);
-//        registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
+        // registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(CLOUD_ISLAND_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
+        registerBiome(ICE_FEATHER_BIOME.get(), BiomeType.ICY, Type.COLD, Type.SNOWY);
     }
 
     private static void registerBiome(Biome biome, BiomeType type, Type... types) {
