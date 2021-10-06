@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.sdoaj.jimgus.util.math.Vec3f;
 
 import java.util.function.Predicate;
 
@@ -43,5 +44,19 @@ public class BlockHelper {
                 }
             }
         }
+    }
+
+    public static void fillTriangle(LevelAccessor world, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness) {
+        final float thicknessRadius = thickness / 2;
+
+        Vec3f min = pos1.min(pos2.min(pos3));
+        Vec3f max = pos1.max(pos2.max(pos3));
+
+        // // form orthonormal basis [xAxis, yAxis]
+        // Vec3f xAxis = pos2.subtract(pos1).normalize();
+        // Vec3f side = pos3.subtract(pos2);
+        // Vec3f yAxis = side.subtract(side.proj(xAxis));
+        //
+        // float height =
     }
 }

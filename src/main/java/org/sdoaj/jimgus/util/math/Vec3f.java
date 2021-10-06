@@ -77,6 +77,10 @@ public class Vec3f {
                 this.x * other.y - this.y * other.x);
     }
 
+    public Vec3f proj(Vec3f other) {
+        return other.multiply(this.dot(other) / (other.dot(other)));
+    }
+
     public Vec3f normalize() {
         float length = this.length();
         return new Vec3f(this.x / length, this.y / length, this.z / length);
@@ -104,8 +108,16 @@ public class Vec3f {
         return new Vec3f(Math.max(this.x, c), Math.max(this.y, c), Math.max(this.z, c));
     }
 
+    public Vec3f max(Vec3f other) {
+        return new Vec3f(Math.max(this.x, other.x), Math.max(this.y, other.y), Math.max(this.z, other.z));
+    }
+
     public Vec3f min(int c) {
         return new Vec3f(Math.min(this.x, c), Math.min(this.y, c), Math.min(this.z, c));
+    }
+
+    public Vec3f min(Vec3f other) {
+        return new Vec3f(Math.min(this.x, other.x), Math.min(this.y, other.y), Math.min(this.z, other.z));
     }
 
     public float maxComp() {
