@@ -5,7 +5,9 @@ import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.phys.Vec3;
 import org.sdoaj.jimgus.Jimgus;
+import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.LSystem;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
@@ -70,47 +72,53 @@ public class IceFeatherStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
-        pos = pos.below(2);
+        Vec3f vec = new Vec3f(pos);
+        BlockHelper.fillTriangle(world, vec.offset(-10, 10, -10),
+                vec.offset(-12, 15, -3),
+                vec.offset(6, 5, 9),
+                3.0f, Blocks.BLUE_ICE);
 
-        Vec3f currentPos = Vec3f.ZERO;
-        Vec3f direction = Vec3f.YP;
-        Deque<Vec3f> savedPositions = new ArrayDeque<>();
-
-        String lSystemString = lSystem.run(5, random);
-        SDF sdf = null;
-
-        for (char c : lSystemString.toCharArray()) {
-            switch (c) {
-                case '[':
-                    savedPositions.addFirst(currentPos);
-                    break;
-                case ']':
-                    currentPos = savedPositions.removeFirst();
-                    break;
-                case 'a':
-                    Vec3f newPos = currentPos.add(direction.multiply(lineLength));
-                    SDF line = new SDFLine(currentPos, newPos).radius(lineRadius);
-                    sdf = (sdf == null) ? line : new SDFUnion().setSources(sdf, line);
-                    currentPos = newPos;
-                    break;
-                case 'x':
-                    direction = direction.rotate(quatXP);
-                    break;
-                case 'X':
-                    direction = direction.rotate(quatXN);
-                    break;
-                case 'z':
-                    direction = direction.rotate(quatZP);
-                    break;
-                case 'Z':
-                    direction = direction.rotate(quatZN);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        sdf = new SDFAbstractShape().setSource(sdf).setBlock(Blocks.BLUE_ICE);
-        sdf.fill(world, pos);
+        // pos = pos.below(2);
+        //
+        // Vec3f currentPos = Vec3f.ZERO;
+        // Vec3f direction = Vec3f.YP;
+        // Deque<Vec3f> savedPositions = new ArrayDeque<>();
+        //
+        // String lSystemString = lSystem.run(5, random);
+        // SDF sdf = null;
+        //
+        // for (char c : lSystemString.toCharArray()) {
+        //     switch (c) {
+        //         case '[':
+        //             savedPositions.addFirst(currentPos);
+        //             break;
+        //         case ']':
+        //             currentPos = savedPositions.removeFirst();
+        //             break;
+        //         case 'a':
+        //             Vec3f newPos = currentPos.add(direction.multiply(lineLength));
+        //             SDF line = new SDFLine(currentPos, newPos).radius(lineRadius);
+        //             sdf = (sdf == null) ? line : new SDFUnion().setSources(sdf, line);
+        //             currentPos = newPos;
+        //             break;
+        //         case 'x':
+        //             direction = direction.rotate(quatXP);
+        //             break;
+        //         case 'X':
+        //             direction = direction.rotate(quatXN);
+        //             break;
+        //         case 'z':
+        //             direction = direction.rotate(quatZP);
+        //             break;
+        //         case 'Z':
+        //             direction = direction.rotate(quatZN);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
+        //
+        // sdf = new SDFAbstractShape().setSource(sdf).setBlock(Blocks.BLUE_ICE);
+        // sdf.fill(world, pos);
     }
 }

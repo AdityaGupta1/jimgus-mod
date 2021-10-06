@@ -4,6 +4,8 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 
+import java.util.function.Function;
+
 public class Vec3f {
     public final float x, y, z;
 
@@ -35,6 +37,10 @@ public class Vec3f {
         return new BlockPos(this.x, this.y, this.z);
     }
 
+    public BlockPos toBlockPos(Function<Float, Integer> func) {
+        return new BlockPos(func.apply(this.x), func.apply(this.y), func.apply(this.z));
+    }
+
     public Vector3f toVector3f() {
         return new Vector3f(this.x, this.y, this.z);
     }
@@ -49,6 +55,10 @@ public class Vec3f {
 
     public Vec3f subtract(Vec3f other) {
         return new Vec3f(this.x - other.x, this.y - other.y, this.z - other.z);
+    }
+
+    public Vec3f offset(float dx, float dy, float dz) {
+        return new Vec3f(this.x + dx, this.y + dy, this.z + dz);
     }
 
     public Vec3f multiply(float c) {
@@ -108,16 +118,16 @@ public class Vec3f {
         return new Vec3f(Math.max(this.x, c), Math.max(this.y, c), Math.max(this.z, c));
     }
 
-    public Vec3f max(Vec3f other) {
-        return new Vec3f(Math.max(this.x, other.x), Math.max(this.y, other.y), Math.max(this.z, other.z));
+    public static Vec3f max(Vec3f a, Vec3f b) {
+        return new Vec3f(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
     }
 
     public Vec3f min(int c) {
         return new Vec3f(Math.min(this.x, c), Math.min(this.y, c), Math.min(this.z, c));
     }
 
-    public Vec3f min(Vec3f other) {
-        return new Vec3f(Math.min(this.x, other.x), Math.min(this.y, other.y), Math.min(this.z, other.z));
+    public static Vec3f min(Vec3f a, Vec3f b) {
+        return new Vec3f(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
     }
 
     public float maxComp() {
