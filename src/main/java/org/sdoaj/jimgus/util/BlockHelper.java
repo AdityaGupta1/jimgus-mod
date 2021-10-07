@@ -76,13 +76,6 @@ public class BlockHelper {
         BlockPos minPos = min.toBlockPos(f -> (int) Math.floor(f - thicknessRadius));
         BlockPos maxPos = max.toBlockPos(f -> (int) Math.ceil(f + thicknessRadius));
 
-//        final Vec3f edge12 = pos2.subtract(pos1);
-//        final Vec3f edge23 = pos3.subtract(pos2);
-//        final Vec3f edge31 = pos1.subtract(pos3);
-//
-//        final Vec3f normal = edge12.cross(edge23);
-//        final float area = Math.abs(normal.length()); // area / 2
-
         for (int x = minPos.getX(); x < maxPos.getX(); x++) {
             for (int y = minPos.getY(); y < maxPos.getY(); y++) {
                 for (int z = minPos.getZ(); z < maxPos.getZ(); z++) {
@@ -112,36 +105,10 @@ public class BlockHelper {
                         continue;
                     }
 
-//                    // project point onto plane
-//                    Vec3f pos1ToPoint = posF.subtract(pos1);
-//                    Vec3f projOntoNormal = pos1ToPoint.proj(normal);
-//                    Vec3f planePoint = pos1.add(pos1ToPoint.subtract(projOntoNormal));
-
-//                    // distance check
-//                    float distanceToPlane = posF.subtract(planePoint).length();
-//                    if (Math.abs(distanceToPlane) > thicknessRadius) {
-//                        continue;
-//                    }
-//
-//                    // barycentric check
-//                    float A1 = edge12.cross(planePoint.subtract(pos2)).length();
-//                    float A2 = edge23.cross(planePoint.subtract(pos3)).length();
-//                    float A3 = edge31.cross(planePoint.subtract(pos1)).length();
-//                    if (A1 + A2 + A3 > area) {
-//                        continue;
-//                    }
-
                     // place block
                     placeFunction.accept(pos);
                 }
             }
         }
-
-        // // form orthonormal basis [xAxis, yAxis]
-        // Vec3f xAxis = pos2.subtract(pos1).normalize();
-        // Vec3f side = pos3.subtract(pos2);
-        // Vec3f yAxis = side.subtract(side.proj(xAxis));
-        //
-        // float height =
     }
 }
