@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.sdoaj.jimgus.util.math.MathHelper;
+import net.minecraftforge.common.Tags;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.world.structure.StructureWorld;
 
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 // based partially on https://github.com/paulevsGitch/BCLib/blob/7d9b56b6e72bd4b9c9752eb0a82f908ca23ec9f7/src/main/java/ru/bclib/util/BlocksHelper.java
 public class BlockHelper {
@@ -50,6 +50,21 @@ public class BlockHelper {
         }
     }
 
+    private static class Plane {
+        private final Vec3f point;
+        private final Vec3f normal;
+
+        Plane(Vec3f point, Vec3f normal) {
+            this.point = point;
+            this.normal = normal;
+        }
+
+        boolean isPointInFront(Vec3f pos) {
+            Vec3f planeToPos = pos.subtract(this.point); // point on plane to point in space
+            return planeToPos.dot(normal) > 0;
+        }
+    }
+
     public static void fillTriangle(LevelAccessor world, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness, Block block) {
         fillTriangle(world, pos1, pos2, pos3, thickness, block.defaultBlockState());
     }
@@ -68,45 +83,42 @@ public class BlockHelper {
 
     // very bad implementation that checks every box in bounding volume
     private static void fillTriangle(Consumer<BlockPos> placeFunction, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness) {
-        final float thicknessRadius = thickness / 2;
+        float thicknessRadius = thickness / 2;
 
         Vec3f min = Vec3f.min(pos1, Vec3f.min(pos2, pos3));
         Vec3f max = Vec3f.max(pos1, Vec3f.max(pos2, pos3));
-
         BlockPos minPos = min.toBlockPos(f -> (int) Math.floor(f - thicknessRadius));
         BlockPos maxPos = max.toBlockPos(f -> (int) Math.ceil(f + thicknessRadius));
+
+        Vec3f edge1 = pos2.subtract(pos1);
+        Vec3f edge2 = pos3.subtract(pos2);
+        Vec3f edge3 = pos1.subtract(pos3);
+        Vec3f normal = edge1.cross(edge2).normalize();
+
+        List<Plane> planes = new ArrayList<>();
+        planes.add(new Plane(pos1.add(normal.multiply(thicknessRadius)), normal));
+        planes.add(new Plane(pos1.subtract(normal.multiply(thicknessRadius)), normal.multiply(-1)));
+        planes.add(new Plane(pos1, edge1.cross(normal)));
+        planes.add(new Plane(pos2, edge2.cross(normal)));
+        planes.add(new Plane(pos3, edge3.cross(normal)));
 
         for (int x = minPos.getX(); x < maxPos.getX(); x++) {
             for (int y = minPos.getY(); y < maxPos.getY(); y++) {
                 for (int z = minPos.getZ(); z < maxPos.getZ(); z++) {
                     BlockPos pos = new BlockPos(x, y, z);
-                    Vec3f posF = new Vec3f(x + 0.5f, y + 0.5f, z + 0.5f);
+                    Vec3f posF = new Vec3f(pos);
 
-                    // https://math.stackexchange.com/questions/544946/determine-if-projection-of-3d-point-onto-plane-is-within-a-triangle
-                    Vec3f u = pos2.subtract(pos1);
-                    Vec3f v = pos3.subtract(pos1);
-                    Vec3f n = u.cross(v);
-                    Vec3f w = posF.subtract(pos1);
-
-                    float gamma = (u.cross(w)).dot(n) / (n.dot(n));
-                    float beta = (w.cross(v)).dot(n) / (n.dot(n));
-                    float alpha = 1 - gamma - beta;
-
-                    Vec3f planePoint = pos1.multiply(alpha).add(pos2.multiply(beta).add(pos3.multiply(gamma)));
-
-                    float distanceToPlane = posF.subtract(planePoint).length();
-                    if (Math.abs(distanceToPlane) > thicknessRadius) {
-                        continue;
+                    boolean isInPrism = true;
+                    for (Plane plane : planes) {
+                        if (plane.isPointInFront(posF)) {
+                            isInPrism = false;
+                            break;
+                        }
                     }
 
-                    if (!MathHelper.isInRange(alpha, 0, 1)
-                            || !MathHelper.isInRange(beta, 0, 1)
-                            || !MathHelper.isInRange(gamma, 0, 1)) {
-                        continue;
+                    if (isInPrism) {
+                        placeFunction.accept(pos);
                     }
-
-                    // place block
-                    placeFunction.accept(pos);
                 }
             }
         }
