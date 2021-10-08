@@ -83,7 +83,7 @@ public class Vec3f {
 
     public Vec3f cross(Vec3f other) {
         return new Vec3f(this.y * other.z - this.z * other.y,
-                this.x * other.z - this.z * other.x,
+                this.z * other.x - this.x * other.z,
                 this.x * other.y - this.y * other.x);
     }
 
