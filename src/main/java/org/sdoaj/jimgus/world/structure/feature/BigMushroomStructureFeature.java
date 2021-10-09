@@ -97,7 +97,8 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
             List<Vec3f> tendrilSpline = SplineHelper.makeSpline(Vec3f.ZERO,
                     tendrilDirection.multiply(tendrilLength), 3);
             tendrilSpline.add(SplineHelper.getEndpoint(tendrilSpline)
-                    .add(new Vec3f(0, MathHelper.nextFloat(random, 12, 16), 0)));
+                    .offset(0, MathHelper.nextFloat(random, 8, 12), 0)
+                    .add(tendrilDirection.multiply(4.0f)));
             SplineHelper.offsetPoints(tendrilSpline, () -> MathHelper.nextFloatOne(random), 4, 4, 4, false, true);
             tendrilSpline = SplineHelper.bezier(tendrilSpline, 8);
 
