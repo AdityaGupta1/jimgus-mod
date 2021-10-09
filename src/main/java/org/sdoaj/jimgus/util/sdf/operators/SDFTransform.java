@@ -1,6 +1,5 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
-import com.mojang.math.Quaternion;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled

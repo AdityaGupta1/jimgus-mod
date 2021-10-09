@@ -2,6 +2,7 @@ package org.sdoaj.jimgus.world.feature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -24,7 +25,8 @@ public class IceWireframeFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         Random random = context.random();
 
-        if (world.getBlockState(pos.below()).getBlock() == Blocks.BLUE_ICE) {
+        Block below = world.getBlockState(pos.below()).getBlock();
+        if (below == Blocks.BLUE_ICE || below == Blocks.ICE) {
             return false;
         }
 
