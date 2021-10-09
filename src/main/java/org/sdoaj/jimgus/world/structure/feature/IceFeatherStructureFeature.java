@@ -5,7 +5,6 @@ import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.phys.Vec3;
 import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.LSystem;
@@ -33,27 +32,23 @@ public class IceFeatherStructureFeature extends AbstractStructureFeature {
                 return Character.toString(c);
             }
 
-            float i = random.nextFloat();
-            char direction;
+            char direction = switch (random.nextInt(4)) {
+                case 0 -> 'x';
+                case 1 -> 'X';
+                case 2 -> 'z';
+                case 3 -> 'Z';
+                default -> throw new IllegalStateException();
+            };
 
-            if (i < 0.35) {
-                direction = 'x';
-            } else {
-                direction = switch (random.nextInt(3)) {
-                    case 0 -> 'X';
-                    case 1 -> 'z';
-                    case 2 -> 'Z';
-                    default -> throw new IllegalStateException();
-                };
-            }
-
-            return "d[" + direction + "ad]a";
+            return "d[t" + direction + "ad]a";
         }
     };
 
-    private static final float lineLength = 12f;
-    private static final float turnAngle = MathHelper.toRadians(10f);
-    private static final float lineRadius = 2.0f;
+    private static final float lineLengthMin = 15f;
+    private static final float lineLengthMax = 22f;
+    private static final float turnAngle = MathHelper.toRadians(22f);
+    private static final float lineRadius = 1.3f;
+    private static final float triangleThickness = 1.8f;
 
     private static final Quaternion quatXP = new Quaternion(Vector3f.ZP, turnAngle, false);
     private static final Quaternion quatXN = new Quaternion(Vector3f.ZP, -turnAngle, false);
@@ -72,53 +67,48 @@ public class IceFeatherStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
-        Vec3f vec = new Vec3f(pos);
-        BlockHelper.fillTriangle(world, vec.offset(-10, 10, -10),
-                vec.offset(-14, 15, -3),
-                vec.offset(6, 5, 9),
-                1.6f, Blocks.BLUE_ICE);
+        pos = pos.below(2);
 
-//         pos = pos.below(2);
-//
-//         Vec3f currentPos = Vec3f.ZERO;
-//         Vec3f direction = Vec3f.YP;
-//         Deque<Vec3f> savedPositions = new ArrayDeque<>();
-//
-//         String lSystemString = lSystem.run(5, random);
-//         SDF sdf = null;
-//
-//         for (char c : lSystemString.toCharArray()) {
-//             switch (c) {
-//                 case '[':
-//                     savedPositions.addFirst(currentPos);
-//                     break;
-//                 case ']':
-//                     currentPos = savedPositions.removeFirst();
-//                     break;
-//                 case 'a':
-//                     Vec3f newPos = currentPos.add(direction.multiply(lineLength));
-//                     SDF line = new SDFLine(currentPos, newPos).radius(lineRadius);
-//                     sdf = (sdf == null) ? line : new SDFUnion().setSources(sdf, line);
-//                     currentPos = newPos;
-//                     break;
-//                 case 'x':
-//                     direction = direction.rotate(quatXP);
-//                     break;
-//                 case 'X':
-//                     direction = direction.rotate(quatXN);
-//                     break;
-//                 case 'z':
-//                     direction = direction.rotate(quatZP);
-//                     break;
-//                 case 'Z':
-//                     direction = direction.rotate(quatZN);
-//                     break;
-//                 default:
-//                     break;
-//             }
-//         }
-//
-//         sdf = new SDFAbstractShape().setSource(sdf).setBlock(Blocks.BLUE_ICE);
-//         sdf.fill(world, pos);
+        Vec3f currentPos = Vec3f.ZERO;
+        Vec3f direction = Vec3f.YP;
+        Deque<Vec3f> savedPositions = new ArrayDeque<>();
+        Map<Vec3f, Vec3f> triangleCandidates = new HashMap<>();
+
+        String lSystemString = lSystem.run(3, random);
+        SDF sdf = null;
+
+        for (char c : lSystemString.toCharArray()) {
+            switch (c) {
+                case '[' -> savedPositions.addFirst(currentPos);
+                case ']' -> currentPos = savedPositions.removeFirst();
+                case 't' -> triangleCandidates.put(currentPos, null);
+                case 'a' -> {
+                    float lineLength = MathHelper.nextFloat(random, lineLengthMin, lineLengthMax);
+                    Vec3f newPos = currentPos.add(direction.multiply(lineLength));
+                    SDF line = new SDFLine(currentPos, newPos).radius(lineRadius);
+                    sdf = (sdf == null) ? line : new SDFUnion().setSources(sdf, line);
+
+                    if (triangleCandidates.containsKey(currentPos)) {
+                        Vec3f trianglePoint = triangleCandidates.get(currentPos);
+                        if (trianglePoint == null) {
+                            triangleCandidates.put(currentPos, newPos);
+                        } else {
+                            BlockHelper.fillTriangle(world, currentPos.offset(pos), trianglePoint.offset(pos),
+                                    newPos.offset(pos), triangleThickness, Blocks.ICE);
+                            triangleCandidates.remove(currentPos);
+                        }
+                    }
+
+                    currentPos = newPos;
+                }
+                case 'x' -> direction = direction.rotate(quatXP);
+                case 'X' -> direction = direction.rotate(quatXN);
+                case 'z' -> direction = direction.rotate(quatZP);
+                case 'Z' -> direction = direction.rotate(quatZN);
+            }
+        }
+
+        sdf = new SDFAbstractShape().setSource(sdf).setBlock(Blocks.BLUE_ICE);
+        sdf.fill(world, pos);
     }
 }

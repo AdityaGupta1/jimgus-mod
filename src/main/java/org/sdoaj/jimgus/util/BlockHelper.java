@@ -95,6 +95,10 @@ public class BlockHelper {
         Vec3f edge3 = pos1.subtract(pos3);
         Vec3f normal = edge1.cross(edge2).normalize();
 
+        if (edge1.equalsEpsilon(Vec3f.ZERO) || edge2.equalsEpsilon(Vec3f.ZERO) || edge3.equalsEpsilon(Vec3f.ZERO)) {
+            return;
+        }
+
         List<Plane> planes = new ArrayList<>();
         planes.add(new Plane(pos1.add(normal.multiply(thicknessRadius)), normal));
         planes.add(new Plane(pos1.subtract(normal.multiply(thicknessRadius)), normal.multiply(-1)));

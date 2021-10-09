@@ -61,6 +61,10 @@ public class Vec3f {
         return new Vec3f(this.x + dx, this.y + dy, this.z + dz);
     }
 
+    public Vec3f offset(BlockPos pos) {
+        return this.offset(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public Vec3f multiply(float c) {
         return new Vec3f(this.x * c, this.y * c, this.z * c);
     }
