@@ -69,7 +69,7 @@ public abstract class SDF {
                     BlockPos posLocal = center.relative(direction);
                     BlockPos posWorld = posLocal.offset(start);
 
-                    if (!done.contains(posLocal) && this.distance(posLocal) < 0) {
+                    if (!done.contains(posLocal) && this.distance(posLocal) <= 0) {
                         if (ignoreCanReplace || canReplace.test(world.getBlockState(posWorld))) {
                             blocks.put(posWorld, getBlockState(posWorld));
                             add.add(posLocal);
