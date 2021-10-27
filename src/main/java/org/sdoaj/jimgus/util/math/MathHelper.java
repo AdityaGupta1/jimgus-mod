@@ -17,6 +17,10 @@ public class MathHelper {
         return Math.min(Math.max(x, min), max);
     }
 
+    public static float fract(float x) {
+        return x - (float) Math.floor(x);
+    }
+
     public static boolean isInRange(float v, float min, float max) {
         return isInRange(v, min, max, true);
     }

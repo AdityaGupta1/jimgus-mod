@@ -1,5 +1,6 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
+import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
@@ -85,6 +86,23 @@ public class SDFLine extends SDFPrimitive {
         float proj = pointPos.dot(vecLine) / length;
         float ratio = proj / length;
 
+        float distanceStart;
+        float distanceEnd;
+
+        if (capStart) {
+            distanceStart = pos.distance(pos1) - rStart;
+        } else {
+            BlockHelper.Plane plane = new BlockHelper.Plane(pos1, pos2.subtract(pos1).normalize());
+            distanceStart = -plane.distanceToPoint(pos);
+        }
+
+        if (capEnd) {
+            distanceEnd = pos.distance(pos2) - rEnd;
+        } else {
+            BlockHelper.Plane plane = new BlockHelper.Plane(pos2, pos1.subtract(pos2).normalize());
+            distanceEnd = -plane.distanceToPoint(pos);
+        }
+
         if (ratio < 0) {
             return capStart ? pos.distance(pos1) - rStart : 0; // 0 is not technically correct but it works
         } else if (ratio > 1) {
@@ -94,7 +112,7 @@ public class SDFLine extends SDFPrimitive {
         ratio = MathHelper.clamp(ratio, 0, 1);
         Vec3f pointLine = vecLine.normalize().multiply(proj); // point on the line
         Vec3f vecPointPos = pointPos.subtract(pointLine); // vector from pointLine to pointPos
-        float distance = vecPointPos.length();
-        return distance - this.getRadius(ratio);
+        float distanceRadius = vecPointPos.length() - this.getRadius(ratio);
+        return Math.min(distanceRadius, Math.min(distanceStart, distanceEnd));
     }
 }

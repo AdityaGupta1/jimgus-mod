@@ -50,18 +50,21 @@ public class BlockHelper {
         }
     }
 
-    private static class Plane {
+    public static class Plane {
         private final Vec3f point;
         private final Vec3f normal;
 
-        Plane(Vec3f point, Vec3f normal) {
+        public Plane(Vec3f point, Vec3f normal) {
             this.point = point;
             this.normal = normal;
         }
 
-        boolean isPointInFront(Vec3f pos) {
-            Vec3f planeToPos = pos.subtract(this.point); // point on plane to point in space
-            return planeToPos.dot(normal) > 0;
+        public float distanceToPoint(Vec3f pos) {
+            return this.normal.dot(pos.subtract(this.point));
+        }
+
+        public boolean isPointInFront(Vec3f pos) {
+            return distanceToPoint(pos) > 0;
         }
     }
 

@@ -5,25 +5,18 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import org.sdoaj.jimgus.util.BlockHelper;
-import org.sdoaj.jimgus.util.Util;
 import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.sdf.SDF;
-import org.sdoaj.jimgus.util.sdf.operators.SDFDisplacement;
 import org.sdoaj.jimgus.util.sdf.operators.SDFSubtraction;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
-import org.sdoaj.jimgus.util.sdf.primitives.SDFAbstractShape;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFBox;
-import org.sdoaj.jimgus.util.sdf.primitives.SDFNgonPrism;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {

@@ -4,7 +4,7 @@ import org.sdoaj.jimgus.util.math.Vec3f;
 
 import java.util.function.Function;
 
-// doesn't really work with some booleans and any SDFs that aren't linear (e.g. SDFLine with no caps)
+// doesn't really work with some booleans and any SDFs that aren't linear
 public class SDFDisplacement extends SDFUnary {
     // negative values expand the shape, positive values shrink the shape
     private Function<Vec3f, Float> displacement;
