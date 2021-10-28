@@ -79,6 +79,10 @@ public class SDFLine extends SDFPrimitive {
         return this.radius.apply(delta) * this.radiusMultiplier;
     }
 
+    protected float getDistanceRadius(Vec3f vecPointPos, float ratio) {
+        return vecPointPos.length() - this.getRadius(MathHelper.clamp(ratio, 0, 1));
+    }
+
     /*
      NOTE: This is probably somewhat incorrect when compared to the actual solution but it allows
            for the various customization options that I need.
@@ -94,7 +98,7 @@ public class SDFLine extends SDFPrimitive {
 
         Vec3f pointLine = vecLine.normalize().multiply(proj); // point on the line
         Vec3f vecPointPos = pointPos.subtract(pointLine); // vector from pointLine to pointPos
-        float distanceRadius = vecPointPos.length() - this.getRadius(MathHelper.clamp(ratio, 0, 1));
+        float distanceRadius = getDistanceRadius(vecPointPos, ratio);
         float distanceStart = -ratio * length;
         float distanceEnd = (ratio - 1) * length;
 

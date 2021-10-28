@@ -1,6 +1,5 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
-import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 public class SDFNgonPrism extends SDFCylinder {
@@ -27,21 +26,32 @@ public class SDFNgonPrism extends SDFCylinder {
     }
 
     @Override
-    public float distance(Vec3f pos) {
-        Vec3f pointPos = pos.subtract(pos1);
-        float ratio = pointPos.y / length;
-
-        Vec3f vecPointPos = pointPos.multiply(new Vec3f(1, 0, 1));
+    protected float getDistanceRadius(Vec3f vecPointPos, float ratio) {
         float distance = vecPointPos.length();
         float angle = (distance == 0) ? 0 : (vecPointPos.angleTo(Vec3f.XP) - rotation + (float) (2 * Math.PI));
-
-        if (!MathHelper.isInRange(ratio, 0, 1)) {
-            return 0; // not technically correct but it works
-        }
 
         float r = this.getRadius(ratio);
         float p = (float) (Math.PI / sides);
         r *= (Math.cos(p) / Math.cos(p - (angle % (2 * p)))); // https://www.youtube.com/watch?v=OG9olLlKB8Q (simplified)
         return distance - r;
     }
+
+//    @Override
+//    public float distance(Vec3f pos) {
+//        Vec3f pointPos = pos.subtract(pos1);
+//        float ratio = pointPos.y / length;
+//
+//        Vec3f vecPointPos = pointPos.multiply(new Vec3f(1, 0, 1));
+//        float distance = vecPointPos.length();
+//        float angle = (distance == 0) ? 0 : (vecPointPos.angleTo(Vec3f.XP) - rotation + (float) (2 * Math.PI));
+//
+//        if (!MathHelper.isInRange(ratio, 0, 1)) {
+//            return -1; // not technically correct but it works
+//        }
+//
+//        float r = this.getRadius(ratio);
+//        float p = (float) (Math.PI / sides);
+//        r *= (Math.cos(p) / Math.cos(p - (angle % (2 * p)))); // https://www.youtube.com/watch?v=OG9olLlKB8Q (simplified)
+//        return distance - r;
+//    }
 }

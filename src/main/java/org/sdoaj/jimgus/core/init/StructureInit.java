@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.world.structure.feature.BigMushroomStructureFeature;
+import org.sdoaj.jimgus.world.structure.feature.FallenMushroomLogStructureFeature;
 import org.sdoaj.jimgus.world.structure.feature.IceFeatherStructureFeature;
 
 import java.util.HashMap;
@@ -26,9 +27,11 @@ import java.util.Map;
 public class StructureInit {
     public static final StructureFeature<NoneFeatureConfiguration> BIG_MUSHROOM = new BigMushroomStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> ICE_FEATHER = new IceFeatherStructureFeature();
+    public static final StructureFeature<NoneFeatureConfiguration> FALLEN_MUSHROOM_LOG = new FallenMushroomLogStructureFeature();
 
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BIG_MUSHROOM = BIG_MUSHROOM.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_ICE_FEATHER = ICE_FEATHER.configured(FeatureConfiguration.NONE);
+    public static final ConfiguredStructureFeature<?, ?> CONFIGURED_FALLEN_MUSHROOM_LOG = FALLEN_MUSHROOM_LOG.configured(FeatureConfiguration.NONE);
 
     @SubscribeEvent
     public static void onRegisterStructures(RegistryEvent.Register<StructureFeature<?>> event) {
@@ -36,11 +39,14 @@ public class StructureInit {
 
         Jimgus.register(registry, BIG_MUSHROOM, "big_mushroom_structure");
         Jimgus.register(registry, ICE_FEATHER, "ice_feather_structure");
+        Jimgus.register(registry, FALLEN_MUSHROOM_LOG, "fallen_mushroom_log_structure");
 
         setupStructure(BIG_MUSHROOM, CONFIGURED_BIG_MUSHROOM,
                 new StructureFeatureConfiguration(12, 4, 5552345), false);
         setupStructure(ICE_FEATHER, CONFIGURED_ICE_FEATHER,
                 new StructureFeatureConfiguration(2, 0, 5552345), false);
+        setupStructure(FALLEN_MUSHROOM_LOG, CONFIGURED_FALLEN_MUSHROOM_LOG,
+                new StructureFeatureConfiguration(4, 2, 5552345), false);
 
         StructurePieceInit.registerPieces();
     }

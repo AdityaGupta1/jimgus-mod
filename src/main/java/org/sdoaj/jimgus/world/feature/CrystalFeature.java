@@ -20,9 +20,9 @@ import java.util.function.UnaryOperator;
 public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
     private static final Block[] blocks = {Blocks.LIME_STAINED_GLASS, Blocks.MAGENTA_STAINED_GLASS, Blocks.LIGHT_BLUE_STAINED_GLASS};
 
-    private static final float coneStart = 0.8f;
-    private static final float coneN = 1 / (1 - coneStart);
-    private static final UnaryOperator<Float> crystalRadius = delta -> {
+    static final float coneStart = 0.8f;
+    static final float coneN = 1 / (1 - coneStart);
+    static final UnaryOperator<Float> crystalRadius = delta -> {
         if (delta <= coneStart) {
             return 1f;
         } else {
