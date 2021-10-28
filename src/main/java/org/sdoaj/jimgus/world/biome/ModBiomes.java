@@ -233,13 +233,6 @@ public class ModBiomes {
                 = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.GRASS);
         addDefaultFeatures(generationSettingsBuilder);
 
-//        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-//                FeatureInit.MUSHROOM.configured(FeatureConfiguration.NONE)
-//                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(1));
-//        generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-//                FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
-//                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(5));
-
         generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_FALLEN_MUSHROOM_LOG);
 
         return new Biome.BiomeBuilder()
