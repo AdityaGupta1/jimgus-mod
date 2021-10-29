@@ -29,7 +29,6 @@ public abstract class SDF {
         return this;
     }
 
-    // negative inside, positive outside
     public final float distance(BlockPos pos) {
         return distance(new Vec3f(pos));
     }
@@ -38,8 +37,11 @@ public abstract class SDF {
         return distance(new Vec3f(x, y, z));
     }
 
+    // local pos
+    // negative inside, positive outside
     public abstract float distance(Vec3f pos);
 
+    // local pos
     public abstract BlockState getBlockState(BlockPos pos);
 
     public final void fill(LevelAccessor world, BlockPos start) {
@@ -60,7 +62,7 @@ public abstract class SDF {
         ends.add(origin);
         done.add(origin);
         if (ignoreCanReplace || canReplace.test(world.getBlockState(start))) {
-            blocks.put(start, getBlockState(start));
+            blocks.put(start, getBlockState(BlockPos.ZERO));
         }
 
         while (!ends.isEmpty()) {
@@ -71,7 +73,7 @@ public abstract class SDF {
 
                     if (!done.contains(posLocal) && this.distance(posLocal) <= 0) {
                         if (ignoreCanReplace || canReplace.test(world.getBlockState(posWorld))) {
-                            blocks.put(posWorld, getBlockState(posWorld));
+                            blocks.put(posWorld, getBlockState(posLocal));
                             add.add(posLocal);
                         }
                     }

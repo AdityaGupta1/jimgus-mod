@@ -3,24 +3,25 @@ package org.sdoaj.jimgus.world.structure.feature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 import org.sdoaj.jimgus.Jimgus;
-import org.sdoaj.jimgus.core.init.BlockInit;
 import org.sdoaj.jimgus.util.math.MathHelper;
-import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
+import org.sdoaj.jimgus.util.sdf.operators.SDFDisplacement;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
-import org.sdoaj.jimgus.world.feature.MushroomFeature;
 import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
 import org.sdoaj.jimgus.world.structure.StructureWorld;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class FallenMushroomLogStructureFeature extends AbstractStructureFeature {
+    private final PerlinNoise smallNoise = new PerlinNoise(new WorldgenRandom(23192309L), IntStream.range(-2, 0));
+    private final PerlinNoise capsNoise = new PerlinNoise(new WorldgenRandom(10923109310L), IntStream.range(-2, 0));
+
     @Override
     public GenerationStep.Decoration step() {
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
@@ -36,8 +37,31 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
         float radius = MathHelper.nextFloat(random, 3, 5);
         float length = MathHelper.nextFloat(random, 32, 48);
 
-        SDF log = new SDFCylinder(length, true).radius(radius)
-                .setBlock(Blocks.OAK_WOOD.defaultBlockState());
+        SDF log = new SDFCylinder(length, true).radius(radius).setBlock(blockPos -> {
+            if (new Vec3f(blockPos.getX(), 0, blockPos.getZ()).length() < radius - 1.5f) {
+                return Blocks.STRIPPED_OAK_WOOD.defaultBlockState();
+            } else {
+                return Blocks.OAK_WOOD.defaultBlockState();
+            }
+        });
+
+        log = new SDFDisplacement().setDisplacement(vec -> (float) smallNoise.getValue(vec.x, vec.y, vec.z))
+                .setSource(log);
+        log = new SDFDisplacement().setDisplacement(vec -> {
+            // too close to center of log along log axis
+            if (Math.abs(vec.y) < (length / 2) - 1) {
+                return 0f;
+            }
+
+            // outside radius of log
+            if (new Vec3f(vec.x, 0, vec.z).length() > radius) {
+                return 0f;
+            }
+
+            float noise = (float) capsNoise.getValue(vec.x, vec.y, vec.z);
+            return noise * 9;
+        }).setSource(log);
+
         log = new SDFTransform().rotate(1, 0, 0, MathHelper.toRadians(90))
                 .setSource(log);
         log = new SDFTransform().rotate(0, 1, 0, MathHelper.toRadians(MathHelper.nextFloat(random, 360)))
