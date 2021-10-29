@@ -21,11 +21,11 @@ import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
 import org.sdoaj.jimgus.world.structure.StructureWorld;
 
 import java.util.Random;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
-public class FallenMushroomLogStructureFeature extends AbstractStructureFeature {
-    private final PerlinNoise smallNoise = new PerlinNoise(new WorldgenRandom(23192309L), IntStream.range(-2, 0));
-    private final PerlinNoise capsNoise = new PerlinNoise(new WorldgenRandom(10923109310L), IntStream.range(-2, 0));
+public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
+    private final PerlinNoise smallNoise = new PerlinNoise(new WorldgenRandom(579812031L), IntStream.range(-2, 0));
 
     @Override
     public GenerationStep.Decoration step() {
@@ -34,59 +34,47 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
 
     @Override
     public String getFeatureName() {
-        return Jimgus.MODID + ":fallen_mushroom_log_structure";
+        return Jimgus.MODID + ":leaf_sphere_tree_structure";
     }
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
-        float radius = MathHelper.nextFloat(random, 3, 5);
-        float length = MathHelper.nextFloat(random, 32, 48);
+        float radiusMultiplier = MathHelper.nextFloat(random, 3, 5);
+        float height = MathHelper.nextFloat(random, 120, 160);
 
-        SDF log = new SDFCylinder(length, true).radius(radius).setBlock(vec -> {
-            if (vec.multiply(new Vec3f(1, 0, 1)).length() < radius - 1.5f) {
-                return Blocks.STRIPPED_OAK_WOOD.defaultBlockState();
-            } else {
-                return Blocks.OAK_WOOD.defaultBlockState();
-            }
-        });
+        UnaryOperator<Float> trunkRadius = x -> (float) ((0.7 / Math.pow(x + 0.1, 0.5) + (0.25 * x)));
+        SDFCylinder logCylinder = new SDFCylinder(height, false);
+
+        SDF log = logCylinder.radius(trunkRadius)
+                .radiusMultiplier(radiusMultiplier)
+                .setBlock(Blocks.OAK_WOOD.defaultBlockState());
 
         log = new SDFDisplacement().setDisplacement(vec -> (float) smallNoise.getValue(vec.x, vec.y, vec.z))
                 .setSource(log);
-        log = new SDFDisplacement().setDisplacement(vec -> {
-            // too close to center of log along log axis
-            if (Math.abs(vec.y) < (length / 2) - 1) {
-                return 0f;
-            }
-
-            // outside radius of log
-            if (new Vec3f(vec.x, 0, vec.z).length() > radius) {
-                return 0f;
-            }
-
-            float noise = (float) capsNoise.getValue(vec.x, vec.y, vec.z);
-            return noise * 9;
-        }).setSource(log);
-
 
         SDF mushrooms = null;
-        int numMushroomGroups = random.nextInt(3);
+        int numMushroomGroups = MathHelper.nextInt(random, 2, 6);
         for (int i = 0; i < numMushroomGroups; i++) {
-            float lengthRatio = MathHelper.nextFloat(random, 0.1f, 0.75f);
-            float angle = MathHelper.nextFloatAbs(random, MathHelper.radians(40));
+            float heightRatio = MathHelper.nextFloat(random, 0.1f, 0.75f);
+            float angle = MathHelper.nextFloat(random, MathHelper.radians(360));
 
             boolean directionBoolean = random.nextBoolean();
             int direction = directionBoolean ? 1 : -1;
             if (directionBoolean) {
-                lengthRatio = 1 - lengthRatio;
+                heightRatio = 1 - heightRatio;
             }
 
-            Vec3f mushroomPos = new Vec3f(0, (lengthRatio - 0.5f) * length, radius - 0.5f);
-            mushroomPos = mushroomPos.rotate(new Quaternion(Vector3f.YP, angle, false));
+            Quaternion rotate = new Quaternion(Vector3f.YP, angle, false);
+            float mushroomHeight = heightRatio * height;
 
             Block mushroomBlock = random.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK;
 
             int numMushrooms = MathHelper.nextInt(random, 4, 7);
             for (int j = 0; j < numMushrooms; j++) {
+                Vec3f mushroomPos = new Vec3f(0, mushroomHeight,
+                        logCylinder.getRadius(mushroomHeight / height) - 0.5f);
+                mushroomPos = mushroomPos.rotate(rotate);
+
                 float mushroomThickness = MathHelper.nextFloat(random, 0.7f, 1.0f);
                 float mushroomRadius = MathHelper.nextFloat(random, 2.2f, 2.8f);
                 SDF mushroom = new SDFCylinder(mushroomThickness, true).radius(mushroomRadius)
@@ -97,7 +85,7 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
                 mushroom = new SDFTransform().translate(randomMushroomPos).setSource(mushroom);
 
                 mushrooms = (mushrooms == null) ? mushroom : new SDFUnion().setSources(mushrooms, mushroom);
-                mushroomPos = mushroomPos.offset(0, direction * MathHelper.nextFloat(random, 1.8f, 2.1f), 0);
+                mushroomHeight += direction * MathHelper.nextFloat(random, 1.8f, 2.1f);
             }
         }
 
@@ -105,15 +93,6 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
             log = new SDFAdd().setSources(log, mushrooms);
         }
 
-        // log aligned with Z axis
-        log = new SDFTransform().rotate(1, 0, 0, MathHelper.radians(90))
-                .setSource(log);
-
-        // log rotated randomly around Y axis
-        log = new SDFTransform().rotate(0, 1, 0, MathHelper.radians(MathHelper.nextFloat(random, 360)))
-                .setSource(log);
-
-        BlockPos logCenter = pos.above(Math.round(radius) - 2);
-        log.fill(world, logCenter);
+        log.fill(world, pos);
     }
 }

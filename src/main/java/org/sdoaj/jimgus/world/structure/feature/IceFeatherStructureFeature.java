@@ -46,7 +46,7 @@ public class IceFeatherStructureFeature extends AbstractStructureFeature {
 
     private static final float lineLengthMin = 15f;
     private static final float lineLengthMax = 22f;
-    private static final float turnAngle = MathHelper.toRadians(22f);
+    private static final float turnAngle = MathHelper.radians(22f);
     private static final float lineRadius = 1.3f;
     private static final float triangleThickness = 1.8f;
 

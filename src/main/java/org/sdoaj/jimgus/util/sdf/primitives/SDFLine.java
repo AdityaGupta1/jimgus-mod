@@ -75,7 +75,7 @@ public class SDFLine extends SDFPrimitive {
         return this;
     }
 
-    protected final float getRadius(float delta) {
+    public final float getRadius(float delta) {
         return this.radius.apply(delta) * this.radiusMultiplier;
     }
 

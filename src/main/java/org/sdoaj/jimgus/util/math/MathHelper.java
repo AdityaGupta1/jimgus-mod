@@ -85,11 +85,11 @@ public class MathHelper {
         return min <= c && c < max;
     }
 
-    public static float toRadians(float degrees) {
+    public static float radians(float degrees) {
         return degrees / 180 * PI;
     }
 
-    public static float toDegrees(float radians) {
+    public static float degrees(float radians) {
         return radians / PI * 180;
     }
 

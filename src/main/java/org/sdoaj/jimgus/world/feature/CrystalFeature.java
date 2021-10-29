@@ -48,14 +48,14 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
         SDF crystal = new SDFNgonPrism(MathHelper.nextInt(random, 20, 25)).sides(6).rotate(random.nextFloat() * 2 * MathHelper.PI)
                 .radius(crystalRadius).radiusMultiplier(4.5f).setBlock(crystalBlock);
         crystal = new SDFTransform().rotate(MathHelper.nextFloatOne(random), 0, MathHelper.nextFloatOne(random),
-                MathHelper.nextFloat(random, 0, MathHelper.toRadians(25))).setSource(crystal);
+                MathHelper.nextFloat(random, 0, MathHelper.radians(25))).setSource(crystal);
 
         int extraCrystals = MathHelper.nextInt(random, 3, 6);
         for (int i = 0; i < extraCrystals; i++) {
             SDF extraCrystal = new SDFNgonPrism(MathHelper.nextFloat(random, 10, 15)).sides(6)
                     .radius(crystalRadius).radiusMultiplier(2.5f).setBlock(crystalBlock);
             extraCrystal = new SDFTransform().rotate(MathHelper.nextFloatOne(random), 0, MathHelper.nextFloatOne(random),
-                    MathHelper.nextFloat(random, MathHelper.toRadians(30), MathHelper.toRadians(65)))
+                    MathHelper.nextFloat(random, MathHelper.radians(30), MathHelper.radians(65)))
                     .setSource(extraCrystal);
             crystal = new SDFUnion().setSourceA(crystal).setSourceB(extraCrystal);
         }

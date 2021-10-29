@@ -234,6 +234,7 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_FALLEN_MUSHROOM_LOG);
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_LEAF_SPHERE_TREE);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
