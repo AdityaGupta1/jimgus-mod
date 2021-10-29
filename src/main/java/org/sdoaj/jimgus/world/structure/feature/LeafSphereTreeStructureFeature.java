@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.util.math.MathHelper;
+import org.sdoaj.jimgus.util.math.SplineHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.operators.SDFAdd;
@@ -20,6 +21,8 @@ import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
 import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
 import org.sdoaj.jimgus.world.structure.StructureWorld;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
@@ -39,6 +42,9 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
+        // main log
+        // ========================================================
+
         float radiusMultiplier = MathHelper.nextFloat(random, 3, 5);
         float height = MathHelper.nextFloat(random, 120, 160);
 
@@ -52,11 +58,14 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
         log = new SDFDisplacement().setDisplacement(vec -> (float) smallNoise.getValue(vec.x, vec.y, vec.z))
                 .setSource(log);
 
+        // mushrooms
+        // ========================================================
+
         SDF mushrooms = null;
         int numMushroomGroups = MathHelper.nextInt(random, 2, 6);
         for (int i = 0; i < numMushroomGroups; i++) {
             float heightRatio = MathHelper.nextFloat(random, 0.1f, 0.75f);
-            float angle = MathHelper.nextFloat(random, MathHelper.radians(360));
+            float angle = MathHelper.nextFloat(random, MathHelper.PI2);
 
             boolean directionBoolean = random.nextBoolean();
             int direction = directionBoolean ? 1 : -1;
@@ -92,6 +101,52 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
         if (mushrooms != null) {
             log = new SDFAdd().setSources(log, mushrooms);
         }
+
+        // branches
+        // ========================================================
+
+        int numBigBranches = MathHelper.nextInt(random, 7, 12);
+        List<Float> bigBranchPositions = new ArrayList<>();
+        float bigBranchPosition = 0;
+        for (int i = 0; i < numBigBranches; i++) {
+            bigBranchPositions.add(bigBranchPosition += MathHelper.nextFloat(random, 1.0f, 2.0f));
+        }
+
+        float lastNonNormalizedBigBranchPosition = bigBranchPositions.get(numBigBranches - 1);
+        float bigBranchesHeightStart = MathHelper.nextFloat(random, 0.35f, 0.4f) * height;
+        float bigBranchesDeltaY = MathHelper.nextFloat(random, 0.55f, 0.6f) * height;
+        for (int i = 0; i < numBigBranches; i++) {
+            float bigBranchLocalHeightRatio = bigBranchPositions.get(i) / lastNonNormalizedBigBranchPosition;
+            float bigBranchHeight = (bigBranchLocalHeightRatio * bigBranchesDeltaY)
+                    + bigBranchesHeightStart;
+
+            int numActualBigBranches = MathHelper.nextInt(random, 2, 4);
+            float angle = MathHelper.nextFloat(random, MathHelper.PI2);
+            float angleOffset = MathHelper.PI2 / numActualBigBranches;
+            float bigBranchSizeMultiplier = MathHelper.lerp(bigBranchLocalHeightRatio, 1.0f, 0.6f);
+            for (int j = 0; j < numActualBigBranches; j++) {
+                float angleRandom = angle + MathHelper.nextFloatAbs(random, MathHelper.radians(10));
+                Vec3f angleVec = new Vec3f((float) Math.cos(angleRandom), 0, (float) Math.sin(angleRandom));
+
+                Vec3f bigBranchStartPos = new Vec3f(pos.getX(), pos.getY() + bigBranchHeight, pos.getZ())
+                        .add(angleVec.multiply(logCylinder.getRadius(bigBranchHeight / height)));
+                Vec3f bigBranchEndPos = angleVec.multiply(MathHelper.nextFloat(random, 40.0f, 48.0f) * bigBranchSizeMultiplier);
+
+                List<Vec3f> spline = SplineHelper.makeSpline(Vec3f.ZERO, bigBranchEndPos, 5);
+                SplineHelper.offsetPoints(spline, random::nextFloat, 2f, 4f, 2f, false, true);
+
+                SDF bigBranch = SplineHelper.SplineSDFBuilder.from(spline)
+                        .radius(x -> (2 - x))
+                        .radiusMultiplier(1.2f * bigBranchSizeMultiplier)
+                        .build()
+                        .setBlock(Blocks.OAK_WOOD.defaultBlockState());
+
+                bigBranch.fill(world, bigBranchStartPos.toBlockPos());
+                angle += angleOffset;
+            }
+        }
+
+        // TODO roots (probably using splines)
 
         log.fill(world, pos);
     }

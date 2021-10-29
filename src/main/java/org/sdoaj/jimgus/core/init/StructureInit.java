@@ -51,9 +51,9 @@ public class StructureInit {
         setupStructure(ICE_FEATHER, CONFIGURED_ICE_FEATHER,
                 new StructureFeatureConfiguration(2, 0, 13201203), false);
         setupStructure(FALLEN_MUSHROOM_LOG, CONFIGURED_FALLEN_MUSHROOM_LOG,
-                new StructureFeatureConfiguration(4, 2, 32312931), false);
+                new StructureFeatureConfiguration(4, 2, 5552345), false);
         setupStructure(LEAF_SPHERE_TREE, CONFIGURED_LEAF_SPHERE_TREE,
-                new StructureFeatureConfiguration(4, 2, 129301239), false);
+                new StructureFeatureConfiguration(6, 3, 34512363), false);
 
         StructurePieceInit.registerPieces();
     }

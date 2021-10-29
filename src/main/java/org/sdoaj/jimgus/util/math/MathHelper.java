@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class MathHelper {
     public static float PI = (float) Math.PI;
+    public static float PI2 = 2 * PI;
 
     public static float length(float x, float y) {
         return (float) Math.sqrt(x * x + y * y);
