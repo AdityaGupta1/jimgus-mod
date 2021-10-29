@@ -9,7 +9,7 @@ import java.util.function.Function;
 public class Vec3f {
     public final float x, y, z;
 
-    public static final float epsilon = 0.0001f;
+    public static final float EPSILON = 0.0001f;
 
     public static Vec3f ZERO = new Vec3f(0f, 0f, 0f);
     public static Vec3f XP = new Vec3f(1, 0, 0);
@@ -23,6 +23,10 @@ public class Vec3f {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vec3f(float v) {
+        this(v, v, v);
     }
 
     public Vec3f(BlockPos pos) {
@@ -167,7 +171,7 @@ public class Vec3f {
     }
 
     public boolean equalsEpsilon(Vec3f other) {
-        return equalsEpsilon(other, epsilon);
+        return equalsEpsilon(other, EPSILON);
     }
 
     public boolean equalsEpsilon(Vec3f other, float epsilon) {

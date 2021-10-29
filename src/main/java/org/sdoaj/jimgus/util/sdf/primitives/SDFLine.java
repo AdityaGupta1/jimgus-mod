@@ -79,22 +79,49 @@ public class SDFLine extends SDFPrimitive {
         return this.radius.apply(delta) * this.radiusMultiplier;
     }
 
+    protected float getDistanceRadius(Vec3f vecPointPos, float ratio) {
+        return vecPointPos.length() - this.getRadius(MathHelper.clamp(ratio, 0, 1));
+    }
+
+    /*
+     NOTE: This is probably somewhat incorrect when compared to the actual solution but it allows
+           for the various customization options that I need.
+
+           For example, it won't work properly if the radius changes significantly over a small distance
+           since it doesn't check for diagonal distance when checking distance from the radius.
+    */
     @Override
     public float distance(Vec3f pos) {
         Vec3f pointPos = pos.subtract(pos1);
         float proj = pointPos.dot(vecLine) / length;
         float ratio = proj / length;
 
-        if (ratio < 0) {
-            return capStart ? pos.distance(pos1) - rStart : 0; // 0 is not technically correct but it works
-        } else if (ratio > 1) {
-            return capEnd ? pos.distance(pos2) - rEnd : 0;
-        }
-
-        ratio = MathHelper.clamp(ratio, 0, 1);
         Vec3f pointLine = vecLine.normalize().multiply(proj); // point on the line
         Vec3f vecPointPos = pointPos.subtract(pointLine); // vector from pointLine to pointPos
-        float distance = vecPointPos.length();
-        return distance - this.getRadius(ratio);
+        float distanceRadius = getDistanceRadius(vecPointPos, ratio);
+        float distanceStart = -ratio * length;
+        float distanceEnd = (ratio - 1) * length;
+
+        if (distanceStart <= 0 && distanceEnd <= 0) { // within planes
+            if (distanceRadius <= 0) { // entirely inside
+                return Math.max(distanceRadius, Math.max(distanceStart, distanceEnd));
+            } else { // outside but within planes
+                return distanceRadius;
+            }
+        } else if (distanceStart > 0) { // outside start plane
+            if (capStart) {
+                return pos.distance(pos1) - this.rStart;
+            } else {
+                return new Vec3f(distanceStart, Math.max(distanceRadius, 0), 0).length();
+            }
+        } else if (distanceEnd > 0) { // outside end plane
+            if (capEnd) {
+                return pos.distance(pos2) - this.rEnd;
+            } else {
+                return new Vec3f(distanceEnd, Math.max(distanceRadius, 0), 0).length();
+            }
+        } else { // outside both planes (impossible)
+            throw new IllegalStateException();
+        }
     }
 }

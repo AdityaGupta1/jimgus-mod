@@ -27,6 +27,7 @@ public class BiomeInit {
     // public static final RegistryObject<Biome> NEON_GENESIS_BIOME = BIOMES.register("neon_genesis_biome", ModBiomes::neonGenesisBiome);
     public static final RegistryObject<Biome> CLOUD_ISLAND_BIOME = BIOMES.register("cloud_island_biome", ModBiomes::cloudIslandBiome);
     public static final RegistryObject<Biome> ICE_FEATHER_BIOME = BIOMES.register("ice_feather_biome", ModBiomes::iceFeatherBiome);
+    public static final RegistryObject<Biome> MUSHROOM_LOG_BIOME = BIOMES.register("mushroom_log_biome", ModBiomes::mushroomLogBiome);
 
     @SubscribeEvent
     public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
@@ -36,6 +37,7 @@ public class BiomeInit {
         // registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(CLOUD_ISLAND_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(ICE_FEATHER_BIOME.get(), BiomeType.ICY, Type.COLD, Type.SNOWY);
+        registerBiome(MUSHROOM_LOG_BIOME.get(), BiomeType.WARM, Type.FOREST, Type.MUSHROOM, Type.MAGICAL);
     }
 
     private static void registerBiome(Biome biome, BiomeType type, Type... types) {

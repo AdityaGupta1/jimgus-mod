@@ -1,6 +1,5 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
@@ -21,7 +20,7 @@ public class SDFSubtraction extends SDFBinary {
     }
 
     @Override
-    public BlockState getBlockState(BlockPos pos) {
+    public BlockState getBlockState(Vec3f pos) {
         return isBoolean ? this.sourceA.getBlockState(pos) : super.getBlockState(pos);
     }
 }

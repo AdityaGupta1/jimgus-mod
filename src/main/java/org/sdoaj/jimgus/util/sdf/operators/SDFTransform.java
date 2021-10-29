@@ -1,5 +1,7 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled
@@ -43,20 +45,19 @@ public class SDFTransform extends SDFUnary {
         return this;
     }
 
-    @Override
-    public float distance(Vec3f pos) {
-         // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
-         if (axis != null) {
-             float wx = axis.x;
-             float wy = axis.y;
-             float wz = axis.z;
+    private Vec3f transformPos(Vec3f pos) {
+        // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula (matrix multiplication expanded)
+        if (axis != null) {
+            float wx = axis.x;
+            float wy = axis.y;
+            float wz = axis.z;
 
-             float px = (cos + (wx * wx) * cosm) * pos.x + (-wz * sin + wx * wy * cosm) * pos.y + (wy * sin + wx * wz * cosm) * pos.z;
-             float py = (wz * sin + wx * wy * cosm) * pos.x + (cos + (wy * wy) * cosm) * pos.y + (-wx * sin + wy * wz * cosm) * pos.z;
-             float pz = (-wy * sin + wx * wz * cosm) * pos.x + (wx * sin + wy * wz * cosm) * pos.y + (cos + (wz * wz) * cosm) * pos.z;
+            float px = (cos + (wx * wx) * cosm) * pos.x + (-wz * sin + wx * wy * cosm) * pos.y + (wy * sin + wx * wz * cosm) * pos.z;
+            float py = (wz * sin + wx * wy * cosm) * pos.x + (cos + (wy * wy) * cosm) * pos.y + (-wx * sin + wy * wz * cosm) * pos.z;
+            float pz = (-wy * sin + wx * wz * cosm) * pos.x + (wx * sin + wy * wz * cosm) * pos.y + (cos + (wz * wz) * cosm) * pos.z;
 
-             pos = new Vec3f(px, py, pz);
-         }
+            pos = new Vec3f(px, py, pz);
+        }
 
         if (scale != null) {
             pos = pos.divide(scale);
@@ -66,6 +67,16 @@ public class SDFTransform extends SDFUnary {
             pos = pos.subtract(translation);
         }
 
-        return source.distance(pos);
+        return pos;
+    }
+
+    @Override
+    public float distance(Vec3f pos) {
+        return source.distance(transformPos(pos));
+    }
+
+    @Override
+    public BlockState getBlockState(Vec3f pos) {
+        return source.getBlockState(transformPos(pos));
     }
 }

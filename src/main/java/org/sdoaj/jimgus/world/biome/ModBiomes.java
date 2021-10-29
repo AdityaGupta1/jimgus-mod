@@ -68,8 +68,7 @@ public class ModBiomes {
                 FeatureInit.MINISHROOM.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).countRandom(5));
 
-        generationSettingsBuilder.addStructureStart(StructureInit.BIG_MUSHROOM
-                .configured(FeatureConfiguration.NONE));
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_BIG_MUSHROOM);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
@@ -205,8 +204,7 @@ public class ModBiomes {
                 FeatureInit.ICE_WIREFRAME_FEATURE.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(3));
 
-        generationSettingsBuilder.addStructureStart(StructureInit.ICE_FEATHER
-                .configured(FeatureConfiguration.NONE));
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_ICE_FEATHER);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.SNOW)
@@ -220,6 +218,36 @@ public class ModBiomes {
                         .waterColor(defaultWaterColor)
                         .waterFogColor(defaultWaterFogColor)
                         .skyColor(0x94A2B5)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
+    public static Biome mushroomLogBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.GRASS);
+        addDefaultFeatures(generationSettingsBuilder);
+
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_FALLEN_MUSHROOM_LOG);
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(Biome.BiomeCategory.FOREST)
+                .depth(0.2f)
+                .scale(0.1f)
+                .temperature(0.7f)
+                .downfall(0.5f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(12638463)
+                        .waterColor(defaultWaterColor)
+                        .waterFogColor(defaultWaterFogColor)
+                        .skyColor(0xCFE8E6)
+                        .grassColorOverride(0x48D95B)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())
