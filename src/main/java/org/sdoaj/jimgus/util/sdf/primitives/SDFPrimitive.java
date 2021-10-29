@@ -1,16 +1,16 @@
 package org.sdoaj.jimgus.util.sdf.primitives;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.sdoaj.jimgus.util.math.Vec3f;
 import org.sdoaj.jimgus.util.sdf.SDF;
 
 import java.util.function.Function;
 
 public abstract class SDFPrimitive extends SDF {
-    protected Function<BlockPos, BlockState> placerFunction;
+    protected Function<Vec3f, BlockState> placerFunction;
 
-    public SDFPrimitive setBlock(Function<BlockPos, BlockState> placerFunction) {
+    public SDFPrimitive setBlock(Function<Vec3f, BlockState> placerFunction) {
         this.placerFunction = placerFunction;
         return this;
     }
@@ -24,7 +24,7 @@ public abstract class SDFPrimitive extends SDF {
     }
 
     @Override
-    public BlockState getBlockState(BlockPos pos) {
+    public BlockState getBlockState(Vec3f pos) {
         return placerFunction.apply(pos);
     }
 }

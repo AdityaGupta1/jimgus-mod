@@ -76,7 +76,7 @@ public class SDFTransform extends SDFUnary {
     }
 
     @Override
-    public BlockState getBlockState(BlockPos pos) {
-        return source.getBlockState(transformPos(new Vec3f(pos)).toBlockPos());
+    public BlockState getBlockState(Vec3f pos) {
+        return source.getBlockState(transformPos(pos));
     }
 }

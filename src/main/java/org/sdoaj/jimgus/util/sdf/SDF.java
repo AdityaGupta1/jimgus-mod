@@ -41,8 +41,12 @@ public abstract class SDF {
     // negative inside, positive outside
     public abstract float distance(Vec3f pos);
 
+    public final BlockState getBlockState(BlockPos pos) {
+        return getBlockState(new Vec3f(pos));
+    }
+
     // local pos
-    public abstract BlockState getBlockState(BlockPos pos);
+    public abstract BlockState getBlockState(Vec3f pos);
 
     public final void fill(LevelAccessor world, BlockPos start) {
         this.fill(world, start, false);

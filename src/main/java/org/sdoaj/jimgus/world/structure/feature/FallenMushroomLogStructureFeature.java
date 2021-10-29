@@ -37,8 +37,8 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
         float radius = MathHelper.nextFloat(random, 3, 5);
         float length = MathHelper.nextFloat(random, 32, 48);
 
-        SDF log = new SDFCylinder(length, true).radius(radius).setBlock(blockPos -> {
-            if (new Vec3f(blockPos.getX(), 0, blockPos.getZ()).length() < radius - 1.5f) {
+        SDF log = new SDFCylinder(length, true).radius(radius).setBlock(vec -> {
+            if (vec.multiply(new Vec3f(1, 0, 1)).length() < radius - 1.5f) {
                 return Blocks.STRIPPED_OAK_WOOD.defaultBlockState();
             } else {
                 return Blocks.OAK_WOOD.defaultBlockState();
