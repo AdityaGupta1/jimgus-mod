@@ -69,7 +69,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
                 boolean isTooClose = false;
                 for (Map.Entry<Float, Float> entry : previousTendrils.entrySet()) {
                     float tPrev = entry.getKey();
-                    float anglePrev = entry.getKey();
+                    float anglePrev = entry.getValue();
 
                     if (Math.abs(t - tPrev) < 0.15f && MathHelper.angleBetween(tendrilAngle, anglePrev) < MathHelper.PI / 4) {
                         isTooClose = true;

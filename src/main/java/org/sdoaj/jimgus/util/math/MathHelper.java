@@ -97,7 +97,7 @@ public class MathHelper {
     // https://stackoverflow.com/questions/7570808/how-do-i-calculate-the-difference-of-two-angle-measures
     // both angles in radians
     public static float angleBetween(float angle1, float angle2) {
-        float phi = Math.abs(angle1 - angle2) % (2 * PI);
-        return phi > PI ? (2 * PI) - phi : phi;
+        float phi = Math.abs(angle1 - angle2) % PI2;
+        return phi > PI ? PI2 - phi : phi;
     }
 }
