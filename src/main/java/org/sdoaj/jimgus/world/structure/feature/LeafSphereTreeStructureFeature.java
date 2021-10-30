@@ -18,6 +18,7 @@ import org.sdoaj.jimgus.util.sdf.operators.SDFDisplacement;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
 import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFSphere;
 import org.sdoaj.jimgus.world.structure.AbstractStructureFeature;
 import org.sdoaj.jimgus.world.structure.StructureWorld;
 
@@ -102,7 +103,9 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
             log = new SDFAdd().setSources(log, mushrooms);
         }
 
-        // branches
+        log.fill(world, pos);
+
+        // branches and leaf spheres
         // ========================================================
 
         int numBigBranches = MathHelper.nextInt(random, 7, 12);
@@ -128,26 +131,40 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
                 float angleRandom = angle + MathHelper.nextFloatAbs(random, MathHelper.radians(10));
                 Vec3f angleVec = new Vec3f((float) Math.cos(angleRandom), 0, (float) Math.sin(angleRandom));
 
-                Vec3f bigBranchStartPos = new Vec3f(pos.getX(), pos.getY() + bigBranchHeight, pos.getZ())
+                Vec3f bigBranchWorldCenterPos = new Vec3f(pos.getX(),
+                        pos.getY() + bigBranchHeight + MathHelper.nextFloatAbs(random, 2.5f),
+                        pos.getZ());
+
+                Vec3f bigBranchWorldStartPos = bigBranchWorldCenterPos
                         .add(angleVec.multiply(logCylinder.getRadius(bigBranchHeight / height)));
-                Vec3f bigBranchEndPos = angleVec.multiply(MathHelper.nextFloat(random, 40.0f, 48.0f) * bigBranchSizeMultiplier);
+                Vec3f bigBranchLocalEndPos = angleVec.multiply(MathHelper.nextFloat(random, 40.0f, 48.0f) * bigBranchSizeMultiplier);
 
-                List<Vec3f> spline = SplineHelper.makeSpline(Vec3f.ZERO, bigBranchEndPos, 5);
-                SplineHelper.offsetPoints(spline, random::nextFloat, 2f, 4f, 2f, false, true);
+                List<Vec3f> bigBranchSpline = SplineHelper.makeSpline(Vec3f.ZERO, bigBranchLocalEndPos, 5);
+                SplineHelper.offsetPoints(bigBranchSpline, random::nextFloat, 2f, 4f, 2f, false, true);
 
-                SDF bigBranch = SplineHelper.SplineSDFBuilder.from(spline)
+                SDF bigBranch = SplineHelper.SplineSDFBuilder.from(bigBranchSpline)
                         .radius(x -> (2 - x))
                         .radiusMultiplier(1.2f * bigBranchSizeMultiplier)
                         .build()
                         .setBlock(Blocks.OAK_WOOD.defaultBlockState());
 
-                bigBranch.fill(world, bigBranchStartPos.toBlockPos());
+                bigBranch.fill(world, bigBranchWorldStartPos.toBlockPos());
                 angle += angleOffset;
+
+                int numLeafSpheres = (int) (MathHelper.nextFloat(random, 5, 11) * bigBranchSizeMultiplier);
+                for (int k = 0; k < numLeafSpheres; k++) {
+                    float leafSphereRadius = MathHelper.nextFloat(random, 3.5f, 5.0f);
+                    Vec3f leafSphereLocalPos = SplineHelper.getPointFromParameter(bigBranchSpline,
+                            MathHelper.nextFloat(random, 0.2f, 1f));
+                    leafSphereLocalPos = leafSphereLocalPos.offset(MathHelper.nextFloat(random, 4f),
+                            MathHelper.nextFloat(random, 4f), MathHelper.nextFloat(random, 4f));
+
+                    SDF leafSphere = new SDFSphere(leafSphereRadius).setBlock(Blocks.OAK_LEAVES);
+                    leafSphere.fill(world, bigBranchWorldStartPos.add(leafSphereLocalPos).toBlockPos());
+                }
             }
         }
 
         // TODO roots (probably using splines)
-
-        log.fill(world, pos);
     }
 }
