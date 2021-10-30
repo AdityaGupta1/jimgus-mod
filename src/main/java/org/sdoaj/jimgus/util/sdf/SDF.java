@@ -58,7 +58,6 @@ public abstract class SDF {
 
     // assumes the origin is always within the SDF
     private void fill(LevelAccessor world, BlockPos start, boolean ignoreCanReplace, BiConsumer<BlockPos, BlockState> placeFunction) {
-        Map<BlockPos, BlockState> blocks = new HashMap<>();
         Set<BlockPos> done = new HashSet<>();
         Set<BlockPos> ends = new HashSet<>();
         Set<BlockPos> add = new HashSet<>();
@@ -66,7 +65,7 @@ public abstract class SDF {
         ends.add(origin);
         done.add(origin);
         if (ignoreCanReplace || canReplace.test(world.getBlockState(start))) {
-            blocks.put(start, getBlockState(BlockPos.ZERO));
+            placeFunction.accept(start, getBlockState(BlockPos.ZERO));
         }
 
         while (!ends.isEmpty()) {
@@ -77,7 +76,7 @@ public abstract class SDF {
 
                     if (!done.contains(posLocal) && this.distance(posLocal) <= 0) {
                         if (ignoreCanReplace || canReplace.test(world.getBlockState(posWorld))) {
-                            blocks.put(posWorld, getBlockState(posLocal));
+                            placeFunction.accept(posWorld, getBlockState(posLocal));
                             add.add(posLocal);
                         }
                     }
@@ -85,13 +84,8 @@ public abstract class SDF {
             }
 
             done.addAll(ends);
-            ends.clear();
-            ends.addAll(add);
-            add.clear();
-        }
-
-        for (Map.Entry<BlockPos, BlockState> entry : blocks.entrySet()) {
-            placeFunction.accept(entry.getKey(), entry.getValue());
+            ends = add;
+            add = new HashSet<>();
         }
     }
 
