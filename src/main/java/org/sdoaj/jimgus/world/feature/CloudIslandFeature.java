@@ -65,14 +65,10 @@ public class CloudIslandFeature extends Feature<NoneFeatureConfiguration> {
             island = new SDFUnion().setSourceA(island).setSourceB(extraCloud);
         }
 
-//        float boxRadius = radius * 1.5f;
-//        SDF subtractionBox = new SDFBox(boxRadius).setBlock(Blocks.DIAMOND_BLOCK);
-//        subtractionBox = new SDFTransform().translate(0, boxRadius + 1.5f, 0).setSource(subtractionBox);
-//        island = new SDFSubtraction().setBoolean().setSourceA(island).setSourceB(subtractionBox);
         island = new SDFTransform().scale(1f, 0.7f, MathHelper.nextFloat(random, 0.5f, 0.8f)).setSource(island);
 
         island = new SDFDisplacement().setDisplacement(vec -> {
-            vec = vec.divide(5f);
+            vec = vec.divide(3f);
             return (float) cloudsNoise.getValue(vec.x, vec.y, vec.z);
         })
                 .setDisplacementMultiplier(10f)

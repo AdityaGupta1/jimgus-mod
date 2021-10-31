@@ -11,11 +11,15 @@ public class SDFLine extends SDFPrimitive {
     protected final Vec3f pos1;
     protected final Vec3f pos2;
 
+    private float sides = 0;
+    private UnaryOperator<Float> rotation = null;
+
     protected float rStart;
     protected float rEnd;
     protected boolean capStart = true;
     protected boolean capEnd = true;
     protected final Vec3f vecLine;
+    protected final Vec3f vecLinePerpendicular;
     protected final float length;
 
     public SDFLine(float x1, float y1, float z1, float x2, float y2, float z2) {
@@ -27,20 +31,19 @@ public class SDFLine extends SDFPrimitive {
         this.pos2 = pos2;
 
         this.vecLine = pos2.subtract(pos1);
+        Vec3f perpendicular = vecLine.cross(Vec3f.ZP).normalize();
+        // NOTE: might be kind of bad
+        this.vecLinePerpendicular = perpendicular.length() == 0 ? Vec3f.XP : perpendicular;
+
         this.length = vecLine.length();
     }
 
     public SDFLine radius(float radius) {
-        this.radius = delta -> radius;
-        this.rStart = this.rEnd = radius;
-        return this;
+        return this.radius(delta -> radius);
     }
 
     public SDFLine radius(float r1, float r2) {
-        this.radius = delta -> MathHelper.lerp(delta, r1, r2);
-        this.rStart = r1;
-        this.rEnd = r2;
-        return this;
+        return this.radius(delta -> MathHelper.lerp(delta, r1, r2));
     }
 
     public SDFLine radius(UnaryOperator<Float> radius) {
@@ -57,6 +60,24 @@ public class SDFLine extends SDFPrimitive {
 
     public SDFLine radiusMultiplier(float multiplier) {
         this.radiusMultiplier = multiplier;
+        return this;
+    }
+
+    public SDFLine sides(int sides) {
+        this.sides = sides;
+        return this;
+    }
+
+    public SDFLine rotation(float rotation) {
+        return this.rotation(delta -> rotation);
+    }
+
+    public SDFLine rotation(float rotation1, float rotation2) {
+        return this.rotation(delta -> MathHelper.lerp(delta, rotation1, rotation2));
+    }
+
+    public SDFLine rotation(UnaryOperator<Float> rotation) {
+        this.rotation = rotation;
         return this;
     }
 
@@ -80,7 +101,26 @@ public class SDFLine extends SDFPrimitive {
     }
 
     protected float getDistanceRadius(Vec3f vecPointPos, float ratio) {
-        return vecPointPos.length() - this.getRadius(MathHelper.clamp(ratio, 0, 1));
+        float length = vecPointPos.length();
+
+        if (sides == 0) {
+            return length - this.getRadius(MathHelper.clamp(ratio, 0, 1));
+        } else {
+            float angle;
+            if (length == 0) {
+                angle = 0;
+            } else {
+                angle = vecPointPos.angleTo(vecLinePerpendicular) + MathHelper.PI2;
+                if (rotation != null) {
+                    angle -= rotation.apply(ratio);
+                }
+            }
+
+            float r = this.getRadius(ratio);
+            float p = (float) (Math.PI / sides);
+            r *= (Math.cos(p) / Math.cos(p - (angle % (2 * p)))); // https://www.youtube.com/watch?v=OG9olLlKB8Q (simplified)
+            return length - r;
+        }
     }
 
     /*
