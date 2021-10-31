@@ -165,17 +165,19 @@ public class ModBiomes {
         BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
 
         BiomeGenerationSettings.Builder generationSettingsBuilder
-                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(basicBuilder(Blocks.WHITE_WOOL));
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.GRASS);
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 FeatureInit.CLOUD_ISLAND.configured(FeatureConfiguration.NONE)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE).rarity(3));
 
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_BEANSTALK);
+
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .biomeCategory(Biome.BiomeCategory.NONE)
-                .depth(0.05f)
+                .depth(0.08f)
                 .scale(0.2f)
                 .temperature(0.3f)
                 .downfall(0.5f)
@@ -184,6 +186,7 @@ public class ModBiomes {
                         .waterColor(defaultWaterColor)
                         .waterFogColor(defaultWaterFogColor)
                         .skyColor(0x98C3D6)
+                        .grassColorOverride(0x45B554)
                         .build())
                 .mobSpawnSettings(spawnSettingsBuilder.build())
                 .generationSettings(generationSettingsBuilder.build())
