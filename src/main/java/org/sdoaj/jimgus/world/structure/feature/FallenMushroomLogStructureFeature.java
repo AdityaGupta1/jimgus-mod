@@ -63,7 +63,7 @@ public class FallenMushroomLogStructureFeature extends AbstractStructureFeature 
                 return 0f;
             }
 
-            float noise = (float) capsNoise.getValue(vec.x, vec.y, vec.z);
+            float noise = (float) capsNoise.getValue(vec.x, vec.y / 3f, vec.z);
             return noise * 9;
         }).setSource(log);
 

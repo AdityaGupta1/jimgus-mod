@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
@@ -43,6 +44,8 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
+        pos = pos.below(3);
+
         // main log
         // ========================================================
 
@@ -128,12 +131,9 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
             float angleOffset = MathHelper.PI2 / numActualBigBranches;
             float bigBranchSizeMultiplier = MathHelper.lerp(bigBranchLocalHeightRatio, 1.0f, 0.6f);
             for (int j = 0; j < numActualBigBranches; j++) {
-                float angleRandom = angle + MathHelper.nextFloatAbs(random, MathHelper.radians(10));
-                Vec3f angleVec = new Vec3f((float) Math.cos(angleRandom), 0, (float) Math.sin(angleRandom));
+                Vec3f angleVec = Vec3f.fromAngleXZ(angle + MathHelper.nextFloatAbs(random, MathHelper.radians(10)));
 
-                Vec3f bigBranchWorldCenterPos = new Vec3f(pos.getX(),
-                        pos.getY() + bigBranchHeight + MathHelper.nextFloatAbs(random, 2.5f),
-                        pos.getZ());
+                Vec3f bigBranchWorldCenterPos = new Vec3f(pos).offset(0, bigBranchHeight + MathHelper.nextFloatAbs(random, 2.5f), 0);
 
                 Vec3f bigBranchWorldStartPos = bigBranchWorldCenterPos
                         .add(angleVec.multiply(logCylinder.getRadius(bigBranchHeight / height)));
@@ -143,7 +143,7 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
                 SplineHelper.offsetPoints(bigBranchSpline, random::nextFloat, 2f, 4f, 2f, false, true);
 
                 SDF bigBranch = SplineHelper.SplineSDFBuilder.from(bigBranchSpline)
-                        .radius(x -> (2 - x))
+                        .radius(2f, 1f)
                         .radiusMultiplier(1.2f * bigBranchSizeMultiplier)
                         .build()
                         .setBlock(Blocks.OAK_WOOD.defaultBlockState());
@@ -159,12 +159,38 @@ public class LeafSphereTreeStructureFeature extends AbstractStructureFeature {
                     leafSphereLocalPos = leafSphereLocalPos.offset(MathHelper.nextFloat(random, 4f),
                             MathHelper.nextFloat(random, 4f), MathHelper.nextFloat(random, 4f));
 
-                    SDF leafSphere = new SDFSphere(leafSphereRadius).setBlock(Blocks.OAK_LEAVES);
+                    SDF leafSphere = new SDFSphere(leafSphereRadius).setBlock(Blocks.OAK_LEAVES.defaultBlockState()
+                            .setValue(LeavesBlock.PERSISTENT, true));
                     leafSphere.fill(world, bigBranchWorldStartPos.add(leafSphereLocalPos).toBlockPos());
                 }
             }
         }
 
-        // TODO roots (probably using splines)
+        // roots
+        // ========================================================
+
+        int numRoots = MathHelper.nextInt(random, 4, 8);
+        for (int i = 0; i < numRoots; i++) {
+            Vec3f angleVec = Vec3f.fromAngleXZ(MathHelper.nextFloat(random, MathHelper.PI2));
+
+            float rootStartHeight = MathHelper.nextFloat(random, 1f, 2.5f);
+            Vec3f rootWorldCenterPos = new Vec3f(pos).offset(0, MathHelper.nextFloat(random, 4f, 7f), 0);
+
+            Vec3f rootWorldStartPos = rootWorldCenterPos
+                    .add(angleVec.multiply(logCylinder.getRadius(rootStartHeight / height) - 1.5f));
+            Vec3f rootLocalEndPos = angleVec.multiply(MathHelper.nextFloat(random, 11f, 14f))
+                    .offset(0, -MathHelper.nextFloat(random, 8f, 12f), 0);
+
+            List<Vec3f> rootSpline = SplineHelper.makeSpline(Vec3f.ZERO, rootLocalEndPos, 4);
+            SplineHelper.offsetPoints(rootSpline, random::nextFloat, 3f, 3f, 3f, false, true);
+
+            SDF root = SplineHelper.SplineSDFBuilder.from(rootSpline)
+                    .radius(4f, 1f)
+                    .radiusMultiplier(MathHelper.nextFloat(random, 0.8f, 1.2f))
+                    .build()
+                    .setBlock(Blocks.OAK_WOOD.defaultBlockState());
+
+            root.fill(world, rootWorldStartPos.toBlockPos());
+        }
     }
 }

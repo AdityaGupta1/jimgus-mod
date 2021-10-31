@@ -37,6 +37,10 @@ public class Vec3f {
         this(v.x(), v.y(), v.z());
     }
 
+    public static Vec3f fromAngleXZ(float radians) {
+        return new Vec3f((float) Math.cos(radians), 0, (float) Math.sin(radians));
+    }
+
     public BlockPos toBlockPos() {
         return new BlockPos(this.x, this.y, this.z);
     }

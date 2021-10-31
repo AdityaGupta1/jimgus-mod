@@ -40,7 +40,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
         float height = MathHelper.nextFloat(random, heightMin, heightMax);
         List<Vec3f> stemSpline = SplineHelper.makeSpline(0, 0, 0,
                 0, height, 0, 6);
-        SplineHelper.offsetPoints(stemSpline, () -> MathHelper.nextFloatOne(random), 10, 0, 10, false, true);
+        SplineHelper.offsetPoints(stemSpline, random::nextFloat, 10, 0, 10, false, true);
         stemSpline = SplineHelper.bezier(stemSpline, 14);
         SDF stem = SplineHelper.SplineSDFBuilder.from(stemSpline)
                 .radius(delta -> {
@@ -99,7 +99,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
             tendrilSpline.add(SplineHelper.getEndpoint(tendrilSpline)
                     .offset(0, MathHelper.nextFloat(random, 8, 12), 0)
                     .add(tendrilDirection.multiply(4.0f)));
-            SplineHelper.offsetPoints(tendrilSpline, () -> MathHelper.nextFloatOne(random), 4, 4, 4, false, true);
+            SplineHelper.offsetPoints(tendrilSpline, random::nextFloat, 4, 4, 4, false, true);
             tendrilSpline = SplineHelper.bezier(tendrilSpline, 8);
 
             SDF tendril = SplineHelper.SplineSDFBuilder.from(tendrilSpline).radius(5, 2).build().setBlock(BlockInit.TEST_BLOCK.get());

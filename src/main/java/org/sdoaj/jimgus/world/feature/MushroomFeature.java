@@ -38,7 +38,7 @@ public class MushroomFeature extends Feature<NoneFeatureConfiguration> {
         float height = MathHelper.nextFloat(random, heightMin, heightMax);
         List<Vec3f> stemSpline = SplineHelper.makeSpline(0, 0, 0,
                 0, height, 0, 4);
-        SplineHelper.offsetPoints(stemSpline, () -> MathHelper.nextFloatOne(random), 6, 0, 6, false, true);
+        SplineHelper.offsetPoints(stemSpline, random::nextFloat, 6, 0, 6, false, true);
         stemSpline = SplineHelper.bezier(stemSpline, 8);
         SDF stem = SplineHelper.SplineSDFBuilder.from(stemSpline)
                 .radius(delta -> {
