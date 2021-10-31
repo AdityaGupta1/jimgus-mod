@@ -8,6 +8,7 @@ import java.util.function.Function;
 public class SDFDisplacement extends SDFUnary {
     // negative values expand the shape, positive values shrink the shape
     private Function<Vec3f, Float> displacement;
+    private float displacementMultiplier = 1;
 
     public SDFDisplacement setDisplacement(float displacement) {
         return setDisplacement(pos -> displacement);
@@ -18,8 +19,13 @@ public class SDFDisplacement extends SDFUnary {
         return this;
     }
 
+    public SDFDisplacement setDisplacementMultiplier(float multiplier) {
+        this.displacementMultiplier = multiplier;
+        return this;
+    }
+
     @Override
     public float distance(Vec3f pos) {
-        return this.source.distance(pos) + displacement.apply(pos);
+        return this.source.distance(pos) + (displacement.apply(pos) * displacementMultiplier);
     }
 }
