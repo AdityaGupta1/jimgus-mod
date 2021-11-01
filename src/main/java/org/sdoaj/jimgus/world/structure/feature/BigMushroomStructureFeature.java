@@ -91,7 +91,7 @@ public class BigMushroomStructureFeature extends AbstractStructureFeature {
             previousTendrils.put(t, tendrilAngle);
 
             Vec3f tendrilBase = SplineHelper.getPointFromParameter(stemSpline, t);
-            Vec3f tendrilDirection = new Vec3f((float) Math.cos(tendrilAngle), 0, (float) Math.sin(tendrilAngle));
+            Vec3f tendrilDirection = Vec3f.fromAngleXZ(tendrilAngle);
             float tendrilLength = MathHelper.nextFloat(random, 30, 38);
 
             List<Vec3f> tendrilSpline = SplineHelper.makeSpline(Vec3f.ZERO,
