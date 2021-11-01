@@ -259,6 +259,37 @@ public class ModBiomes {
                 .build();
     }
 
+    public static Biome pepsiBiome() {
+        MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
+
+        BiomeGenerationSettings.Builder generationSettingsBuilder
+                = (new BiomeGenerationSettings.Builder()).surfaceBuilder(SurfaceBuilders.GRASS);
+        addDefaultFeatures(generationSettingsBuilder);
+
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_PEPSIMAN);
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_PEPSI_CAN);
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .biomeCategory(Biome.BiomeCategory.NONE)
+                .depth(0.2f)
+                .scale(0.1f)
+                .temperature(0.8f)
+                .downfall(0.2f)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .fogColor(12638463)
+                        .waterColor(0x974319)
+                        .waterFogColor(0x40180B)
+                        .skyColor(0xCFD0E8)
+                        .grassColorOverride(0x005CB4)
+                        .build())
+                .mobSpawnSettings(spawnSettingsBuilder.build())
+                .generationSettings(generationSettingsBuilder.build())
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .build();
+    }
+
     public static void addDefaultFeatures(BiomeGenerationSettings.Builder builder) {
         BiomeDefaultFeatures.addDefaultCarvers(builder);
         BiomeDefaultFeatures.addDefaultLakes(builder);

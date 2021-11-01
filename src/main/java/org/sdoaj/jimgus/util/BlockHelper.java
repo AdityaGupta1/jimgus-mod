@@ -50,24 +50,6 @@ public class BlockHelper {
         }
     }
 
-    public static class Plane {
-        private final Vec3f point;
-        private final Vec3f normal;
-
-        public Plane(Vec3f point, Vec3f normal) {
-            this.point = point;
-            this.normal = normal;
-        }
-
-        public float distanceToPoint(Vec3f pos) {
-            return this.normal.dot(pos.subtract(this.point));
-        }
-
-        public boolean isPointInFront(Vec3f pos) {
-            return distanceToPoint(pos) > 0;
-        }
-    }
-
     public static void fillTriangle(LevelAccessor world, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness, Block block) {
         fillTriangle(world, pos1, pos2, pos3, thickness, block.defaultBlockState());
     }
@@ -84,7 +66,7 @@ public class BlockHelper {
         fillTriangle((pos) -> world.setBlock(pos, state), pos1, pos2, pos3, thickness);
     }
 
-    // very bad implementation that checks every box in bounding volume
+    // kind of bad implementation that checks every box in bounding volume
     private static void fillTriangle(Consumer<BlockPos> placeFunction, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness) {
         float thicknessRadius = thickness / 2;
 
