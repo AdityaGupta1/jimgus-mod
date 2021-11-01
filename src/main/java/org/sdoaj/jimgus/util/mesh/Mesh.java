@@ -4,7 +4,6 @@ import org.sdoaj.jimgus.Jimgus;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +16,16 @@ public class Mesh {
 
     private Mesh() {}
 
-    public static Mesh fromOBJ(String name) throws IOException {
+    public static Mesh fromOBJ(String name) {
+        try {
+            return fromOBJInternal(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("file is broke: " + name);
+        }
+    }
+
+    private static Mesh fromOBJInternal(String name) throws IOException {
         String path = "assets/" + Jimgus.MODID + "/objs/" + name + ".obj";
         BufferedReader reader = new BufferedReader(new InputStreamReader(Mesh.class.getClassLoader()
                 .getResourceAsStream(path), StandardCharsets.UTF_8));
