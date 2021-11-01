@@ -119,7 +119,7 @@ public class Mesh {
         }
     }
 
-    private static final float triangleSidePadding = 0f;
+    private static final float triangleSidePadding = 0.5f;
 
     private void fillTriangle(StructureWorld world, Face face, BlockPos origin, float thickness, BlockState state, Function<Color, BlockState> stateFunction) {
         float thicknessRadius = thickness / 2;
@@ -182,15 +182,15 @@ public class Mesh {
                         contributions[1] = edge3.cross(planePos.subtract(pos1)).length();
                         contributions[2] = edge1.cross(planePos.subtract(pos2)).length();
 
-//                        float totalContribution = 0f;
-//                        float areaSign = Math.signum(area);
-//                        for (float contribution : contributions) {
-//                            if (Math.signum(contribution) == areaSign) {
-//                                totalContribution += contribution;
-//                            }
-//                        }
+                        float totalContribution = 0f;
+                        float areaSign = Math.signum(area);
+                        for (float contribution : contributions) {
+                            if (Math.signum(contribution) == areaSign) {
+                                totalContribution += contribution;
+                            }
+                        }
 
-                        float totalContribution = area;
+//                        float totalContribution = area;
                         for (int i = 0; i < 3; i++) {
                             contributions[i] /= totalContribution;
                         }
