@@ -26,9 +26,12 @@ public class PepsimanStructureFeature extends AbstractStructureFeature {
         Meshes.PEPSIMAN.fill(world, pos, 2f, color -> {
             boolean red = color.getRed() > 10;
             boolean blue = color.getBlue() > 10;
+            boolean green = color.getGreen() > 10;
 
             if (red && blue) {
                 return Blocks.IRON_BLOCK.defaultBlockState();
+            } else if (blue && green) {
+                return Blocks.BLUE_CONCRETE.defaultBlockState();
             } else if (red) {
                 return Blocks.RED_WOOL.defaultBlockState();
             } else if (blue) {

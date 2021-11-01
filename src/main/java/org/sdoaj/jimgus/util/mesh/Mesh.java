@@ -97,6 +97,8 @@ public class Mesh {
         return mesh;
     }
 
+    // TODO add options to rotate/scale when porting to C++
+
     public void fill(StructureWorld world, BlockPos origin, float thickness, Block block) {
         this.fill(world, origin, thickness, block.defaultBlockState());
     }
@@ -190,7 +192,6 @@ public class Mesh {
                             }
                         }
 
-//                        float totalContribution = area;
                         for (int i = 0; i < 3; i++) {
                             contributions[i] /= totalContribution;
                         }
