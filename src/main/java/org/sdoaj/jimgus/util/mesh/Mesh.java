@@ -28,6 +28,8 @@ public class Mesh {
 
     private Texture texture = null;
 
+    private float triangleSidePadding = 0f;
+
     private Mesh() {}
 
     public static Mesh fromOBJ(String name) {
@@ -97,6 +99,11 @@ public class Mesh {
         return mesh;
     }
 
+    public Mesh setTriangleSidePadding(float padding) {
+        this.triangleSidePadding = padding;
+        return this;
+    }
+
     // TODO add options to rotate/scale when porting to C++
 
     public void fill(StructureWorld world, BlockPos origin, float thickness, Block block) {
@@ -120,8 +127,6 @@ public class Mesh {
             this.fillTriangle(world, face, origin, thickness, null, stateFunction);
         }
     }
-
-    private static final float triangleSidePadding = 0.5f;
 
     private void fillTriangle(StructureWorld world, Face face, BlockPos origin, float thickness, BlockState state, Function<Color, BlockState> stateFunction) {
         float thicknessRadius = thickness / 2;
@@ -153,16 +158,17 @@ public class Mesh {
 
         Plane centerPlane = new Plane(pos1, normal);
 
-        for (int x = minPos.getX(); x < maxPos.getX(); x++) {
-            for (int y = minPos.getY(); y < maxPos.getY(); y++) {
-                for (int z = minPos.getZ(); z < maxPos.getZ(); z++) {
+        int paddingInt = (int) Math.ceil(this.triangleSidePadding);
+        for (int x = minPos.getX() - paddingInt; x < maxPos.getX() + paddingInt; x++) {
+            for (int y = minPos.getY() - paddingInt; y < maxPos.getY() + paddingInt; y++) {
+                for (int z = minPos.getZ() - paddingInt; z < maxPos.getZ() + paddingInt; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     Vec3f posF = new Vec3f(pos);
 
                     boolean isInPrism = true;
                     for (int i = 0; i < 5; i++) {
                         Plane plane = planes[i];
-                        if (plane.isPointInFront(posF, i <= 1 ? 0f : triangleSidePadding)) {
+                        if (plane.isPointInFront(posF, i <= 1 ? 0f : this.triangleSidePadding)) {
                             isInPrism = false;
                             break;
                         }

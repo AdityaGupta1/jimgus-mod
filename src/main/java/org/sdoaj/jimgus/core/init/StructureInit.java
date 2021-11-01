@@ -29,6 +29,7 @@ public class StructureInit {
     public static final StructureFeature<NoneFeatureConfiguration> LEAF_SPHERE_TREE = new LeafSphereTreeStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> BEANSTALK = new BeanstalkStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> PEPSIMAN = new PepsimanStructureFeature();
+    public static final StructureFeature<NoneFeatureConfiguration> PEPSI_CAN = new PepsiCanStructureFeature();
 
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BIG_MUSHROOM = BIG_MUSHROOM.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_ICE_FEATHER = ICE_FEATHER.configured(FeatureConfiguration.NONE);
@@ -36,6 +37,7 @@ public class StructureInit {
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LEAF_SPHERE_TREE = LEAF_SPHERE_TREE.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BEANSTALK = BEANSTALK.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_PEPSIMAN = PEPSIMAN.configured(FeatureConfiguration.NONE);
+    public static final ConfiguredStructureFeature<?, ?> CONFIGURED_PEPSI_CAN = PEPSI_CAN.configured(FeatureConfiguration.NONE);
 
     @SubscribeEvent
     public static void onRegisterStructures(RegistryEvent.Register<StructureFeature<?>> event) {
@@ -47,6 +49,7 @@ public class StructureInit {
         Jimgus.register(registry, LEAF_SPHERE_TREE, "leaf_sphere_tree_structure");
         Jimgus.register(registry, BEANSTALK, "beanstalk_structure");
         Jimgus.register(registry, PEPSIMAN, "pepsiman_structure");
+        Jimgus.register(registry, PEPSI_CAN, "pepsi_can_structure");
 
         // explanation of spacing, separation, and salt:
         // https://www.minecraftforum.net/forums/minecraft-java-edition/discussion/3042476-whats-the-best-way-to-customize-my-world-settings#c14
@@ -62,6 +65,8 @@ public class StructureInit {
                 new StructureFeatureConfiguration(7, 2, 24091209), false);
         setupStructure(PEPSIMAN, CONFIGURED_PEPSIMAN,
                 new StructureFeatureConfiguration(8, 3, 5820910), false);
+        setupStructure(PEPSI_CAN, CONFIGURED_PEPSI_CAN,
+                new StructureFeatureConfiguration(5, 2, 95498182), false);
 
         StructurePieceInit.registerPieces();
     }

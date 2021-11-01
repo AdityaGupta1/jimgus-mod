@@ -268,6 +268,7 @@ public class ModBiomes {
         addDefaultFeatures(generationSettingsBuilder);
 
         generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_PEPSIMAN);
+        generationSettingsBuilder.addStructureStart(StructureInit.CONFIGURED_PEPSI_CAN);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)

@@ -9,6 +9,10 @@ jimgus mod
 
 <!-- ![neon genesis biome](images/neon_genesis_biome.png) -->
 
-![cloud island biome](images/cloud_island_biome.png)
+![beanstalk biome](images/beanstalk_biome.png)
 
 ![ice feather biome](images/ice_feather_biome.png)
+
+![mushroom log biome](images/mushroom_log_biome.png)
+
+![pepsi biome](images/pepsi_biome.png)
