@@ -34,8 +34,6 @@ public class BeanstalkStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
-        // TODO try twisty beanstalk
-
         float height = MathHelper.nextFloat(random, 132, 164);
 
         Vec3f splineLocalEndPos = new Vec3f(0, height, 0);
@@ -75,6 +73,9 @@ public class BeanstalkStructureFeature extends AbstractStructureFeature {
             leaf = new SDFTransform().rotate(0, 1, 0, leafAngle).setSource(leaf);
             Vec3f leafLocalStartPos = Vec3f.fromAngleXZ(leafAngle + MathHelper.PI / 2f, beanstalkRadius.apply(leafHeightRatio))
                     .add(SplineHelper.getPointFromParameter(spline, leafHeightRatio));
+
+            leaf = new SDFTransform().rotate(random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                    MathHelper.nextFloatAbs(random, MathHelper.radians(20))).setSource(leaf);
 
             leaf.fill(world, pos.offset(leafLocalStartPos.toBlockPos()));
             leafHeightRatio += MathHelper.nextFloat(random, 0.03f, 0.05f);
