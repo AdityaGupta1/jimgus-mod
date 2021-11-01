@@ -22,4 +22,9 @@ public class Plane {
     public boolean isPointInFront(Vec3f pos, float padding) {
         return distanceToPoint(pos) > padding;
     }
+
+    public Vec3f project(Vec3f pos) {
+        Vec3f planeToPos = pos.subtract(this.point);
+        return planeToPos.subtract(planeToPos.proj(this.normal)).add(this.point);
+    }
 }

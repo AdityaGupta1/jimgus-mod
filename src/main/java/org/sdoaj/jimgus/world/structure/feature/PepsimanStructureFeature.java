@@ -23,6 +23,19 @@ public class PepsimanStructureFeature extends AbstractStructureFeature {
 
     @Override
     protected void fillStructureWorld(StructureWorld world, BlockPos pos, Random random) {
-        Meshes.PEPSIMAN.fill(world, pos, 2f, Blocks.IRON_BLOCK);
+        Meshes.PEPSIMAN.fill(world, pos, 2f, color -> {
+            boolean red = color.getRed() > 10;
+            boolean blue = color.getBlue() > 10;
+
+            if (red && blue) {
+                return Blocks.IRON_BLOCK.defaultBlockState();
+            } else if (red) {
+                return Blocks.RED_WOOL.defaultBlockState();
+            } else if (blue) {
+                return Blocks.BLUE_WOOL.defaultBlockState();
+            } else {
+                throw new IllegalStateException("bad color: " + color);
+            }
+        });
     }
 }
