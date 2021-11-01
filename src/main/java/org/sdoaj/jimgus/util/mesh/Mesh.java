@@ -1,7 +1,12 @@
 package org.sdoaj.jimgus.util.mesh;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.Jimgus;
+import org.sdoaj.jimgus.util.BlockHelper;
 import org.sdoaj.jimgus.util.math.Vec3f;
+import org.sdoaj.jimgus.world.structure.StructureWorld;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,5 +62,19 @@ public class Mesh {
 
         reader.close();
         return mesh;
+    }
+
+    public void fill(StructureWorld world, BlockPos start, float thickness, Block block) {
+        this.fill(world, start, thickness, block.defaultBlockState());
+    }
+
+    // takes only StructureWorld since things that require meshes are likely huge structures
+    public void fill(StructureWorld world, BlockPos start, float thickness, BlockState state) {
+        for (int[] face : this.triangles) {
+            BlockHelper.fillTriangle(world, this.vertices.get(face[0]).offset(start),
+                    this.vertices.get(face[1]).offset(start),
+                    this.vertices.get(face[2]).offset(start),
+                    thickness, state);
+        }
     }
 }

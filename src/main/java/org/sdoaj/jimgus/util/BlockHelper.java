@@ -84,7 +84,7 @@ public class BlockHelper {
         fillTriangle((pos) -> world.setBlock(pos, state), pos1, pos2, pos3, thickness);
     }
 
-    // very bad implementation that checks every box in bounding volume
+    // kind of bad implementation that checks every box in bounding volume
     private static void fillTriangle(Consumer<BlockPos> placeFunction, Vec3f pos1, Vec3f pos2, Vec3f pos3, float thickness) {
         float thicknessRadius = thickness / 2;
 

@@ -28,12 +28,14 @@ public class StructureInit {
     public static final StructureFeature<NoneFeatureConfiguration> FALLEN_MUSHROOM_LOG = new FallenMushroomLogStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> LEAF_SPHERE_TREE = new LeafSphereTreeStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> BEANSTALK = new BeanstalkStructureFeature();
+    public static final StructureFeature<NoneFeatureConfiguration> PEPSIMAN = new PepsimanStructureFeature();
 
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BIG_MUSHROOM = BIG_MUSHROOM.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_ICE_FEATHER = ICE_FEATHER.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_FALLEN_MUSHROOM_LOG = FALLEN_MUSHROOM_LOG.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LEAF_SPHERE_TREE = LEAF_SPHERE_TREE.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BEANSTALK = BEANSTALK.configured(FeatureConfiguration.NONE);
+    public static final ConfiguredStructureFeature<?, ?> CONFIGURED_PEPSIMAN = PEPSIMAN.configured(FeatureConfiguration.NONE);
 
     @SubscribeEvent
     public static void onRegisterStructures(RegistryEvent.Register<StructureFeature<?>> event) {
@@ -44,7 +46,9 @@ public class StructureInit {
         Jimgus.register(registry, FALLEN_MUSHROOM_LOG, "fallen_mushroom_log_structure");
         Jimgus.register(registry, LEAF_SPHERE_TREE, "leaf_sphere_tree_structure");
         Jimgus.register(registry, BEANSTALK, "beanstalk_structure");
+        Jimgus.register(registry, PEPSIMAN, "pepsiman_structure");
 
+        // explanation of spacing, separation, and salt:
         // https://www.minecraftforum.net/forums/minecraft-java-edition/discussion/3042476-whats-the-best-way-to-customize-my-world-settings#c14
         setupStructure(BIG_MUSHROOM, CONFIGURED_BIG_MUSHROOM,
                 new StructureFeatureConfiguration(12, 4, 4093123), false);
@@ -56,6 +60,8 @@ public class StructureInit {
                 new StructureFeatureConfiguration(6, 3, 34512363), false);
         setupStructure(BEANSTALK, CONFIGURED_BEANSTALK,
                 new StructureFeatureConfiguration(7, 2, 24091209), false);
+        setupStructure(PEPSIMAN, CONFIGURED_PEPSIMAN,
+                new StructureFeatureConfiguration(8, 3, 5820910), false);
 
         StructurePieceInit.registerPieces();
     }

@@ -28,6 +28,7 @@ public class BiomeInit {
     public static final RegistryObject<Biome> BEANSTALK_BIOME = BIOMES.register("beanstalk_biome", ModBiomes::beanstalkBiome);
     public static final RegistryObject<Biome> ICE_FEATHER_BIOME = BIOMES.register("ice_feather_biome", ModBiomes::iceFeatherBiome);
     public static final RegistryObject<Biome> MUSHROOM_LOG_BIOME = BIOMES.register("mushroom_log_biome", ModBiomes::mushroomLogBiome);
+    public static final RegistryObject<Biome> PEPSI_BIOME = BIOMES.register("pepsi_biome", ModBiomes::pepsiBiome);
 
     @SubscribeEvent
     public static void onRegisterBiomes(final RegistryEvent.Register<Biome> event) {
@@ -38,6 +39,7 @@ public class BiomeInit {
         registerBiome(BEANSTALK_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(ICE_FEATHER_BIOME.get(), BiomeType.ICY, Type.COLD, Type.SNOWY);
         registerBiome(MUSHROOM_LOG_BIOME.get(), BiomeType.WARM, Type.FOREST, Type.MUSHROOM, Type.MAGICAL);
+        registerBiome(PEPSI_BIOME.get(), BiomeType.WARM, Type.MAGICAL);
     }
 
     private static void registerBiome(Biome biome, BiomeType type, Type... types) {
