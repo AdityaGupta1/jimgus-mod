@@ -12,7 +12,7 @@ import org.sdoaj.jimgus.util.math.MathHelper;
 import org.sdoaj.jimgus.util.sdf.SDF;
 import org.sdoaj.jimgus.util.sdf.operators.SDFTransform;
 import org.sdoaj.jimgus.util.sdf.operators.SDFUnion;
-import org.sdoaj.jimgus.util.sdf.primitives.SDFNgonPrism;
+import org.sdoaj.jimgus.util.sdf.primitives.SDFCylinder;
 
 import java.util.Random;
 import java.util.function.UnaryOperator;
@@ -45,15 +45,21 @@ public class CrystalFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         Block crystalBlock = Util.pickRandom(random, blocks);
-        SDF crystal = new SDFNgonPrism(MathHelper.nextInt(random, 20, 25)).sides(6).rotate(random.nextFloat() * 2 * MathHelper.PI)
-                .radius(crystalRadius).radiusMultiplier(4.5f).setBlock(crystalBlock);
+        SDF crystal = new SDFCylinder(MathHelper.nextInt(random, 20, 25))
+                .sides(6)
+                .rotation(MathHelper.nextFloat(random, MathHelper.PI2))
+                .radius(crystalRadius).radiusMultiplier(4.5f)
+                .setBlock(crystalBlock);
         crystal = new SDFTransform().rotate(MathHelper.nextFloatOne(random), 0, MathHelper.nextFloatOne(random),
                 MathHelper.nextFloat(random, 0, MathHelper.radians(25))).setSource(crystal);
 
         int extraCrystals = MathHelper.nextInt(random, 3, 6);
         for (int i = 0; i < extraCrystals; i++) {
-            SDF extraCrystal = new SDFNgonPrism(MathHelper.nextFloat(random, 10, 15)).sides(6)
-                    .radius(crystalRadius).radiusMultiplier(2.5f).setBlock(crystalBlock);
+            SDF extraCrystal = new SDFCylinder(MathHelper.nextFloat(random, 10, 15))
+                    .sides(6)
+                    .rotation(MathHelper.nextFloat(random, MathHelper.PI2))
+                    .radius(crystalRadius).radiusMultiplier(2.5f)
+                    .setBlock(crystalBlock);
             extraCrystal = new SDFTransform().rotate(MathHelper.nextFloatOne(random), 0, MathHelper.nextFloatOne(random),
                     MathHelper.nextFloat(random, MathHelper.radians(30), MathHelper.radians(65)))
                     .setSource(extraCrystal);

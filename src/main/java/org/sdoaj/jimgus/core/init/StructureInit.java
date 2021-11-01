@@ -16,10 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.sdoaj.jimgus.Jimgus;
-import org.sdoaj.jimgus.world.structure.feature.BigMushroomStructureFeature;
-import org.sdoaj.jimgus.world.structure.feature.FallenMushroomLogStructureFeature;
-import org.sdoaj.jimgus.world.structure.feature.IceFeatherStructureFeature;
-import org.sdoaj.jimgus.world.structure.feature.LeafSphereTreeStructureFeature;
+import org.sdoaj.jimgus.world.structure.feature.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +27,13 @@ public class StructureInit {
     public static final StructureFeature<NoneFeatureConfiguration> ICE_FEATHER = new IceFeatherStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> FALLEN_MUSHROOM_LOG = new FallenMushroomLogStructureFeature();
     public static final StructureFeature<NoneFeatureConfiguration> LEAF_SPHERE_TREE = new LeafSphereTreeStructureFeature();
+    public static final StructureFeature<NoneFeatureConfiguration> BEANSTALK = new BeanstalkStructureFeature();
 
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BIG_MUSHROOM = BIG_MUSHROOM.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_ICE_FEATHER = ICE_FEATHER.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_FALLEN_MUSHROOM_LOG = FALLEN_MUSHROOM_LOG.configured(FeatureConfiguration.NONE);
     public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LEAF_SPHERE_TREE = LEAF_SPHERE_TREE.configured(FeatureConfiguration.NONE);
+    public static final ConfiguredStructureFeature<?, ?> CONFIGURED_BEANSTALK = BEANSTALK.configured(FeatureConfiguration.NONE);
 
     @SubscribeEvent
     public static void onRegisterStructures(RegistryEvent.Register<StructureFeature<?>> event) {
@@ -44,6 +43,7 @@ public class StructureInit {
         Jimgus.register(registry, ICE_FEATHER, "ice_feather_structure");
         Jimgus.register(registry, FALLEN_MUSHROOM_LOG, "fallen_mushroom_log_structure");
         Jimgus.register(registry, LEAF_SPHERE_TREE, "leaf_sphere_tree_structure");
+        Jimgus.register(registry, BEANSTALK, "beanstalk_structure");
 
         // https://www.minecraftforum.net/forums/minecraft-java-edition/discussion/3042476-whats-the-best-way-to-customize-my-world-settings#c14
         setupStructure(BIG_MUSHROOM, CONFIGURED_BIG_MUSHROOM,
@@ -54,6 +54,8 @@ public class StructureInit {
                 new StructureFeatureConfiguration(5, 2, 5552346), false);
         setupStructure(LEAF_SPHERE_TREE, CONFIGURED_LEAF_SPHERE_TREE,
                 new StructureFeatureConfiguration(6, 3, 34512363), false);
+        setupStructure(BEANSTALK, CONFIGURED_BEANSTALK,
+                new StructureFeatureConfiguration(7, 2, 24091209), false);
 
         StructurePieceInit.registerPieces();
     }

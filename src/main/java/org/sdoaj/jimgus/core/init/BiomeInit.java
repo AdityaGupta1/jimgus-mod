@@ -25,7 +25,7 @@ public class BiomeInit {
     public static final RegistryObject<Biome> MUSHROOM_BIOME = BIOMES.register("mushroom_biome", ModBiomes::mushroomBiome);
     public static final RegistryObject<Biome> CRYSTAL_BIOME = BIOMES.register("crystal_biome", ModBiomes::crystalBiome);
     // public static final RegistryObject<Biome> NEON_GENESIS_BIOME = BIOMES.register("neon_genesis_biome", ModBiomes::neonGenesisBiome);
-    public static final RegistryObject<Biome> CLOUD_ISLAND_BIOME = BIOMES.register("cloud_island_biome", ModBiomes::cloudIslandBiome);
+    public static final RegistryObject<Biome> BEANSTALK_BIOME = BIOMES.register("beanstalk_biome", ModBiomes::beanstalkBiome);
     public static final RegistryObject<Biome> ICE_FEATHER_BIOME = BIOMES.register("ice_feather_biome", ModBiomes::iceFeatherBiome);
     public static final RegistryObject<Biome> MUSHROOM_LOG_BIOME = BIOMES.register("mushroom_log_biome", ModBiomes::mushroomLogBiome);
 
@@ -35,7 +35,7 @@ public class BiomeInit {
         registerBiome(MUSHROOM_BIOME.get(), BiomeType.WARM, Type.MUSHROOM);
         registerBiome(CRYSTAL_BIOME.get(), BiomeType.COOL, Type.MOUNTAIN, Type.MAGICAL);
         // registerBiome(NEON_GENESIS_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
-        registerBiome(CLOUD_ISLAND_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
+        registerBiome(BEANSTALK_BIOME.get(), BiomeType.COOL, Type.MAGICAL);
         registerBiome(ICE_FEATHER_BIOME.get(), BiomeType.ICY, Type.COLD, Type.SNOWY);
         registerBiome(MUSHROOM_LOG_BIOME.get(), BiomeType.WARM, Type.FOREST, Type.MUSHROOM, Type.MAGICAL);
     }
