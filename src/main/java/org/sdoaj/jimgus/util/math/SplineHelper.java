@@ -98,6 +98,11 @@ public class SplineHelper {
         t = MathHelper.clamp(t, 0f, 1f);
         float t2 = t * (spline.size() - 1);
         int point1 = (int) Math.floor(t2);
+
+        if (point1 == spline.size() - 1) {
+            return spline.get(point1);
+        }
+
         float tLocal = t2 - point1;
         return Vec3f.lerp(tLocal, spline.get(point1), spline.get(point1 + 1));
     }
@@ -170,6 +175,10 @@ public class SplineHelper {
         public SplineSDFBuilder radius(UnaryOperator<Float> radius) {
             this.radius = radius;
             return this;
+        }
+
+        public UnaryOperator<Float> getRadiusFunction() {
+            return this.radius;
         }
 
         public SplineSDFBuilder radiusMultiplier(float multiplier) {

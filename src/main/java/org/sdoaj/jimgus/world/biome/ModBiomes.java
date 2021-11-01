@@ -160,7 +160,7 @@ public class ModBiomes {
                 .build();
     }
 
-    public static Biome cloudIslandBiome() {
+    public static Biome beanstalkBiome() {
         MobSpawnSettings.Builder spawnSettingsBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(spawnSettingsBuilder);
 

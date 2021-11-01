@@ -1,11 +1,13 @@
 package org.sdoaj.jimgus.util.sdf.operators;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.sdoaj.jimgus.util.math.Vec3f;
 
 // kinda bad because if the translated SDF doesn't cover the origin, it won't be filled
 public class SDFTransform extends SDFUnary {
+    // TODO when porting to C++, implement as a stack of matrices instead of just one of each transformation
+    // i.e. methods like addTranslation(vec) that will set this.mat4 = glm::translate(vec) * this.mat4
+
     private Vec3f translation, scale;
      private Vec3f axis;
      private float sin, cos, cosm; // cosm = 1 - cos
@@ -19,15 +21,14 @@ public class SDFTransform extends SDFUnary {
         return this;
     }
 
-    // angle in radians
-    public SDFTransform rotate(float x, float y, float z, float angle) {
-        return rotate(new Vec3f(x, y, z), angle);
+    public SDFTransform rotate(float x, float y, float z, float radians) {
+        return rotate(new Vec3f(x, y, z), radians);
     }
 
-     public SDFTransform rotate(Vec3f axis, float angle) {
+     public SDFTransform rotate(Vec3f axis, float radians) {
          this.axis = axis.normalize();
-         this.sin = (float) Math.sin(angle);
-         this.cos = (float) Math.cos(angle);
+         this.sin = (float) Math.sin(radians);
+         this.cos = (float) Math.cos(radians);
          this.cosm = 1 - this.cos;
          return this;
      }
